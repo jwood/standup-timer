@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+   android:layout_height="fill_parent" android:layout_width="fill_parent"
+   android:padding="30dip" android:orientation="horizontal">
+
+   <LinearLayout android:orientation="vertical"
+      android:layout_height="wrap_content" android:layout_width="fill_parent"
+      android:layout_gravity="center">
+
+      <TextView android:text="@string/number_of_participants"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"></TextView>
+
+      <com.android.internal.widget.NumberPicker
+         android:id="@+id/num_participants" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+         android:layout_marginTop="5dp" />
+
+      <TextView android:text="@string/length_of_meeting"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal" android:paddingTop="10dp"></TextView>
+
+      <Spinner android:id="@+id/meeting_length" android:layout_width="fill_parent"
+         android:layout_height="wrap_content" android:drawSelectorOnTop="true"
+         android:prompt="@string/length_of_meeting" android:layout_marginTop="5dp" />
+
+      <Button android:text="@string/start" android:id="@+id/start_button"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:layout_marginTop="10dp"></Button>
+
+   </LinearLayout>
 </LinearLayout>

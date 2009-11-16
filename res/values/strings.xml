@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, StandupTimer!</string>
     <string name="app_name">Standup Timer</string>
+
+    <string name="number_of_participants">Number of participants</string>
+    <string name="length_of_meeting">Length of meeting</string>
+    <string name="start">Start</string>
+
+    <string name="five_min">5 min</string>
+    <string name="ten_min">10 min</string>
+    <string name="fifteen_min">15 min</string>
+    <string name="twenty_min">20 min</string>
 </resources>
