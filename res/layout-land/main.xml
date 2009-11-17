@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_height="fill_parent" android:layout_width="fill_parent"
+   android:padding="30dip" android:orientation="horizontal">
+
+   <TableLayout android:layout_width="fill_parent"
+      android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+      <TableRow android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:gravity="center">
+         <TextView android:text="@string/number_of_participants"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"></TextView>
+
+         <TextView android:text="@string/length_of_meeting"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingLeft="30dp"></TextView>
+      </TableRow>
+
+      <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:gravity="center">
+         <com.android.internal.widget.NumberPicker
+            android:id="@+id/num_participants" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+            android:layout_marginRight="40dp" android:paddingTop="10dp" />
+
+         <Spinner android:id="@+id/meeting_length"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true" android:prompt="@string/length_of_meeting"
+            android:paddingTop="10dp" />
+      </TableRow>
+
+      <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:gravity="center" android:paddingTop="10dp">
+         <Button android:text="@string/start" android:id="@+id/start_button"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"></Button>
+      </TableRow>
+   </TableLayout>
+</LinearLayout>
