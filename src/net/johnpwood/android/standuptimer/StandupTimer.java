@@ -5,13 +5,13 @@ import java.lang.reflect.Method;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class StandupTimer extends Activity implements OnClickListener {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,16 +23,17 @@ public class StandupTimer extends Activity implements OnClickListener {
         Intent i = new Intent(this, Timer.class);
 
         Spinner s = (Spinner) findViewById(R.id.meeting_length);
-        i.putExtra("meetingLength", s.getSelectedItem().toString());
+        i.putExtra("meetingLengthPos", s.getSelectedItemPosition());
 
         Object o = findViewById(R.id.num_participants);
         Class<? extends Object> c = o.getClass();
         int numParticipants = 0;
         try {
             Method m = c.getMethod("getCurrent");
-            numParticipants = (Integer) m.invoke(o, null);
+            numParticipants = (Integer) m.invoke(o, new Object[]{});
         } catch (Exception e) {
-            Log.e("Failed to get the number of partipipants: ", e.getMessage());
+            Logger.e("Failed to get the number of partipipants: " + e.getMessage());
+            Logger.e("Quitting");
             throw new RuntimeException(e);
         }
         i.putExtra("numParticipants", numParticipants);
@@ -53,7 +54,7 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private void initializeMeetingLengthSpinner() {
         Spinner s = (Spinner) findViewById(R.id.meeting_length);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.meeting_lengths,
+        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, R.array.meeting_lengths,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
@@ -66,7 +67,8 @@ public class StandupTimer extends Activity implements OnClickListener {
             Method m = c.getMethod("setRange", int.class, int.class);
             m.invoke(o, 0, 20);
         } catch (Exception e) {
-            Log.e("Failed to set the range of the participants number picker: ", e.getMessage());
+            Logger.e("Failed to set the range of the participants number picker: " + e.getMessage());
+            Logger.e("Quitting");
             throw new RuntimeException(e);
         }
     }
