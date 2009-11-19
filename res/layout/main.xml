@@ -18,7 +18,7 @@
 
       <TextView android:text="@string/length_of_meeting"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:paddingTop="10dp"></TextView>
+         android:layout_gravity="center_horizontal" android:paddingTop="35dp"></TextView>
 
       <Spinner android:id="@+id/meeting_length" android:layout_width="fill_parent"
          android:layout_height="wrap_content" android:drawSelectorOnTop="true"
