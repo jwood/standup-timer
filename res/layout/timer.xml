@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_height="fill_parent" android:layout_width="fill_parent">
+   android:layout_height="fill_parent" android:layout_width="fill_parent"
+   android:padding="30dip" android:orientation="horizontal">
 
-   <TextView android:text="timer"
-      android:layout_width="wrap_content" android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal" android:paddingTop="10dp"></TextView>
+   <LinearLayout android:orientation="vertical"
+      android:layout_height="wrap_content" android:layout_width="fill_parent"
+      android:layout_gravity="center">
 
+      <TextView android:text="@string/individual_time_remaining" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+         android:textSize="15sp"></TextView>
+
+      <TextView android:id="@+id/individual_time_remaining"
+         android:text="00:00:00" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+         android:textSize="40sp" android:textColor="@color/green"
+         android:layout_marginTop="5dp"></TextView>
+
+      <Button android:text="@string/next" android:id="@+id/next_button"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:layout_marginTop="15dp"></Button>
+
+      <TextView android:text="@string/total_time_remaining" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+         android:textSize="15sp" android:layout_marginTop="30dp"></TextView>
+
+      <TextView android:id="@+id/total_time_remaining"
+         android:text="00:00:00" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+         android:textSize="40sp" android:textColor="@color/green"
+         android:layout_marginTop="5dp"></TextView>
+
+      <Button android:text="@string/finished" android:id="@+id/finished_button"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:layout_marginTop="15dp"></Button>
+
+   </LinearLayout>
 </LinearLayout>

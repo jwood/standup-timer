@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Standup Timer</string>
-    <string name="timer">Timer</string>
+   <string name="app_name">Standup Timer</string>
+   <string name="timer">Timer</string>
 
-    <string name="number_of_participants">Number of participants</string>
-    <string name="length_of_meeting">Length of meeting</string>
-    <string name="start">Start</string>
+   <string name="number_of_participants">Number of participants</string>
+   <string name="length_of_meeting">Length of meeting</string>
+   <string name="start">Start</string>
 
-    <string name="five_min">5 min</string>
-    <string name="ten_min">10 min</string>
-    <string name="fifteen_min">15 min</string>
-    <string name="twenty_min">20 min</string>
+   <string name="five_min">5 min</string>
+   <string name="ten_min">10 min</string>
+   <string name="fifteen_min">15 min</string>
+   <string name="twenty_min">20 min</string>
+
+   <string name="individual_time_remaining">Individual time remaining</string>
+   <string name="total_time_remaining">Total time remaining</string>
+   <string name="next">Next</string>
+   <string name="finished">Finished</string>
 </resources>

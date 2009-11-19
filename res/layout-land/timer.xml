@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_height="fill_parent" android:layout_width="fill_parent"
+   android:padding="60dp" android:orientation="horizontal">
+
+   <TableLayout android:layout_width="fill_parent"
+      android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+      android:stretchColumns="0">
+
+      <TableRow android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:gravity="center">
+
+         <TextView android:text="@string/individual_time_remaining"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" android:textSize="15sp"></TextView>
+
+         <TextView android:text="@string/total_time_remaining"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" android:textSize="15sp"></TextView>
+
+      </TableRow>
+
+      <TableRow android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:gravity="center">
+
+         <TextView android:id="@+id/individual_time_remaining"
+            android:text="00:00:00" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+            android:textSize="40sp" android:textColor="@color/green"
+            android:paddingTop="15dp" android:paddingBottom="15px"></TextView>
+
+         <TextView android:id="@+id/total_time_remaining"
+            android:text="00:00:00" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+            android:textSize="40sp" android:textColor="@color/green"
+            android:paddingTop="15dp" android:paddingBottom="15px"></TextView>
+
+      </TableRow>
+
+      <TableRow android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:gravity="center">
+
+         <Button android:text="@string/next" android:id="@+id/next_button"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            ></Button>
+
+         <Button android:text="@string/finished" android:id="@+id/finished_button"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            ></Button>
+
+      </TableRow>
+
+   </TableLayout>
+</LinearLayout>
