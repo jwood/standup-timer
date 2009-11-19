@@ -14,8 +14,7 @@
       <TextView android:id="@+id/individual_time_remaining"
          android:text="00:00:00" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-         android:textSize="40sp" android:textColor="@color/green"
-         android:layout_marginTop="5dp"></TextView>
+         android:textSize="40sp" android:layout_marginTop="5dp"></TextView>
 
       <Button android:text="@string/next" android:id="@+id/next_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -29,8 +28,7 @@
       <TextView android:id="@+id/total_time_remaining"
          android:text="00:00:00" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-         android:textSize="40sp" android:textColor="@color/green"
-         android:layout_marginTop="5dp"></TextView>
+         android:textSize="40sp" android:layout_marginTop="5dp"></TextView>
 
       <Button android:text="@string/finished" android:id="@+id/finished_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
