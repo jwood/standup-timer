@@ -65,7 +65,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         Class<? extends Object> c = o.getClass();
         try {
             Method m = c.getMethod("setRange", int.class, int.class);
-            m.invoke(o, 0, 20);
+            m.invoke(o, 2, 20);
         } catch (Exception e) {
             Logger.e("Failed to set the range of the participants number picker: " + e.getMessage());
             Logger.e("Quitting");
