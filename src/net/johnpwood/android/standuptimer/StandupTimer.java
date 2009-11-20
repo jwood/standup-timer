@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +15,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StandupTimer extends Activity implements OnClickListener {
+    private final String REMAINING_INDIVIDUAL_SECONDS = "remainingIndividualSeconds";
+    private final String REMAINING_MEETING_SECONDS = "remainingMeetingSeconds";
+    private final String STARTING_INDIVIDUAL_SECONDS = "startingIndividualSeconds";
+    private final String COMPLETED_PARTICIPANTS = "completedParticipants";
+    private final String TOTAL_PARTICIPANTS = "totalParticipants";
+
     private int remainingIndividualSeconds = 0;
     private int remainingMeetingSeconds = 0;
     private int startingIndividualSeconds = 0;
     private int completedParticipants = 0;
     private int totalParticipants = 0;
+    private boolean finished = false;
 
     private Handler updateDisplayHandler = new Handler() {
         @Override
@@ -45,6 +53,17 @@ public class StandupTimer extends Activity implements OnClickListener {
         startTimer();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (finished) {
+            clearState();
+        } else {
+            saveState();
+        }
+    }
+
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.next_button:
@@ -67,15 +86,12 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private void initializeTimerValues() {
         int meetingLengthPos = getIntent().getIntExtra("meetingLengthPos", 0);
-        totalParticipants = getIntent().getIntExtra("numParticipants", 0);
+        int numParticipants = getIntent().getIntExtra("numParticipants", 0);
 
         Logger.d("Timer: meetingLengthPos = " + meetingLengthPos);
         Logger.d("Timer: numParticipants = " + totalParticipants);
 
-        MeetingLength meetingLength = MeetingLength.findByPosition(meetingLengthPos);
-        remainingMeetingSeconds = meetingLength.getLength() * 60;
-        startingIndividualSeconds = remainingMeetingSeconds / totalParticipants;
-        remainingIndividualSeconds = startingIndividualSeconds;
+        loadState(meetingLengthPos, numParticipants);
     }
 
     private synchronized void updateDisplay() {
@@ -85,9 +101,10 @@ public class StandupTimer extends Activity implements OnClickListener {
             individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds));
 
             TextView participantNumber = (TextView) findViewById(R.id.participant_number);
-            // TODO: Change to pull from resource file
-            participantNumber.setText("Participant" + " " + 
+            participantNumber.setText(this.getString(R.string.participant) + " " +
                     (completedParticipants + 1) + "/" + totalParticipants);
+        } else {
+            disableIndividualTimer();
         }
 
         TextView totalTimeRemaining = (TextView) findViewById(R.id.total_time_remaining);
@@ -148,11 +165,37 @@ public class StandupTimer extends Activity implements OnClickListener {
         nextButton.setTextColor(Color.GRAY);
     }
 
+    private void loadState(int meetingLengthPos, int numParticipants) {
+        MeetingLength meetingLength = MeetingLength.findByPosition(meetingLengthPos);
+
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        totalParticipants = preferences.getInt(TOTAL_PARTICIPANTS, numParticipants);
+        remainingMeetingSeconds = preferences.getInt(REMAINING_MEETING_SECONDS, meetingLength.getLength() * 60);
+        startingIndividualSeconds = preferences.getInt(STARTING_INDIVIDUAL_SECONDS, remainingMeetingSeconds / totalParticipants);
+        remainingIndividualSeconds = preferences.getInt(REMAINING_INDIVIDUAL_SECONDS, startingIndividualSeconds);
+        completedParticipants = preferences.getInt(COMPLETED_PARTICIPANTS, 0);
+    }
+
+    private void saveState() {
+        SharedPreferences.Editor preferences = getPreferences(MODE_PRIVATE).edit();
+        preferences.putInt(REMAINING_INDIVIDUAL_SECONDS, remainingIndividualSeconds);
+        preferences.putInt(REMAINING_MEETING_SECONDS, remainingMeetingSeconds);
+        preferences.putInt(STARTING_INDIVIDUAL_SECONDS, startingIndividualSeconds);
+        preferences.putInt(COMPLETED_PARTICIPANTS, completedParticipants);
+        preferences.putInt(TOTAL_PARTICIPANTS, totalParticipants);
+        preferences.commit();
+    }
+
+    private void clearState() {
+        getPreferences(MODE_PRIVATE).edit().clear().commit();
+    }
+
     private synchronized boolean individualStatusInProgress() {
         return completedParticipants < totalParticipants;
     }
 
-    private void processFinishedButtonClick() {
+    private synchronized void processFinishedButtonClick() {
+        finished = true;
         finish();
     }
 
