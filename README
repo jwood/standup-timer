@@ -1,0 +1,17 @@
+== Description
+Standup Timer is a simple, stand-up meeting stop watch that can be used to ensure
+your stand-up meeting finishes on time, and gives all the participants an
+equal share of time to state their progress.
+
+Standup Timer is free, open source, and available under the ?? license.
+
+== TODO
+- Play sounds when time is individual time is running out, and when time runs out.
+- Go back to home screen when Finish button is clicked
+- Clean up the views
+- Create icons
+
+== Author
+John Wood
+john_p_wood@yahoo.com
+http://johnpwood.net

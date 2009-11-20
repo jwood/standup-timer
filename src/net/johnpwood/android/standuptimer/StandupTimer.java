@@ -13,10 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-// TODO: Play sounds when time is individual time is running out, and when time runs out.
-// TODO: Go back to home screen when Finish button is clicked
-// TODO: Clean up the views
-
 public class StandupTimer extends Activity implements OnClickListener {
     private int remainingIndividualSeconds = 0;
     private int remainingMeetingSeconds = 0;
