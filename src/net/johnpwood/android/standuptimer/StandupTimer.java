@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 // TODO: Play sounds when time is individual time is running out, and when time runs out.
-// TODO: Grey out individual clock and disable Next button when next is clicked and no more participants
-// TODO: Show the status of participants (1 of 5, 2 of 5, etc)
 // TODO: Go back to home screen when Finish button is clicked
 // TODO: Clean up the views
 
@@ -23,12 +21,20 @@ public class StandupTimer extends Activity implements OnClickListener {
     private int remainingIndividualSeconds = 0;
     private int remainingMeetingSeconds = 0;
     private int startingIndividualSeconds = 0;
-    private int remainingParticipants = 0;
+    private int completedParticipants = 0;
+    private int totalParticipants = 0;
 
-    private Handler handler = new Handler() {
+    private Handler updateDisplayHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             updateDisplay();
+        }
+    };
+
+    private Handler disableIndividualTimerHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            disableIndividualTimer();
         }
     };
 
@@ -65,22 +71,28 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private void initializeTimerValues() {
         int meetingLengthPos = getIntent().getIntExtra("meetingLengthPos", 0);
-        int numParticipants = getIntent().getIntExtra("numParticipants", 0);
+        totalParticipants = getIntent().getIntExtra("numParticipants", 0);
 
         Logger.d("Timer: meetingLengthPos = " + meetingLengthPos);
-        Logger.d("Timer: numParticipants = " + numParticipants);
+        Logger.d("Timer: numParticipants = " + totalParticipants);
 
         MeetingLength meetingLength = MeetingLength.findByPosition(meetingLengthPos);
         remainingMeetingSeconds = meetingLength.getLength() * 60;
-        startingIndividualSeconds = remainingMeetingSeconds / numParticipants;
+        startingIndividualSeconds = remainingMeetingSeconds / totalParticipants;
         remainingIndividualSeconds = startingIndividualSeconds;
-        remainingParticipants = numParticipants;
     }
 
     private void updateDisplay() {
-        TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
-        individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
-        individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds));
+        if (completedParticipants < totalParticipants) {
+            TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
+            individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
+            individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds));
+
+            TextView participantNumber = (TextView) findViewById(R.id.participant_number);
+            // TODO: Change to pull from resource file
+            participantNumber.setText("Participant" + " " + 
+                    (completedParticipants + 1) + "/" + totalParticipants);
+        }
 
         TextView totalTimeRemaining = (TextView) findViewById(R.id.total_time_remaining);
         totalTimeRemaining.setText(formatTime(remainingMeetingSeconds));
@@ -107,13 +119,14 @@ public class StandupTimer extends Activity implements OnClickListener {
                 remainingMeetingSeconds--;
         }
 
-        handler.sendEmptyMessage(0);
+        updateDisplayHandler.sendEmptyMessage(0);
     }
 
     private void processNextButtonClick() {
-        remainingParticipants--;
-        if (remainingParticipants == 0) {
-            disableIndividualClock();
+        completedParticipants++;
+
+        if (completedParticipants == totalParticipants) {
+            disableIndividualTimerHandler.sendEmptyMessage(0);
         } else {
             synchronized(this) {
                 if (startingIndividualSeconds < remainingMeetingSeconds) {
@@ -126,9 +139,21 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    private void disableIndividualClock() {
+    private void disableIndividualTimer() {
+        synchronized(this) {
+            remainingIndividualSeconds = 0;
+        }
+
+        TextView participantNumber = (TextView) findViewById(R.id.participant_number);
+        participantNumber.setText(R.string.individual_status_complete);
+
+        TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
+        individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
+        individualTimeRemaining.setTextColor(Color.GRAY);
+
         Button nextButton = (Button) findViewById(R.id.next_button);
         nextButton.setClickable(false);
+        nextButton.setTextColor(Color.GRAY);
     }
 
     private void processFinishedButtonClick() {

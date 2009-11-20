@@ -12,7 +12,8 @@
    <string name="fifteen_min">15 min</string>
    <string name="twenty_min">20 min</string>
 
-   <string name="individual_time_remaining">Individual time remaining</string>
+   <string name="participant">Participant</string>
+   <string name="individual_status_complete">Individual status complete</string>
    <string name="total_time_remaining">Total time remaining</string>
    <string name="next">Next</string>
    <string name="finished">Finished</string>
