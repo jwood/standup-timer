@@ -15,11 +15,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StandupTimer extends Activity implements OnClickListener {
-    private final String REMAINING_INDIVIDUAL_SECONDS = "remainingIndividualSeconds";
-    private final String REMAINING_MEETING_SECONDS = "remainingMeetingSeconds";
-    private final String STARTING_INDIVIDUAL_SECONDS = "startingIndividualSeconds";
-    private final String COMPLETED_PARTICIPANTS = "completedParticipants";
-    private final String TOTAL_PARTICIPANTS = "totalParticipants";
+    private static final String REMAINING_INDIVIDUAL_SECONDS = "remainingIndividualSeconds";
+    private static final String REMAINING_MEETING_SECONDS = "remainingMeetingSeconds";
+    private static final String STARTING_INDIVIDUAL_SECONDS = "startingIndividualSeconds";
+    private static final String COMPLETED_PARTICIPANTS = "completedParticipants";
+    private static final String TOTAL_PARTICIPANTS = "totalParticipants";
 
     private int remainingIndividualSeconds = 0;
     private int remainingMeetingSeconds = 0;
@@ -165,7 +165,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         nextButton.setTextColor(Color.GRAY);
     }
 
-    private void loadState(int meetingLengthPos, int numParticipants) {
+    private synchronized void loadState(int meetingLengthPos, int numParticipants) {
         MeetingLength meetingLength = MeetingLength.findByPosition(meetingLengthPos);
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
@@ -176,7 +176,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         completedParticipants = preferences.getInt(COMPLETED_PARTICIPANTS, 0);
     }
 
-    private void saveState() {
+    private synchronized void saveState() {
         SharedPreferences.Editor preferences = getPreferences(MODE_PRIVATE).edit();
         preferences.putInt(REMAINING_INDIVIDUAL_SECONDS, remainingIndividualSeconds);
         preferences.putInt(REMAINING_MEETING_SECONDS, remainingMeetingSeconds);
