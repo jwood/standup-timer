@@ -82,8 +82,8 @@ public class StandupTimer extends Activity implements OnClickListener {
         remainingIndividualSeconds = startingIndividualSeconds;
     }
 
-    private void updateDisplay() {
-        if (completedParticipants < totalParticipants) {
+    private synchronized void updateDisplay() {
+        if (individualStatusInProgress()) {
             TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
             individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
             individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds));
@@ -122,27 +122,23 @@ public class StandupTimer extends Activity implements OnClickListener {
         updateDisplayHandler.sendEmptyMessage(0);
     }
 
-    private void processNextButtonClick() {
+    private synchronized void processNextButtonClick() {
         completedParticipants++;
 
         if (completedParticipants == totalParticipants) {
             disableIndividualTimerHandler.sendEmptyMessage(0);
         } else {
-            synchronized(this) {
-                if (startingIndividualSeconds < remainingMeetingSeconds) {
-                    remainingIndividualSeconds = startingIndividualSeconds;
-                } else {
-                    remainingIndividualSeconds = remainingMeetingSeconds;
-                }
+            if (startingIndividualSeconds < remainingMeetingSeconds) {
+                remainingIndividualSeconds = startingIndividualSeconds;
+            } else {
+                remainingIndividualSeconds = remainingMeetingSeconds;
             }
             updateDisplay();
         }
     }
 
-    private void disableIndividualTimer() {
-        synchronized(this) {
-            remainingIndividualSeconds = 0;
-        }
+    private synchronized void disableIndividualTimer() {
+        remainingIndividualSeconds = 0;
 
         TextView participantNumber = (TextView) findViewById(R.id.participant_number);
         participantNumber.setText(R.string.individual_status_complete);
@@ -154,6 +150,10 @@ public class StandupTimer extends Activity implements OnClickListener {
         Button nextButton = (Button) findViewById(R.id.next_button);
         nextButton.setClickable(false);
         nextButton.setTextColor(Color.GRAY);
+    }
+
+    private synchronized boolean individualStatusInProgress() {
+        return completedParticipants < totalParticipants;
     }
 
     private void processFinishedButtonClick() {
