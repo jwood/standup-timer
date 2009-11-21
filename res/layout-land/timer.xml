@@ -1,54 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_height="fill_parent" android:layout_width="fill_parent"
-   android:padding="60dp" android:orientation="horizontal">
+<TableLayout android:layout_width="fill_parent"
+   android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical" android:gravity="center">
 
-   <TableLayout android:layout_width="fill_parent"
-      android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-      android:stretchColumns="0">
+   <TableRow android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:gravity="center">
 
-      <TableRow android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:gravity="center">
+      <TextView android:id="@+id/participant_number"
+         android:text="@string/participant" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:textSize="18sp"></TextView>
 
-         <TextView android:id="@+id/participant_number"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" android:textSize="15sp"></TextView>
+      <View android:layout_width="30dp" android:layout_height="1dp"></View>
 
-         <TextView android:text="@string/total_time_remaining"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" android:textSize="15sp"></TextView>
+      <TextView android:text="@string/total_time_remaining"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center" android:textSize="15sp"></TextView>
 
-      </TableRow>
+   </TableRow>
 
-      <TableRow android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:gravity="center">
+   <TableRow android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:gravity="center">
 
-         <TextView android:id="@+id/individual_time_remaining"
-            android:text="00:00:00" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-            android:textSize="40sp" android:paddingTop="15dp"
-            android:paddingBottom="15px"></TextView>
+      <TextView android:id="@+id/individual_time_remaining"
+         android:text="00:00" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:textSize="45sp" android:paddingTop="15dp"></TextView>
 
-         <TextView android:id="@+id/total_time_remaining"
-            android:text="00:00:00" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-            android:textSize="40sp" android:paddingTop="15dp"
-            android:paddingBottom="15px"></TextView>
+      <View android:layout_width="30dp" android:layout_height="1dp"></View>
 
-      </TableRow>
+      <TextView android:id="@+id/total_time_remaining"
+         android:text="00:00" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:textSize="35sp" android:paddingTop="15dp"></TextView>
 
-      <TableRow android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:gravity="center">
+   </TableRow>
 
-         <Button android:text="@string/next" android:id="@+id/next_button"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"></Button>
+   <TableRow android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:gravity="center">
 
-         <Button android:text="@string/finished" android:id="@+id/finished_button"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"></Button>
+      <Button android:text="@string/next" android:id="@+id/next_button"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center" android:width="80dp"
+         android:layout_marginTop="15dp"></Button>
 
-      </TableRow>
+      <View android:layout_width="30dp" android:layout_height="1dp"></View>
 
-   </TableLayout>
-</LinearLayout>
+      <Button android:text="@string/finished" android:id="@+id/finished_button"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center" android:width="80dp"
+         android:layout_marginTop="15dp"></Button>
+
+   </TableRow>
+
+</TableLayout>

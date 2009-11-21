@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
    android:layout_height="fill_parent" android:layout_width="fill_parent"
-   android:padding="30dip" android:orientation="horizontal">
+   android:orientation="horizontal">
 
    <LinearLayout android:orientation="vertical"
       android:layout_height="wrap_content" android:layout_width="fill_parent"
       android:layout_gravity="center">
 
       <TextView android:id="@+id/participant_number"
-         android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:textSize="15sp"></TextView>
+         android:text="@string/participant" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:textSize="18sp"></TextView>
 
       <TextView android:id="@+id/individual_time_remaining"
-         android:text="00:00:00" android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-         android:textSize="40sp" android:layout_marginTop="5dp"></TextView>
+         android:text="00:00" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:textSize="45sp" android:layout_marginTop="5dp"></TextView>
 
       <Button android:text="@string/next" android:id="@+id/next_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal"
-         android:layout_marginTop="15dp"></Button>
+         android:layout_gravity="center" android:layout_marginTop="15dp"
+         android:width="80dp"></Button>
 
       <TextView android:text="@string/total_time_remaining"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:textSize="15sp"
+         android:layout_gravity="center" android:textSize="15sp"
          android:layout_marginTop="30dp"></TextView>
 
       <TextView android:id="@+id/total_time_remaining"
-         android:text="00:00:00" android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-         android:textSize="40sp" android:layout_marginTop="5dp"></TextView>
+         android:text="00:00" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:textSize="35sp" android:layout_marginTop="5dp"></TextView>
 
       <Button android:text="@string/finished" android:id="@+id/finished_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal"
-         android:layout_marginTop="15dp"></Button>
+         android:layout_gravity="center" android:layout_marginTop="15dp"
+         android:width="80dp"></Button>
 
    </LinearLayout>
 </LinearLayout>
