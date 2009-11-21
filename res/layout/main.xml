@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
    android:layout_height="fill_parent" android:layout_width="fill_parent"
-   android:padding="30dip" android:orientation="horizontal">
+   android:orientation="horizontal">
 
    <LinearLayout android:orientation="vertical"
       android:layout_height="wrap_content" android:layout_width="fill_parent"
@@ -9,7 +9,7 @@
 
       <TextView android:text="@string/number_of_participants"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal"></TextView>
+         android:layout_gravity="center_horizontal" android:textSize="17sp"></TextView>
 
       <com.android.internal.widget.NumberPicker
          android:id="@+id/num_participants" android:layout_width="wrap_content"
@@ -18,16 +18,19 @@
 
       <TextView android:text="@string/length_of_meeting"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:paddingTop="35dp"></TextView>
+         android:layout_gravity="center_horizontal" android:paddingTop="30dp"
+         android:textSize="17sp"></TextView>
 
-      <Spinner android:id="@+id/meeting_length" android:layout_width="fill_parent"
-         android:layout_height="wrap_content" android:drawSelectorOnTop="true"
-         android:prompt="@string/length_of_meeting" android:layout_marginTop="5dp" />
+      <Spinner android:id="@+id/meeting_length"
+         android:layout_width="fill_parent" android:layout_height="wrap_content"
+         android:prompt="@string/length_of_meeting"
+         android:layout_marginTop="5dp" android:layout_marginLeft="100dp"
+         android:layout_marginRight="100dp" />
 
       <Button android:text="@string/start" android:id="@+id/start_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
          android:layout_gravity="center_horizontal"
-         android:layout_marginTop="10dp"></Button>
+         android:layout_marginTop="30dp" android:width="80dp"></Button>
 
    </LinearLayout>
 </LinearLayout>

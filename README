@@ -8,6 +8,7 @@ Standup Timer is free, open source, and available under the Apache V2 license.
 == TODO
 - Play sounds when time is individual time is running out, and when time runs out.
 - Go back to home screen when Finish button is clicked
+- Blow away timer state when navigating back to the home screen
 - Clean up the views
 - Create icons
 
