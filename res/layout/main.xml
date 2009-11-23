@@ -13,7 +13,8 @@
 
       <EditText android:id="@+id/num_participants" android:layout_width="60dp"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:digits="0123456789" android:inputType="number">
+         android:digits="0123456789" android:inputType="number" android:gravity="center"
+         android:layout_marginTop="10dp">
       </EditText>
 
       <TextView android:text="@string/length_of_meeting"
@@ -24,7 +25,7 @@
       <Spinner android:id="@+id/meeting_length"
          android:layout_width="fill_parent" android:layout_height="wrap_content"
          android:prompt="@string/length_of_meeting"
-         android:layout_marginTop="5dp" android:layout_marginLeft="100dp"
+         android:layout_marginTop="10dp" android:layout_marginLeft="100dp"
          android:layout_marginRight="100dp" />
 
       <Button android:text="@string/start" android:id="@+id/start_button"

@@ -23,7 +23,7 @@
       <EditText android:id="@+id/num_participants"
          android:layout_height="wrap_content" android:layout_gravity="center"
          android:digits="0123456789" android:inputType="number"
-         android:paddingTop="10dp" android:width="60dp">
+         android:layout_marginTop="10dp" android:width="60dp" android:gravity="center">
       </EditText>
 
       <View android:layout_width="40dp" android:layout_height="1dp"></View>
@@ -31,7 +31,7 @@
       <Spinner android:id="@+id/meeting_length"
          android:layout_width="fill_parent" android:layout_height="wrap_content"
          android:drawSelectorOnTop="true" android:prompt="@string/length_of_meeting"
-         android:paddingTop="10dp" android:layout_marginLeft="20dp"
+         android:layout_marginTop="10dp" android:layout_marginLeft="20dp"
          android:layout_marginRight="20dp" />
    </TableRow>
 
