@@ -17,4 +17,16 @@
    <string name="total_time_remaining">Total time remaining</string>
    <string name="next">Next</string>
    <string name="finished">Finished</string>
+
+   <string name="about_label">About</string>
+   <string name="about_title">About Standup Timer</string>
+   <string name="about_text">\
+Standup Timer is a simple application that can be
+used to keep your stand-up meetings on track.
+Simply specify the number of participants and the
+meeting length, and press <b>Start</b> to get
+started. On the timer screen, press <b>Next</b>
+to restart the timer for a new meeting participant,
+or <b>Finish</b> to stop the timer.
+   </string>
 </resources>
