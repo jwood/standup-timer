@@ -41,6 +41,9 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         case R.id.about:
             startActivity(new Intent(this, About.class));
             return true;
+        case R.id.quit:
+            finish();
+            return true;
         }
         return false;
     }
