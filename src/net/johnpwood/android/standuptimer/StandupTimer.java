@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +27,12 @@ public class StandupTimer extends Activity implements OnClickListener {
     private int startingIndividualSeconds = 0;
     private int completedParticipants = 0;
     private int totalParticipants = 0;
+
     private boolean finished = false;
+    private Timer timer = null;
+
+    private static MediaPlayer bell = null;
+    private static MediaPlayer airhorn = null;
 
     private Handler updateDisplayHandler = new Handler() {
         @Override
@@ -47,6 +53,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timer);
 
+        initializeSounds();
         setupButtonListeners();
         initializeTimerValues();
         updateDisplay();
@@ -57,10 +64,17 @@ public class StandupTimer extends Activity implements OnClickListener {
     protected void onPause() {
         super.onPause();
 
-        if (finished) {
-            clearState();
-        } else {
-            saveState();
+        synchronized(this) {
+            if (timer != null) {
+                Logger.d("Canceling timer");
+                timer.cancel();
+            }
+
+            if (finished) {
+                clearState();
+            } else {
+                saveState();
+            }
         }
     }
 
@@ -73,6 +87,18 @@ public class StandupTimer extends Activity implements OnClickListener {
         case R.id.finished_button:
             processFinishedButtonClick();
             break;
+        }
+    }
+
+    private void initializeSounds() {
+        if (bell == null) {
+            Logger.d("Loading the bell sound");
+            bell = MediaPlayer.create(this, R.raw.bell);
+        }
+
+        if (airhorn == null) {
+            Logger.d("Loading the airhorn sound");
+            airhorn = MediaPlayer.create(this, R.raw.airhorn);
         }
     }
 
@@ -112,8 +138,10 @@ public class StandupTimer extends Activity implements OnClickListener {
         totalTimeRemaining.setTextColor(determineColor(remainingMeetingSeconds));
     }
 
-    private void startTimer() {
-        Timer timer = new Timer();
+    private synchronized void startTimer() {
+        Logger.d("Starting a new timer");
+
+        timer = new Timer();
         TimerTask updateTimerValuesTask = new TimerTask() {
             @Override
             public void run() {
@@ -123,14 +151,21 @@ public class StandupTimer extends Activity implements OnClickListener {
         timer.schedule(updateTimerValuesTask, 1000, 1000);
     }
 
-    private void updateTimerValues() {
-        synchronized(this) {
-            if (remainingIndividualSeconds > 0)
-                remainingIndividualSeconds--;
+    private synchronized void updateTimerValues() {
+        if (remainingIndividualSeconds > 0) {
+            remainingIndividualSeconds--;
 
-            if (remainingMeetingSeconds > 0)
-                remainingMeetingSeconds--;
+            if (remainingIndividualSeconds == 15) {
+                Logger.d("Playing the bell sound");
+                playSound(bell);
+            } else if (remainingIndividualSeconds == 0) {
+                Logger.d("Playing the airhorn sound");
+                playSound(airhorn);
+            }
         }
+
+        if (remainingMeetingSeconds > 0)
+            remainingMeetingSeconds--;
 
         updateDisplayHandler.sendEmptyMessage(0);
     }
@@ -195,8 +230,19 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     private synchronized void processFinishedButtonClick() {
+        destroySounds();
         finished = true;
         finish();
+    }
+
+    private void destroySounds() {
+        bell.stop();
+        bell.release();
+        bell = null;
+
+        airhorn.stop();
+        airhorn.release();
+        airhorn = null;
     }
 
     private String formatTime(int seconds) {
@@ -215,5 +261,10 @@ public class StandupTimer extends Activity implements OnClickListener {
         } else {
             return Color.GREEN;
         }
+    }
+
+    private void playSound(MediaPlayer mp) {
+        mp.seekTo(0);
+        mp.start();
     }
 }
