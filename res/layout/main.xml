@@ -13,8 +13,8 @@
 
       <EditText android:id="@+id/num_participants" android:layout_width="60dp"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:digits="0123456789" android:inputType="number" android:gravity="center"
-         android:layout_marginTop="10dp">
+         android:digits="0123456789" android:gravity="center"
+         android:layout_marginTop="10dp" android:inputType="phone">
       </EditText>
 
       <TextView android:text="@string/length_of_meeting"
