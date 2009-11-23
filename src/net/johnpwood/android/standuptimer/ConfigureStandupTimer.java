@@ -59,7 +59,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         int numParticipants = Integer.parseInt(t.getText().toString());
         i.putExtra("numParticipants", numParticipants);
 
-        if (numParticipants > 0) {
+        if (numParticipants > 0 && numParticipants <= 20) {
             saveState();
             startActivity(i);
         }
