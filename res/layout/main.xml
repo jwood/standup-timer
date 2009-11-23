@@ -9,16 +9,16 @@
 
       <TextView android:text="@string/number_of_participants"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:textSize="17sp"></TextView>
+         android:layout_gravity="center" android:textSize="17sp"></TextView>
 
-      <com.android.internal.widget.NumberPicker
-         android:id="@+id/num_participants" android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
-         android:layout_marginTop="5dp" />
+      <EditText android:id="@+id/num_participants" android:layout_width="60dp"
+         android:layout_height="wrap_content" android:layout_gravity="center"
+         android:digits="0123456789" android:inputType="number">
+      </EditText>
 
       <TextView android:text="@string/length_of_meeting"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:paddingTop="30dp"
+         android:layout_gravity="center" android:paddingTop="30dp"
          android:textSize="17sp"></TextView>
 
       <Spinner android:id="@+id/meeting_length"
@@ -29,7 +29,7 @@
 
       <Button android:text="@string/start" android:id="@+id/start_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal"
+         android:layout_gravity="center"
          android:layout_marginTop="30dp" android:width="80dp"></Button>
 
    </LinearLayout>

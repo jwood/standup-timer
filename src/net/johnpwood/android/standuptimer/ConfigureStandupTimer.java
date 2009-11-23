@@ -1,7 +1,5 @@
 package net.johnpwood.android.standuptimer;
 
-import java.lang.reflect.Method;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class ConfigureStandupTimer extends Activity implements OnClickListener {
     private static final String MEETING_LENGTH_POS = "meetingLengthPos";
@@ -53,27 +52,26 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         meetingLengthPos = s.getSelectedItemPosition();
         i.putExtra("meetingLengthPos", meetingLengthPos);
 
-        Object o = findViewById(R.id.num_participants);
-        Class<? extends Object> c = o.getClass();
-        try {
-            Method m = c.getMethod("getCurrent");
-            numParticipants = (Integer) m.invoke(o, new Object[]{});
-        } catch (Exception e) {
-            Logger.e("Failed to get the number of partipipants: " + e.getMessage());
-            Logger.e("Quitting");
-            throw new RuntimeException(e);
-        }
+        TextView t = (TextView) findViewById(R.id.num_participants);
+        int numParticipants = Integer.parseInt(t.getText().toString());
         i.putExtra("numParticipants", numParticipants);
 
-        saveState();
-        startActivity(i);
+        if (numParticipants > 0) {
+            saveState();
+            startActivity(i);
+        }
     }
 
     private void initializeGUIElements() {
         loadState();
-        initializeNumberOfParticipantsPicker();
+        initializeNumberOfParticipants();
         initializeMeetingLengthSpinner();
         initializeStartButton();
+    }
+
+    private void initializeNumberOfParticipants() {
+        TextView t = (TextView) findViewById(R.id.num_participants);
+        t.setText("" + numParticipants);
     }
 
     private void initializeStartButton() {
@@ -88,22 +86,6 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
         s.setSelection(meetingLengthPos);
-    }
-
-    private void initializeNumberOfParticipantsPicker() {
-        Object o = findViewById(R.id.num_participants);
-        Class<? extends Object> c = o.getClass();
-        try {
-            Method m = c.getMethod("setRange", int.class, int.class);
-            m.invoke(o, 2, 20);
-
-            m = c.getMethod("setCurrent", int.class);
-            m.invoke(o, numParticipants);
-        } catch (Exception e) {
-            Logger.e("Failed to set the range of the participants number picker: " + e.getMessage());
-            Logger.e("Quitting");
-            throw new RuntimeException(e);
-        }
     }
 
     private void saveState() {
