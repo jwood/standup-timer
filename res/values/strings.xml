@@ -13,6 +13,9 @@
    <string name="fifteen_min">15 min</string>
    <string name="twenty_min">20 min</string>
 
+   <string name="valid_num_participants_warning">Number of participants must be between 2 and 20.</string>
+   <string name="ok">OK</string>
+
    <string name="participant">Participant</string>
    <string name="individual_status_complete">Individual status complete</string>
    <string name="total_time_remaining">Total time remaining</string>

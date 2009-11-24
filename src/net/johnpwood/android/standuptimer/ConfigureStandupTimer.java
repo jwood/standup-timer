@@ -1,6 +1,9 @@
 package net.johnpwood.android.standuptimer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,9 +62,11 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         int numParticipants = Integer.parseInt(t.getText().toString());
         i.putExtra("numParticipants", numParticipants);
 
-        if (numParticipants > 0 && numParticipants <= 20) {
+        if (numParticipants > 1 && numParticipants <= 20) {
             saveState();
             startActivity(i);
+        } else {
+            showDialog(0);
         }
     }
 
@@ -104,5 +109,18 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         meetingLengthPos = preferences.getInt(MEETING_LENGTH_POS, 0);
         numParticipants = preferences.getInt(NUMBER_OF_PARTICIPANTS, 2);
         Logger.i("Retrieved state.  mettingLengthPos = " + meetingLengthPos + ", numParticipants = " + numParticipants);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.valid_num_participants_warning)
+            .setCancelable(true)
+            .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dismissDialog(0);
+                }
+            });
+        return builder.create();
     }
 }
