@@ -54,7 +54,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         setContentView(R.layout.timer);
 
         initializeSounds();
-        setupButtonListeners();
+        initializeButtonListeners();
         initializeTimerValues();
         updateDisplay();
         startTimer();
@@ -65,10 +65,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         super.onPause();
 
         synchronized(this) {
-            if (timer != null) {
-                Logger.d("Canceling timer");
-                timer.cancel();
-            }
+            cancelTimer();
 
             if (finished) {
                 clearState();
@@ -102,7 +99,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    private void setupButtonListeners() {
+    private void initializeButtonListeners() {
         View nextButton = findViewById(R.id.next_button);
         nextButton.setOnClickListener(this);
 
@@ -114,8 +111,8 @@ public class StandupTimer extends Activity implements OnClickListener {
         int meetingLengthPos = getIntent().getIntExtra("meetingLengthPos", 0);
         int numParticipants = getIntent().getIntExtra("numParticipants", 0);
 
-        Logger.d("Timer: meetingLengthPos = " + meetingLengthPos);
-        Logger.d("Timer: numParticipants = " + totalParticipants);
+        Logger.d("Data from Intent: meetingLengthPos = " + meetingLengthPos);
+        Logger.d("Data from Intent: numParticipants = " + totalParticipants);
 
         loadState(meetingLengthPos, numParticipants);
     }
@@ -149,6 +146,13 @@ public class StandupTimer extends Activity implements OnClickListener {
             }
         };
         timer.schedule(updateTimerValuesTask, 1000, 1000);
+    }
+
+    private synchronized void cancelTimer() {
+        if (timer != null) {
+            Logger.d("Canceling timer");
+            timer.cancel();
+        }
     }
 
     private synchronized void updateTimerValues() {
