@@ -205,11 +205,9 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     private synchronized void loadState(int meetingLengthPos, int numParticipants) {
-        MeetingLength meetingLength = MeetingLength.findByPosition(meetingLengthPos);
-
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         totalParticipants = preferences.getInt(TOTAL_PARTICIPANTS, numParticipants);
-        remainingMeetingSeconds = preferences.getInt(REMAINING_MEETING_SECONDS, meetingLength.getLength() * 60);
+        remainingMeetingSeconds = preferences.getInt(REMAINING_MEETING_SECONDS, getMeetingLength(meetingLengthPos));
         startingIndividualSeconds = preferences.getInt(STARTING_INDIVIDUAL_SECONDS, remainingMeetingSeconds / totalParticipants);
         remainingIndividualSeconds = preferences.getInt(REMAINING_INDIVIDUAL_SECONDS, startingIndividualSeconds);
         completedParticipants = preferences.getInt(COMPLETED_PARTICIPANTS, 0);
@@ -239,7 +237,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         finish();
     }
 
-    private void destroySounds() {
+    private static void destroySounds() {
         bell.stop();
         bell.release();
         bell = null;
@@ -249,15 +247,15 @@ public class StandupTimer extends Activity implements OnClickListener {
         airhorn = null;
     }
 
-    private String formatTime(int seconds) {
+    private static String formatTime(int seconds) {
         return "" + seconds / 60 + ":" + padWithZeros(seconds % 60);
     }
 
-    private String padWithZeros(int seconds) {
+    private static String padWithZeros(int seconds) {
         return seconds < 10 ? "0" + seconds : "" + seconds;
     }
 
-    private int determineColor(int seconds) {
+    private static int determineColor(int seconds) {
         if (seconds == 0) {
             return Color.RED;
         } else if (seconds <= 15) {
@@ -267,8 +265,19 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    private void playSound(MediaPlayer mp) {
+    private static void playSound(MediaPlayer mp) {
         mp.seekTo(0);
         mp.start();
+    }
+
+    private static int getMeetingLength(int meetingLengthPos) {
+        int minutes = 0;
+        switch (meetingLengthPos) {
+            case 0: minutes = 5;  break;
+            case 1: minutes = 10; break;
+            case 2: minutes = 15; break;
+            case 3: minutes = 20; break;
+        }
+        return minutes * 60;
     }
 }
