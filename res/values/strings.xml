@@ -26,6 +26,8 @@
    <string name="settings_title">Standup Timer Settings</string>
    <string name="play_sounds">Play sounds</string>
    <string name="play_sounds_summary">Play sounds when time is running out</string>
+   <string name="warning_time">Warning time</string>
+   <string name="warning_time_summary">When to notify participants time is running out</string>
 
    <string name="about_label">About</string>
    <string name="about_title">About Standup Timer</string>

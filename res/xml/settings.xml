@@ -3,4 +3,7 @@
    <CheckBoxPreference android:key="sounds"
       android:title="@string/play_sounds" android:summary="@string/play_sounds_summary"
       android:defaultValue="true" />
+   <EditTextPreference android:key="warning_time"
+      android:title="@string/warning_time" android:summary="@string/warning_time_summary"
+      android:defaultValue="15" android:inputType="phone" android:digits="0123456789" />
 </PreferenceScreen> 

@@ -27,6 +27,7 @@ public class StandupTimer extends Activity implements OnClickListener {
     private int startingIndividualSeconds = 0;
     private int completedParticipants = 0;
     private int totalParticipants = 0;
+    private int warningTime = 0;
 
     private boolean finished = false;
     private Timer timer = null;
@@ -114,6 +115,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         Logger.d("Data from Intent: meetingLengthPos = " + meetingLengthPos);
         Logger.d("Data from Intent: numParticipants = " + totalParticipants);
 
+        warningTime = Prefs.getWarningTime(this);
         loadState(meetingLengthPos, numParticipants);
     }
 
@@ -121,7 +123,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         if (individualStatusInProgress()) {
             TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
             individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
-            individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds));
+            individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds, warningTime));
 
             TextView participantNumber = (TextView) findViewById(R.id.participant_number);
             participantNumber.setText(this.getString(R.string.participant) + " " +
@@ -132,7 +134,7 @@ public class StandupTimer extends Activity implements OnClickListener {
 
         TextView totalTimeRemaining = (TextView) findViewById(R.id.total_time_remaining);
         totalTimeRemaining.setText(formatTime(remainingMeetingSeconds));
-        totalTimeRemaining.setTextColor(determineColor(remainingMeetingSeconds));
+        totalTimeRemaining.setTextColor(determineColor(remainingMeetingSeconds, warningTime));
     }
 
     private synchronized void startTimer() {
@@ -159,7 +161,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         if (remainingIndividualSeconds > 0) {
             remainingIndividualSeconds--;
 
-            if (remainingIndividualSeconds == 15) {
+            if (remainingIndividualSeconds == warningTime) {
                 Logger.d("Playing the bell sound");
                 playSound(bell);
             } else if (remainingIndividualSeconds == 0) {
@@ -255,10 +257,10 @@ public class StandupTimer extends Activity implements OnClickListener {
         return seconds < 10 ? "0" + seconds : "" + seconds;
     }
 
-    private static int determineColor(int seconds) {
+    private static int determineColor(int seconds, int warningTime) {
         if (seconds == 0) {
             return Color.RED;
-        } else if (seconds <= 15) {
+        } else if (seconds <= warningTime) {
             return Color.YELLOW;
         } else {
             return Color.GREEN;
