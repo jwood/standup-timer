@@ -62,7 +62,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         i.putExtra("meetingLengthPos", meetingLengthPos);
 
         TextView t = (TextView) findViewById(R.id.num_participants);
-        int numParticipants = Integer.parseInt(t.getText().toString());
+        numParticipants = Integer.parseInt(t.getText().toString());
         i.putExtra("numParticipants", numParticipants);
 
         if (numParticipants > 1 && numParticipants <= 20) {
