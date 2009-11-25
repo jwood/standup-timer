@@ -265,9 +265,11 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    private static void playSound(MediaPlayer mp) {
-        mp.seekTo(0);
-        mp.start();
+    private void playSound(MediaPlayer mp) {
+        if (Prefs.playSounds(this)) {
+            mp.seekTo(0);
+            mp.start();
+        }
     }
 
     private static int getMeetingLength(int meetingLengthPos) {

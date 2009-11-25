@@ -18,6 +18,9 @@
          android:theme="@android:style/Theme.Dialog">
       </activity>
 
+      <activity android:name=".Prefs" android:label="@string/settings_title">
+      </activity>
+
    </application>
    <uses-sdk android:minSdkVersion="2" android:targetSdkVersion="4" />
 </manifest> 
