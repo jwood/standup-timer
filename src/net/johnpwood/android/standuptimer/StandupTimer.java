@@ -33,8 +33,8 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private boolean finished = false;
     private Timer timer = null;
+    private PowerManager.WakeLock wakeLock = null;
 
-    private static PowerManager.WakeLock wakeLock = null;
     private static MediaPlayer bell = null;
     private static MediaPlayer airhorn = null;
 
@@ -71,6 +71,7 @@ public class StandupTimer extends Activity implements OnClickListener {
 
         synchronized(this) {
             cancelTimer();
+            releaseWakeLock();
 
             if (finished) {
                 clearState();
@@ -78,12 +79,6 @@ public class StandupTimer extends Activity implements OnClickListener {
                 saveState();
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        releaseWakeLock();
     }
 
     public void onClick(View v) {
@@ -262,7 +257,6 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private synchronized void processFinishedButtonClick() {
         destroySounds();
-        releaseWakeLock();
         finished = true;
         finish();
     }
