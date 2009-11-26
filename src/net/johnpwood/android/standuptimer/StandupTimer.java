@@ -4,12 +4,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,6 +34,7 @@ public class StandupTimer extends Activity implements OnClickListener {
     private boolean finished = false;
     private Timer timer = null;
 
+    private static PowerManager.WakeLock wakeLock = null;
     private static MediaPlayer bell = null;
     private static MediaPlayer airhorn = null;
 
@@ -58,6 +61,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         initializeButtonListeners();
         initializeTimerValues();
         updateDisplay();
+        acquireWakeLock();
         startTimer();
     }
 
@@ -74,6 +78,12 @@ public class StandupTimer extends Activity implements OnClickListener {
                 saveState();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releaseWakeLock();
     }
 
     public void onClick(View v) {
@@ -206,6 +216,23 @@ public class StandupTimer extends Activity implements OnClickListener {
         nextButton.setTextColor(Color.GRAY);
     }
 
+    private void acquireWakeLock() {
+        if (wakeLock == null) {
+            Logger.d("Acquiring wake lock");
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, this.getClass().getCanonicalName());
+            wakeLock.acquire();
+        }
+    }
+
+    private void releaseWakeLock() {
+        if (wakeLock != null && wakeLock.isHeld()) {
+            Logger.d("Releasing wake lock");
+            wakeLock.release();
+            wakeLock = null;
+        }
+    }
+
     private synchronized void loadState(int meetingLengthPos, int numParticipants) {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         totalParticipants = preferences.getInt(TOTAL_PARTICIPANTS, numParticipants);
@@ -235,6 +262,7 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private synchronized void processFinishedButtonClick() {
         destroySounds();
+        releaseWakeLock();
         finished = true;
         finish();
     }
