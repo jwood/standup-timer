@@ -7,7 +7,6 @@ Standup Timer is free, open source, and available under the Apache V2 license.
 
 == TODO
 - Go back to home screen when Finish button is clicked
-- Create icons
 
 == License
 Copyright 2009 John Wood
@@ -25,8 +24,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 == Credits
-Air horn sound (Sampling Plus 1.0 license) courtesy of guitarguy1985
-Bell sound (Attribution 3.0 license) courtesy of Mike Koenig
+Sounds downloaded from http://soundbible.com, and modified for this application.
+- Air horn sound (Sampling Plus 1.0 license) courtesy of guitarguy1985
+- Bell sound (Attribution 3.0 license) courtesy of Mike Koenig
 
 == Author
 John Wood
