@@ -118,7 +118,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         int numParticipants = getIntent().getIntExtra("numParticipants", 0);
 
         Logger.d("Data from Intent: meetingLengthPos = " + meetingLengthPos);
-        Logger.d("Data from Intent: numParticipants = " + totalParticipants);
+        Logger.d("Data from Intent: numParticipants = " + numParticipants);
 
         warningTime = Prefs.getWarningTime(this);
         loadState(meetingLengthPos, numParticipants);
