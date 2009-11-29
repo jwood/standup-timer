@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -79,6 +80,15 @@ public class StandupTimer extends Activity implements OnClickListener {
                 saveState();
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+        Logger.i("Key pressed: " + keyCode);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            shutdownTimer();
+        }
+        return super.onKeyDown(keyCode, keyEvent);
     }
 
     public void onClick(View v) {
@@ -256,9 +266,13 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     private synchronized void processFinishedButtonClick() {
+        shutdownTimer();
+        finish();
+    }
+
+    private synchronized void shutdownTimer() {
         destroySounds();
         finished = true;
-        finish();
     }
 
     private static void destroySounds() {
