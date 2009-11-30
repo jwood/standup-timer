@@ -62,6 +62,11 @@ public class StandupTimer extends Activity implements OnClickListener {
         initializeButtonListeners();
         initializeTimerValues();
         updateDisplay();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         acquireWakeLock();
         startTimer();
     }
