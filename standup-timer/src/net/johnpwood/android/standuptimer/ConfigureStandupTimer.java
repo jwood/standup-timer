@@ -42,16 +42,29 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.about:
-            startActivity(new Intent(this, About.class));
+            Logger.d("Displaying the about box");
+            displayAboutBox();
             return true;
         case R.id.settings:
-            startActivity(new Intent(this, Prefs.class));
+            Logger.d("Displaying the settings");
+            displaySettings();
             return true;
         case R.id.quit:
+            Logger.d("Quitting");
             finish();
             return true;
+        default:
+            Logger.e("Unknown menu item selected");
+            return false;
         }
-        return false;
+    }
+
+    protected void displaySettings() {
+        startActivity(new Intent(this, Prefs.class));
+    }
+
+    protected void displayAboutBox() {
+        startActivity(new Intent(this, About.class));
     }
 
     public void onClick(View v) {
@@ -67,10 +80,18 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
 
         if (numParticipants > 1 && numParticipants <= 20) {
             saveState();
-            startActivity(i);
+            startTimer(i);
         } else {
-            showDialog(0);
+            showInvalidNumberOfParticipantsDialog();
         }
+    }
+
+    protected void showInvalidNumberOfParticipantsDialog() {
+        showDialog(0);
+    }
+
+    protected void startTimer(Intent i) {
+        startActivity(i);
     }
 
     private void initializeGUIElements() {
@@ -85,11 +106,6 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         t.setText("" + numParticipants);
     }
 
-    private void initializeStartButton() {
-        View startButton = findViewById(R.id.start_button);
-        startButton.setOnClickListener(this);
-    }
-
     private void initializeMeetingLengthSpinner() {
         Spinner s = (Spinner) findViewById(R.id.meeting_length);
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, R.array.meeting_lengths,
@@ -97,6 +113,11 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
         s.setSelection(meetingLengthPos);
+    }
+
+    private void initializeStartButton() {
+        View startButton = findViewById(R.id.start_button);
+        startButton.setOnClickListener(this);
     }
 
     private void saveState() {
@@ -107,7 +128,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         preferences.commit();
     }
 
-    private void loadState() {
+    protected void loadState() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         meetingLengthPos = preferences.getInt(MEETING_LENGTH_POS, 0);
         numParticipants = preferences.getInt(NUMBER_OF_PARTICIPANTS, 2);
@@ -125,5 +146,13 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
                 }
             });
         return builder.create();
+    }
+
+    protected int getMeetingLengthPos() {
+        return meetingLengthPos;
+    }
+
+    protected int getNumParticipants() {
+        return numParticipants;
     }
 }
