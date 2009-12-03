@@ -103,7 +103,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
 
     private void initializeNumberOfParticipants() {
         TextView t = (TextView) findViewById(R.id.num_participants);
-        t.setText("" + numParticipants);
+        t.setText(Integer.toString(numParticipants));
     }
 
     private void initializeMeetingLengthSpinner() {
