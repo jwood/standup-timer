@@ -24,7 +24,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     private int numParticipants = 0;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         initializeGUIElements();
