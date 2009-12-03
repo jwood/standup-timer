@@ -9,7 +9,7 @@ public class Prefs extends PreferenceActivity {
     private static final String SOUNDS = "sounds";
     private static boolean SOUNDS_DEFAULT = true;
     private static final String WARNING_TIME = "warning_time";
-    private static final String WARNING_TIME_DEFAULT = "15";
+    private static final int WARNING_TIME_DEFAULT = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +21,21 @@ public class Prefs extends PreferenceActivity {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(SOUNDS, SOUNDS_DEFAULT);
     }
 
+    public static void setPlaySounds(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(SOUNDS, value).commit();
+    }
+
     public static int getWarningTime(Context context) {
-        String value = PreferenceManager.getDefaultSharedPreferences(context).getString(WARNING_TIME, WARNING_TIME_DEFAULT);
+        String value = PreferenceManager.getDefaultSharedPreferences(context).getString(WARNING_TIME, Integer.toString(WARNING_TIME_DEFAULT));
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putString(WARNING_TIME, WARNING_TIME_DEFAULT).commit();
-            return Integer.parseInt(WARNING_TIME_DEFAULT);
+            setWarningTime(context, WARNING_TIME_DEFAULT);
+            return WARNING_TIME_DEFAULT;
         }
+    }
+
+    public static void setWarningTime(Context context, int warningTime) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(WARNING_TIME, Integer.toString(warningTime)).commit();
     }
 }
