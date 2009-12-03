@@ -186,17 +186,6 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         assertFalse(a.wasFinishedSoundPlayed());
     }
 
-    @MediumTest
-    public void test_times_are_displayed_in_the_proper_format() {
-        assertEquals("0:00", StandupTimerMock.formatTime(0));
-        assertEquals("0:30", StandupTimerMock.formatTime(30));
-        assertEquals("0:59", StandupTimerMock.formatTime(59));
-        assertEquals("1:00", StandupTimerMock.formatTime(60));
-        assertEquals("1:01", StandupTimerMock.formatTime(61));
-        assertEquals("1:59", StandupTimerMock.formatTime(119));
-        assertEquals("2:00", StandupTimerMock.formatTime(120));
-    }
-
     private void clickFinishedButton() {
         ((Button) a.findViewById(R.id.finished_button)).performClick();
     }

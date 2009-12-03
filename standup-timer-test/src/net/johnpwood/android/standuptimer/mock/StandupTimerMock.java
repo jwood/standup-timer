@@ -100,10 +100,6 @@ public class StandupTimerMock extends StandupTimer {
         super.onResume();
     }
 
-    public static String formatTime(int seconds) {
-        return StandupTimer.formatTime(seconds);
-    }
-
     public boolean isTimerActive() {
         if (super.getTimer() != null) {
             return true;

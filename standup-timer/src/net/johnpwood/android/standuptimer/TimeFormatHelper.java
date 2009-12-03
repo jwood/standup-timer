@@ -1,0 +1,24 @@
+package net.johnpwood.android.standuptimer;
+
+import android.graphics.Color;
+
+public abstract class TimeFormatHelper {
+
+    public static int determineColor(int seconds, int warningTime) {
+        if (seconds <= 0) {
+            return Color.RED;
+        } else if (seconds <= warningTime) {
+            return Color.YELLOW;
+        } else {
+            return Color.GREEN;
+        }
+    }
+    
+    public static String formatTime(int seconds) {
+        return Integer.toString(seconds / 60) + ":" + padWithZeros(seconds % 60);
+    }
+
+    private static String padWithZeros(int seconds) {
+        return seconds < 10 ? "0" + seconds : Integer.toString(seconds);
+    }
+}

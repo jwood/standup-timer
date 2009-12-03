@@ -141,8 +141,8 @@ public class StandupTimer extends Activity implements OnClickListener {
     protected synchronized void updateDisplay() {
         if (individualStatusInProgress()) {
             TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
-            individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
-            individualTimeRemaining.setTextColor(determineColor(remainingIndividualSeconds, warningTime));
+            individualTimeRemaining.setText(TimeFormatHelper.formatTime(remainingIndividualSeconds));
+            individualTimeRemaining.setTextColor(TimeFormatHelper.determineColor(remainingIndividualSeconds, warningTime));
 
             TextView participantNumber = (TextView) findViewById(R.id.participant_number);
             participantNumber.setText(this.getString(R.string.participant) + " " +
@@ -152,8 +152,8 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
 
         TextView totalTimeRemaining = (TextView) findViewById(R.id.total_time_remaining);
-        totalTimeRemaining.setText(formatTime(remainingMeetingSeconds));
-        totalTimeRemaining.setTextColor(determineColor(remainingMeetingSeconds, warningTime));
+        totalTimeRemaining.setText(TimeFormatHelper.formatTime(remainingMeetingSeconds));
+        totalTimeRemaining.setTextColor(TimeFormatHelper.determineColor(remainingMeetingSeconds, warningTime));
     }
 
     private synchronized void startTimer() {
@@ -222,7 +222,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         participantNumber.setText(R.string.individual_status_complete);
 
         TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
-        individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
+        individualTimeRemaining.setText(TimeFormatHelper.formatTime(remainingIndividualSeconds));
         individualTimeRemaining.setTextColor(Color.GRAY);
 
         Button nextButton = (Button) findViewById(R.id.next_button);
@@ -294,24 +294,6 @@ public class StandupTimer extends Activity implements OnClickListener {
         airhorn.stop();
         airhorn.release();
         airhorn = null;
-    }
-
-    protected static String formatTime(int seconds) {
-        return Integer.toString(seconds / 60) + ":" + padWithZeros(seconds % 60);
-    }
-
-    private static String padWithZeros(int seconds) {
-        return seconds < 10 ? "0" + seconds : Integer.toString(seconds);
-    }
-
-    private static int determineColor(int seconds, int warningTime) {
-        if (seconds == 0) {
-            return Color.RED;
-        } else if (seconds <= warningTime) {
-            return Color.YELLOW;
-        } else {
-            return Color.GREEN;
-        }
     }
 
     protected void playWarningSound() {
