@@ -19,11 +19,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class StandupTimer extends Activity implements OnClickListener {
-    private static final String REMAINING_INDIVIDUAL_SECONDS = "remainingIndividualSeconds";
-    private static final String REMAINING_MEETING_SECONDS = "remainingMeetingSeconds";
-    private static final String STARTING_INDIVIDUAL_SECONDS = "startingIndividualSeconds";
-    private static final String COMPLETED_PARTICIPANTS = "completedParticipants";
-    private static final String TOTAL_PARTICIPANTS = "totalParticipants";
+    protected static final String REMAINING_INDIVIDUAL_SECONDS = "remainingIndividualSeconds";
+    protected static final String REMAINING_MEETING_SECONDS = "remainingMeetingSeconds";
+    protected static final String STARTING_INDIVIDUAL_SECONDS = "startingIndividualSeconds";
+    protected static final String COMPLETED_PARTICIPANTS = "completedParticipants";
+    protected static final String TOTAL_PARTICIPANTS = "totalParticipants";
 
     private int remainingIndividualSeconds = 0;
     private int remainingMeetingSeconds = 0;
@@ -54,7 +54,7 @@ public class StandupTimer extends Activity implements OnClickListener {
     };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timer);
 
@@ -65,7 +65,7 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
         acquireWakeLock();
         startTimer();
@@ -135,11 +135,10 @@ public class StandupTimer extends Activity implements OnClickListener {
         Logger.d("Data from Intent: meetingLengthPos = " + meetingLengthPos);
         Logger.d("Data from Intent: numParticipants = " + numParticipants);
 
-        warningTime = Prefs.getWarningTime(this);
         loadState(meetingLengthPos, numParticipants);
     }
 
-    private synchronized void updateDisplay() {
+    protected synchronized void updateDisplay() {
         if (individualStatusInProgress()) {
             TextView individualTimeRemaining = (TextView) findViewById(R.id.individual_time_remaining);
             individualTimeRemaining.setText(formatTime(remainingIndividualSeconds));
@@ -174,19 +173,24 @@ public class StandupTimer extends Activity implements OnClickListener {
         if (timer != null) {
             Logger.d("Canceling timer");
             timer.cancel();
+            timer = null;
         }
     }
 
-    private synchronized void updateTimerValues() {
+    protected synchronized void updateTimerValues() {
         if (remainingIndividualSeconds > 0) {
             remainingIndividualSeconds--;
 
             if (remainingIndividualSeconds == warningTime) {
                 Logger.d("Playing the bell sound");
-                playSound(bell);
+                if (Prefs.playSounds(this)) {
+                    playWarningSound();
+                }
             } else if (remainingIndividualSeconds == 0) {
                 Logger.d("Playing the airhorn sound");
-                playSound(airhorn);
+                if (Prefs.playSounds(this)) {
+                    playFinishedSound();
+                }
             }
         }
 
@@ -243,7 +247,9 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    private synchronized void loadState(int meetingLengthPos, int numParticipants) {
+    protected synchronized void loadState(int meetingLengthPos, int numParticipants) {
+        warningTime = Prefs.getWarningTime(this);
+
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         totalParticipants = preferences.getInt(TOTAL_PARTICIPANTS, numParticipants);
         remainingMeetingSeconds = preferences.getInt(REMAINING_MEETING_SECONDS, getMeetingLength(meetingLengthPos));
@@ -290,12 +296,12 @@ public class StandupTimer extends Activity implements OnClickListener {
         airhorn = null;
     }
 
-    private static String formatTime(int seconds) {
-        return "" + seconds / 60 + ":" + padWithZeros(seconds % 60);
+    protected static String formatTime(int seconds) {
+        return Integer.toString(seconds / 60) + ":" + padWithZeros(seconds % 60);
     }
 
     private static String padWithZeros(int seconds) {
-        return seconds < 10 ? "0" + seconds : "" + seconds;
+        return seconds < 10 ? "0" + seconds : Integer.toString(seconds);
     }
 
     private static int determineColor(int seconds, int warningTime) {
@@ -308,11 +314,17 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
+    protected void playWarningSound() {
+        playSound(bell);
+    }
+
+    protected void playFinishedSound() {
+        playSound(airhorn);
+    }
+
     private void playSound(MediaPlayer mp) {
-        if (Prefs.playSounds(this)) {
-            mp.seekTo(0);
-            mp.start();
-        }
+        mp.seekTo(0);
+        mp.start();
     }
 
     private static int getMeetingLength(int meetingLengthPos) {
@@ -324,5 +336,41 @@ public class StandupTimer extends Activity implements OnClickListener {
             case 3: minutes = 20; break;
         }
         return minutes * 60;
+    }
+
+    protected synchronized int getRemainingIndividualSeconds() {
+        return remainingIndividualSeconds;
+    }
+
+    protected synchronized int getRemainingMeetingSeconds() {
+        return remainingMeetingSeconds;
+    }
+
+    protected synchronized int getStartingIndividualSeconds() {
+        return startingIndividualSeconds;
+    }
+
+    protected synchronized int getCompletedParticipants() {
+        return completedParticipants;
+    }
+
+    protected synchronized int getTotalParticipants() {
+        return totalParticipants;
+    }
+
+    protected synchronized int getWarningTime() {
+        return warningTime;
+    }
+
+    protected synchronized boolean isFinished() {
+        return finished;
+    }
+
+    protected synchronized Timer getTimer() {
+        return timer;
+    }
+
+    protected synchronized PowerManager.WakeLock getWakeLock() {
+        return wakeLock;
     }
 }
