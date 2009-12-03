@@ -91,6 +91,8 @@ public class StandupTimer extends Activity implements OnClickListener {
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
         Logger.i("Key pressed: " + keyCode);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // Shutdown the timer when back is pressed.  Let the framework
+            // handle the back behavior.
             shutdownTimer();
         }
         return super.onKeyDown(keyCode, keyEvent);

@@ -134,6 +134,7 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
     @MediumTest
     public void test_click_finish_button_ends_the_timer_and_clears_state() {
         clickFinishedButton();
+        a.onPause();
 
         a.loadState();
         assertEquals(DEFAULT_MEETING_LENGTH, a.getRemainingMeetingSeconds());
@@ -165,6 +166,27 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         TextView individualTimeRemaining = (TextView) a.findViewById(R.id.individual_time_remaining);
         assertEquals(Color.RED, individualTimeRemaining.getTextColors().getDefaultColor());
         assertTrue(a.wasFinishedSoundPlayed());
+    }
+
+    @MediumTest
+    public void test_total_time_remaining_is_changed_to_yellow_it_reaches_the_warning_time() {
+        Prefs.setWarningTime(a, 15);
+        a.setRemainingMeetingSeconds(16);
+        a.updateTimerValues();
+        a.updateDisplay();
+
+        TextView totalTimeRemaining = (TextView) a.findViewById(R.id.total_time_remaining);
+        assertEquals(Color.YELLOW, totalTimeRemaining.getTextColors().getDefaultColor());
+    }
+
+    @MediumTest
+    public void test_total_time_remaining_is_changed_to_red_when_time_runs_out() {
+        a.setRemainingMeetingSeconds(1);
+        a.updateTimerValues();
+        a.updateDisplay();
+
+        TextView totalTimeRemaining = (TextView) a.findViewById(R.id.total_time_remaining);
+        assertEquals(Color.RED, totalTimeRemaining.getTextColors().getDefaultColor());
     }
 
     @MediumTest
