@@ -30,7 +30,10 @@
    <string name="warning_time_summary">When to notify participants time is running out</string>
 
    <string name="about_label">About</string>
-   <string name="about_title">About Standup Timer</string>
+   <string name="about_title">About</string>
+   <string name="about_version">Standup Timer v1.0</string>
+   <string name="about_copywright">&#169;2009 by John Wood</string>
+   <string name="about_author_email">john_p_wood@yahoo.com</string>
    <string name="about_text">\
 Standup Timer is a simple application that can be
 used to keep your stand-up meetings on track.

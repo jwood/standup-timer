@@ -3,8 +3,26 @@
    android:layout_width="fill_parent" android:layout_height="fill_parent"
    android:padding="10dp">
 
-   <TextView android:id="@+id/about_content"
-      android:layout_width="wrap_content" android:layout_height="wrap_content"
-      android:text="@string/about_text" />
+   <LinearLayout android:orientation="vertical"
+      android:layout_height="wrap_content" android:layout_width="wrap_content"
+      android:layout_gravity="center">
 
+      <TextView android:id="@+id/about_content"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:text="@string/about_text" />
+
+      <TextView android:layout_width="wrap_content"
+         android:layout_marginTop="10dp" android:layout_height="wrap_content"
+         android:text="@string/about_version" />
+      <TextView android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:text="@string/about_copywright" />
+      <TextView android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:text="@string/about_author_email" />
+
+      <Button android:text="@string/ok" android:id="@+id/about_ok"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:layout_marginTop="10dp" android:width="100dp"></Button>
+
+   </LinearLayout>
 </ScrollView> 
