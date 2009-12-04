@@ -24,4 +24,5 @@
    </application>
    <uses-permission android:name="android.permission.WAKE_LOCK" />
    <uses-sdk android:minSdkVersion="2" android:targetSdkVersion="4" />
+   <supports-screens android:smallScreens="false" />
 </manifest> 
