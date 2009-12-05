@@ -9,6 +9,7 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     private boolean displaySettingsCalled = false;
     private boolean displayAboutBoxCalled = false;
     private boolean displayHelpDialogCalled = false;
+    private boolean displayTeamConfigurationCalled = false;
 
     @Override
     protected void showInvalidNumberOfParticipantsDialog() {
@@ -53,6 +54,15 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
 
     public boolean displayHelpDialogCalled() {
         return displayHelpDialogCalled;
+    }
+
+    @Override
+    protected void displayTeamConfiguration() {
+        displayTeamConfigurationCalled = true;
+    }
+
+    public boolean displayTeamConfigurationCalled() {
+        return displayTeamConfigurationCalled;
     }
 
     @Override

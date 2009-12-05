@@ -8,4 +8,6 @@
       android:icon="@android:drawable/ic_menu_help" />
    <item android:id="@+id/quit" android:title="@string/quit"
       android:icon="@android:drawable/ic_menu_close_clear_cancel" />
+   <item android:id="@+id/teams" android:title="@string/team_label"
+      android:icon="@android:drawable/ic_menu_edit" />
 </menu>

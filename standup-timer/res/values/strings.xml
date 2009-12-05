@@ -29,6 +29,9 @@
    <string name="warning_time">Warning time</string>
    <string name="warning_time_summary">When to notify participants time is running out</string>
 
+   <string name="team_label">Teams</string>
+   <string name="add_team">Add Team</string>
+
    <string name="about_label">About</string>
    <string name="about_title">About</string>
    <string name="about_text">\

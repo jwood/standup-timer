@@ -53,6 +53,10 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
             Logger.d("Displaying the settings");
             displaySettings();
             return true;
+        case R.id.teams:
+            Logger.d("Displaying the team configuration");
+            displayTeamConfiguration();
+            return true;
         case R.id.quit:
             Logger.d("Quitting");
             finish();
@@ -73,6 +77,10 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
 
     protected void displayHelpDialog() {
         startActivity(new Intent(this, Help.class));
+    }
+
+    protected void displayTeamConfiguration() {
+        startActivity(new Intent(this, Teams.class));
     }
 
     public void onClick(View v) {

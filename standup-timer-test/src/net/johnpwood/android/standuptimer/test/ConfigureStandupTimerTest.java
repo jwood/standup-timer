@@ -103,6 +103,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         assertTrue(a.displayHelpDialogCalled());
         assertFalse(a.displaySettingsCalled());
         assertFalse(isFinishCalled());
+        assertFalse(a.displayTeamConfigurationCalled());
         EasyMock.verify(menuItem);
     }
 
@@ -117,6 +118,21 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         assertFalse(a.displayHelpDialogCalled());
         assertTrue(a.displaySettingsCalled());
         assertFalse(isFinishCalled());
+        assertFalse(a.displayTeamConfigurationCalled());
+        EasyMock.verify(menuItem);
+    }
+
+    @MediumTest
+    public void test_team_configuration_displayed_successfully() {
+        MenuItem menuItem = EasyMock.createMock(MenuItem.class);
+        EasyMock.expect(menuItem.getItemId()).andReturn(R.id.teams);
+
+        EasyMock.replay(menuItem);
+        a.onOptionsItemSelected(menuItem);
+        assertFalse(a.displayAboutBoxCalled());
+        assertFalse(a.displaySettingsCalled());
+        assertFalse(isFinishCalled());
+        assertTrue(a.displayTeamConfigurationCalled());
         EasyMock.verify(menuItem);
     }
 
@@ -131,6 +147,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         assertFalse(a.displayHelpDialogCalled());
         assertFalse(a.displaySettingsCalled());
         assertTrue(isFinishCalled());
+        assertFalse(a.displayTeamConfigurationCalled());
         EasyMock.verify(menuItem);
     }
 }
