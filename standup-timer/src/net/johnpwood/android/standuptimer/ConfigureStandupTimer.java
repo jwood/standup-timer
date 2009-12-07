@@ -1,5 +1,6 @@
 package net.johnpwood.android.standuptimer;
 
+import net.johnpwood.android.standuptimer.utils.Logger;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

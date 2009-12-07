@@ -3,6 +3,8 @@ package net.johnpwood.android.standuptimer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.johnpwood.android.standuptimer.utils.Logger;
+import net.johnpwood.android.standuptimer.utils.TimeFormatHelper;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;

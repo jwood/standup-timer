@@ -1,7 +1,7 @@
 package net.johnpwood.android.standuptimer.test;
 
 import junit.framework.TestCase;
-import net.johnpwood.android.standuptimer.TimeFormatHelper;
+import net.johnpwood.android.standuptimer.utils.TimeFormatHelper;
 import android.graphics.Color;
 
 public class TimeFormatHelperTest extends TestCase {

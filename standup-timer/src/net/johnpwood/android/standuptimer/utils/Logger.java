@@ -1,4 +1,4 @@
-package net.johnpwood.android.standuptimer;
+package net.johnpwood.android.standuptimer.utils;
 
 import android.util.Log;
 
