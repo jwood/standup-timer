@@ -1,14 +1,17 @@
 package net.johnpwood.android.standuptimer.dao;
 
 import static android.provider.BaseColumns._ID;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.johnpwood.android.standuptimer.model.Team;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-public class TeamDAO extends SQLiteOpenHelper implements DatabaseConstants {
+public class TeamDAO extends DAOHelper {
     private static final String TABLE_NAME = "teams";
     private static final String NAME = "name";
     private static final String[] ALL_COLUMS = { _ID, NAME };
@@ -41,19 +44,50 @@ public class TeamDAO extends SQLiteOpenHelper implements DatabaseConstants {
 
         values.put(NAME, team.getName());
         long id = db.insertOrThrow(TABLE_NAME, null, values);
-
         return new Team(id, team.getName());
     }
 
     public Team findById(Long id) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = " + id, null, null, null, null);
-        if (cursor.getCount() == 1) {
-            if (cursor.moveToFirst()) {
-                String name = cursor.getString(1);
-                return new Team(id, name);
+        Cursor cursor = null;
+        Team team = null;
+
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = " + id, null, null, null, null);
+            if (cursor.getCount() == 1) {
+                if (cursor.moveToFirst()) {
+                    String name = cursor.getString(1);
+                    team = new Team(id, name);
+                }
             }
+        } finally {
+            closeCursor(cursor);
         }
-        return null;
+
+        return team;
+    }
+
+    public List<Team> findAll() {
+        List<Team> teamList = new ArrayList<Team>();
+        Cursor cursor = null;
+
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(TABLE_NAME, ALL_COLUMS, null, null, null, null, NAME);
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(0);
+                String name = cursor.getString(1);
+                teamList.add(new Team(id, name));
+            }
+        } finally {
+            closeCursor(cursor);
+        }
+
+        return teamList;
+    }
+
+    public void deleteAll() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
     }
 }

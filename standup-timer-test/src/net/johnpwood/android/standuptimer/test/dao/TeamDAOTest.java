@@ -1,5 +1,7 @@
 package net.johnpwood.android.standuptimer.test.dao;
 
+import java.util.List;
+
 import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import net.johnpwood.android.standuptimer.model.Team;
 import android.test.AndroidTestCase;
@@ -9,8 +11,15 @@ public class TeamDAOTest extends AndroidTestCase {
 
     private TeamDAO dao = null;
 
+    @Override
     protected void setUp() {
         dao = new TeamDAO(mContext);
+    }
+
+    @Override
+    protected void tearDown() {
+        dao.deleteAll();
+        dao.close();
     }
 
     @MediumTest
@@ -29,5 +38,16 @@ public class TeamDAOTest extends AndroidTestCase {
         Team foundTeam = dao.findById(team.getId());
         assertEquals(team.getId(), foundTeam.getId());
         assertEquals(team.getName(), foundTeam.getName());
+    }
+
+    @MediumTest
+    public void test_find_all_can_retrieve_all_teams() {
+        dao.save(new Team("Test Team 1"));
+        dao.save(new Team("Test Team 2"));
+        dao.save(new Team("Test Team 3"));
+        dao.save(new Team("Test Team 4"));
+
+        List<Team> teams = dao.findAll();
+        assertEquals(4, teams.size());
     }
 }
