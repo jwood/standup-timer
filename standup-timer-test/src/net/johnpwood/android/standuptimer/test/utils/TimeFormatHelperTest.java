@@ -1,4 +1,4 @@
-package net.johnpwood.android.standuptimer.test;
+package net.johnpwood.android.standuptimer.test.utils;
 
 import junit.framework.TestCase;
 import net.johnpwood.android.standuptimer.utils.TimeFormatHelper;
