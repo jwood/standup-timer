@@ -18,6 +18,10 @@
          android:theme="@android:style/Theme.Dialog">
       </activity>
 
+      <activity android:name=".Help" android:label="@string/help_title"
+         android:theme="@android:style/Theme.Dialog">
+      </activity>
+
       <activity android:name=".Prefs" android:label="@string/settings_title">
       </activity>
 

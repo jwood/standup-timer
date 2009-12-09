@@ -4,6 +4,8 @@
       android:icon="@android:drawable/ic_menu_preferences" />
    <item android:id="@+id/about" android:title="@string/about_label"
       android:icon="@android:drawable/ic_menu_info_details" />
+   <item android:id="@+id/help" android:title="@string/help_label"
+      android:icon="@android:drawable/ic_menu_help" />
    <item android:id="@+id/quit" android:title="@string/quit"
       android:icon="@android:drawable/ic_menu_close_clear_cancel" />
 </menu>

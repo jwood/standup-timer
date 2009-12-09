@@ -9,20 +9,25 @@
 
       <TextView android:id="@+id/about_content"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:text="@string/about_text" />
+         android:text="@string/about_text" android:layout_gravity="center" />
 
       <TextView android:layout_width="wrap_content"
          android:layout_marginTop="10dp" android:layout_height="wrap_content"
-         android:text="@string/about_version" />
+         android:text="@string/about_version" android:layout_gravity="center" />
       <TextView android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:text="@string/about_copywright" />
+         android:layout_height="wrap_content" android:text="@string/about_copywright"
+         android:layout_gravity="center" />
       <TextView android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:text="@string/about_author_email" />
+         android:layout_height="wrap_content" android:text="@string/about_author_email"
+         android:layout_gravity="center" />
+      <TextView android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:text="@string/about_source_code"
+         android:layout_gravity="center" />
 
       <Button android:text="@string/ok" android:id="@+id/about_ok"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center"
-         android:layout_marginTop="10dp" android:width="100dp"></Button>
+         android:layout_gravity="center" android:layout_marginTop="10dp"
+         android:width="100dp" />
 
    </LinearLayout>
 </ScrollView> 

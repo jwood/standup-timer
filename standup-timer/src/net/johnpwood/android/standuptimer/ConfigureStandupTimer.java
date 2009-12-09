@@ -45,6 +45,10 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
             Logger.d("Displaying the about box");
             displayAboutBox();
             return true;
+        case R.id.help:
+            Logger.d("Displaying the help dialog");
+            displayHelpDialog();
+            return true;
         case R.id.settings:
             Logger.d("Displaying the settings");
             displaySettings();
@@ -65,6 +69,10 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
 
     protected void displayAboutBox() {
         startActivity(new Intent(this, About.class));
+    }
+
+    protected void displayHelpDialog() {
+        startActivity(new Intent(this, Help.class));
     }
 
     public void onClick(View v) {

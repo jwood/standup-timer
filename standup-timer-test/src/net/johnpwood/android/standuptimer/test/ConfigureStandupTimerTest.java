@@ -86,6 +86,21 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         EasyMock.replay(menuItem);
         a.onOptionsItemSelected(menuItem);
         assertTrue(a.displayAboutBoxCalled());
+        assertFalse(a.displayHelpDialogCalled());
+        assertFalse(a.displaySettingsCalled());
+        assertFalse(isFinishCalled());
+        EasyMock.verify(menuItem);
+    }
+
+    @MediumTest
+    public void test_help_dialog_displayed_successfully() {
+        MenuItem menuItem = EasyMock.createMock(MenuItem.class);
+        EasyMock.expect(menuItem.getItemId()).andReturn(R.id.help);
+
+        EasyMock.replay(menuItem);
+        a.onOptionsItemSelected(menuItem);
+        assertFalse(a.displayAboutBoxCalled());
+        assertTrue(a.displayHelpDialogCalled());
         assertFalse(a.displaySettingsCalled());
         assertFalse(isFinishCalled());
         EasyMock.verify(menuItem);
@@ -99,6 +114,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         EasyMock.replay(menuItem);
         a.onOptionsItemSelected(menuItem);
         assertFalse(a.displayAboutBoxCalled());
+        assertFalse(a.displayHelpDialogCalled());
         assertTrue(a.displaySettingsCalled());
         assertFalse(isFinishCalled());
         EasyMock.verify(menuItem);
@@ -112,6 +128,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         EasyMock.replay(menuItem);
         a.onOptionsItemSelected(menuItem);
         assertFalse(a.displayAboutBoxCalled());
+        assertFalse(a.displayHelpDialogCalled());
         assertFalse(a.displaySettingsCalled());
         assertTrue(isFinishCalled());
         EasyMock.verify(menuItem);
