@@ -35,7 +35,7 @@
 Standup Timer is a simple application that can be
 used to keep your stand-up meetings on track.
    </string>
-   <string name="about_version">Standup Timer v1.0</string>
+   <string name="about_version">Standup Timer v1.1</string>
    <string name="about_copywright">&#169;2009 by John Wood</string>
    <string name="about_author_email">john_p_wood@yahoo.com</string>
    <string name="about_source_code">http://github.com/jwood/standup-timer</string>
