@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.johnpwood.android.standuptimer.model.Team;
+import net.johnpwood.android.standuptimer.utils.Logger;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -36,15 +37,11 @@ public class TeamDAO extends DAOHelper {
 
     public Team save(Team team) {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-
         if (team.getId() != null) {
-            values.put(_ID, team.getId().longValue());
+            return updateExistingTeam(db, team);
+        } else {
+            return createNewTeam(db, team);
         }
-
-        values.put(NAME, team.getName());
-        long id = db.insertOrThrow(TABLE_NAME, null, values);
-        return new Team(id, team.getName());
     }
 
     public Team findById(Long id) {
@@ -67,27 +64,69 @@ public class TeamDAO extends DAOHelper {
         return team;
     }
 
-    public List<Team> findAll() {
-        List<Team> teamList = new ArrayList<Team>();
+    public Team findByName(String name) {
         Cursor cursor = null;
+        Team team = null;
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, null, null, null, null, NAME);
-            while (cursor.moveToNext()) {
-                long id = cursor.getLong(0);
-                String name = cursor.getString(1);
-                teamList.add(new Team(id, name));
+            cursor = db.query(TABLE_NAME, ALL_COLUMS, NAME + " = '" + name + "'", null, null, null, null);
+            if (cursor.getCount() == 1) {
+                if (cursor.moveToFirst()) {
+                    long id = cursor.getLong(0);
+                    name = cursor.getString(1);
+                    team = new Team(id, name);
+                }
             }
         } finally {
             closeCursor(cursor);
         }
 
-        return teamList;
+        return team;
+    }
+
+    public List<String> findAllTeamNames() {
+        List<String> teamNames = new ArrayList<String>();
+        Cursor cursor = null;
+
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(TABLE_NAME, new String[]{NAME}, null, null, null, null, NAME);
+            while (cursor.moveToNext()) {
+                teamNames.add(cursor.getString(0));
+            }
+        } finally {
+            closeCursor(cursor);
+        }
+
+        return teamNames;
     }
 
     public void deleteAll() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NAME, null, null);
+    }
+
+    private boolean attemptingToCreateDuplicateTeam(Team team) {
+        return team.getId() == null && findByName(team.getName()) != null;
+    }
+
+    private Team createNewTeam(SQLiteDatabase db, Team team) {
+        if (attemptingToCreateDuplicateTeam(team)) {
+            Logger.w("Attempting to create a duplicate team");
+            throw new RuntimeException();
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(NAME, team.getName());
+        long id = db.insertOrThrow(TABLE_NAME, null, values);
+        return new Team(id, team.getName());
+    }
+
+    private Team updateExistingTeam(SQLiteDatabase db, Team team) {
+        ContentValues values = new ContentValues();
+        values.put(NAME, team.getName());
+        long id = db.update(TABLE_NAME, values, _ID + " = " + team.getId(), null);
+        return new Team(id, team.getName());
     }
 }

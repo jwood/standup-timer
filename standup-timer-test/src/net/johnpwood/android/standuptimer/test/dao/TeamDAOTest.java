@@ -47,7 +47,42 @@ public class TeamDAOTest extends AndroidTestCase {
         dao.save(new Team("Test Team 3"));
         dao.save(new Team("Test Team 4"));
 
-        List<Team> teams = dao.findAll();
+        List<String> teams = dao.findAllTeamNames();
         assertEquals(4, teams.size());
+    }
+
+    @MediumTest
+    public void test_can_find_a_team_by_name() {
+        dao.save(new Team("Test Team 1"));
+
+        Team team = dao.findByName("Test Team 1");
+        assertEquals("Test Team 1", team.getName());
+        assertNotNull(team.getId());
+    }
+
+    @MediumTest
+    public void test_find_by_team_returns_null_if_team_cannot_be_found() {
+        Team team = dao.findByName("Blah Blah Blah");
+        assertNull(team);
+    }
+
+    @MediumTest
+    public void test_cannot_create_a_team_with_a_name_that_already_exists() {
+        dao.save(new Team("Test Team 1"));
+        try {
+            dao.save(new Team("Test Team 1"));
+            assertTrue("Should have thrown an exception", false);
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
+    @MediumTest
+    public void test_can_update_an_existing_team() {
+        Team team1 = dao.save(new Team("Test Team 1"));
+        dao.save(new Team(team1.getId(), "Test Team 2"));
+
+        Team team = dao.findById(team1.getId());
+        assertEquals("Test Team 2", team.getName());
     }
 }
