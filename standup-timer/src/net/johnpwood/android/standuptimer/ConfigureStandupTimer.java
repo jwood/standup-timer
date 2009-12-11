@@ -81,7 +81,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     }
 
     protected void displayTeamConfiguration() {
-        startActivity(new Intent(this, Teams.class));
+        startActivity(new Intent(this, TeamList.class));
     }
 
     public void onClick(View v) {
