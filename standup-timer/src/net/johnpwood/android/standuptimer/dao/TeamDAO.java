@@ -114,7 +114,7 @@ public class TeamDAO extends DAOHelper {
     private Team createNewTeam(SQLiteDatabase db, Team team) {
         if (attemptingToCreateDuplicateTeam(team)) {
             Logger.w("Attempting to create a duplicate team");
-            throw new RuntimeException();
+            throw new DuplicateTeamException("Attempting to create duplicate team with the name " + team.getName());
         }
 
         ContentValues values = new ContentValues();
