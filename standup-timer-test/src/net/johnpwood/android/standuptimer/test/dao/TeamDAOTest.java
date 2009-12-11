@@ -86,4 +86,13 @@ public class TeamDAOTest extends AndroidTestCase {
         Team team = dao.findById(team1.getId());
         assertEquals("Test Team 2", team.getName());
     }
+
+    @MediumTest
+    public void test_can_delete_a_team() {
+        Team team = dao.save(new Team("Test Team 1"));
+        assertEquals(1, dao.findAllTeamNames().size());
+
+        dao.delete(team);
+        assertEquals(0, dao.findAllTeamNames().size());
+    }
 }

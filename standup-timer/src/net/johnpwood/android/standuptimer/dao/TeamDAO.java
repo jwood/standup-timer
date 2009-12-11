@@ -107,6 +107,13 @@ public class TeamDAO extends DAOHelper {
         db.delete(TABLE_NAME, null, null);
     }
 
+    public void delete(Team team) {
+        if (team.getId() != null) {
+            SQLiteDatabase db = getWritableDatabase();
+            db.delete(TABLE_NAME, _ID + " = ?", new String[]{team.getId().toString()});
+        }
+    }
+
     private boolean attemptingToCreateDuplicateTeam(Team team) {
         return team.getId() == null && findByName(team.getName()) != null;
     }
