@@ -15,6 +15,9 @@
 
    <string name="valid_num_participants_warning">Number of participants must be between 2 and 20.</string>
    <string name="ok">OK</string>
+   <string name="add">Add</string>
+   <string name="revert">Revert</string>
+   <string name="done">Done</string>
 
    <string name="participant">Participant</string>
    <string name="individual_status_complete">Individual status complete</string>
@@ -31,6 +34,7 @@
 
    <string name="team_label">Teams</string>
    <string name="add_team">Add Team</string>
+   <string name="no_teams">No teams configured</string>
 
    <string name="about_label">About</string>
    <string name="about_title">About</string>
