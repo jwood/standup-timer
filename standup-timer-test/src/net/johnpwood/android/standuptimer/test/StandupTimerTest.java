@@ -83,7 +83,6 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         assertEquals(DEFAULT_MEETING_LENGTH, a.getRemainingMeetingSeconds());
         assertEquals(DEFAULT_NUM_PARTICIPANTS, a.getTotalParticipants());
         assertTrue(a.isFinished());
-        assertTrue(isFinishCalled());
     }
 
     @MediumTest
