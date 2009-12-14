@@ -6,6 +6,7 @@ import net.johnpwood.android.standuptimer.dao.DuplicateTeamException;
 import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import net.johnpwood.android.standuptimer.model.Team;
 import android.test.AndroidTestCase;
+import android.test.RenamingDelegatingContext;
 import android.test.suitebuilder.annotation.MediumTest;
 
 public class TeamDAOTest extends AndroidTestCase {
@@ -14,7 +15,7 @@ public class TeamDAOTest extends AndroidTestCase {
 
     @Override
     protected void setUp() {
-        dao = new TeamDAO(mContext);
+        dao = new TeamDAO(new RenamingDelegatingContext(mContext, "test_"));
     }
 
     @Override
