@@ -3,6 +3,7 @@ package net.johnpwood.android.standuptimer.test.dao;
 import java.util.List;
 
 import net.johnpwood.android.standuptimer.dao.DuplicateTeamException;
+import net.johnpwood.android.standuptimer.dao.InvalidTeamNameException;
 import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import net.johnpwood.android.standuptimer.model.Team;
 import android.test.AndroidTestCase;
@@ -75,6 +76,23 @@ public class TeamDAOTest extends AndroidTestCase {
             dao.save(new Team("Test Team 1"));
             assertTrue("Should have thrown an exception", false);
         } catch (DuplicateTeamException e) {
+            assertTrue(true);
+        }
+    }
+
+    @MediumTest
+    public void test_cannot_create_a_team_with_an_empty_name() {
+        try {
+            dao.save(new Team(""));
+            assertTrue("Should have thrown an exception", false);
+        } catch (InvalidTeamNameException e) {
+            assertTrue(true);
+        }
+
+        try {
+            dao.save(new Team("    "));
+            assertTrue("Should have thrown an exception", false);
+        } catch (InvalidTeamNameException e) {
             assertTrue(true);
         }
     }

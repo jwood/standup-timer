@@ -119,9 +119,16 @@ public class TeamDAO extends DAOHelper {
     }
 
     private Team createNewTeam(SQLiteDatabase db, Team team) {
+        if (team.getName() == null || team.getName().trim().length() == 0) {
+            String msg = "Attempting to create a team with an empty name";
+            Logger.w(msg);
+            throw new InvalidTeamNameException(msg);
+        }
+
         if (attemptingToCreateDuplicateTeam(team)) {
-            Logger.w("Attempting to create a duplicate team");
-            throw new DuplicateTeamException("Attempting to create duplicate team with the name " + team.getName());
+            String msg = "Attempting to create duplicate team with the name " + team.getName();
+            Logger.w(msg);
+            throw new DuplicateTeamException(msg);
         }
 
         ContentValues values = new ContentValues();
