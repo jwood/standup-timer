@@ -41,7 +41,7 @@ public class TeamList extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.teams_menu, menu);
+        inflater.inflate(R.menu.teams_options_menu, menu);
         return true;
     }
 
