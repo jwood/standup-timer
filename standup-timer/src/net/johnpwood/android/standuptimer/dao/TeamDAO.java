@@ -82,6 +82,7 @@ public class TeamDAO extends DAOHelper {
             closeCursor(cursor);
         }
 
+        Logger.d((team == null ? "Unsuccessfully" : "Successfully") + " found team with a name of '" + name + "'");
         return team;
     }
 
@@ -99,15 +100,18 @@ public class TeamDAO extends DAOHelper {
             closeCursor(cursor);
         }
 
+        Logger.d("Found " + teamNames.size() + " teams");
         return teamNames;
     }
 
     public void deleteAll() {
+        Logger.d("Deleting all teams");
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NAME, null, null);
     }
 
     public void delete(Team team) {
+        Logger.d("Deleting team with the name of '" + team.getName() + "'");
         if (team.getId() != null) {
             SQLiteDatabase db = getWritableDatabase();
             db.delete(TABLE_NAME, _ID + " = ?", new String[]{team.getId().toString()});
@@ -131,6 +135,7 @@ public class TeamDAO extends DAOHelper {
             throw new DuplicateTeamException(msg);
         }
 
+        Logger.d("Creating new team with a name of '" + team.getName() + "'");
         ContentValues values = new ContentValues();
         values.put(NAME, team.getName());
         long id = db.insertOrThrow(TABLE_NAME, null, values);
@@ -138,6 +143,7 @@ public class TeamDAO extends DAOHelper {
     }
 
     private Team updateExistingTeam(SQLiteDatabase db, Team team) {
+        Logger.d("Updating team with the name of '" + team.getName() + "'");
         ContentValues values = new ContentValues();
         values.put(NAME, team.getName());
         long id = db.update(TABLE_NAME, values, _ID + " = " + team.getId(), null);
