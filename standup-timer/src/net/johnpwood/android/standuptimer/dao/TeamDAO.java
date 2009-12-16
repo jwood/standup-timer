@@ -50,7 +50,7 @@ public class TeamDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = " + id, null, null, null, null);
+            cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = ?", new String[]{id.toString()}, null, null, null);
             if (cursor.getCount() == 1) {
                 if (cursor.moveToFirst()) {
                     String name = cursor.getString(1);
@@ -70,7 +70,7 @@ public class TeamDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, NAME + " = '" + name + "'", null, null, null, null);
+            cursor = db.query(TABLE_NAME, ALL_COLUMS, NAME + " = ?", new String[]{name}, null, null, null);
             if (cursor.getCount() == 1) {
                 if (cursor.moveToFirst()) {
                     long id = cursor.getLong(0);
@@ -146,7 +146,7 @@ public class TeamDAO extends DAOHelper {
         Logger.d("Updating team with the name of '" + team.getName() + "'");
         ContentValues values = new ContentValues();
         values.put(NAME, team.getName());
-        long id = db.update(TABLE_NAME, values, _ID + " = " + team.getId(), null);
+        long id = db.update(TABLE_NAME, values, _ID + " = ?", new String[]{team.getId().toString()});
         return new Team(id, team.getName());
     }
 }

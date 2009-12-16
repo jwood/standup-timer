@@ -34,6 +34,14 @@ public class TeamDAOTest extends AndroidTestCase {
     }
 
     @MediumTest
+    public void test_create_a_team_with_an_apostrophy_in_the_name() {
+        Team team = new Team("John's Team");
+        team = dao.save(team);
+        assertNotNull(team.getId());
+        assertEquals("John's Team", team.getName());
+    }
+
+    @MediumTest
     public void test_find_a_team_by_id() {
         Team team = new Team("Another Test Team");
         team = dao.save(team);
