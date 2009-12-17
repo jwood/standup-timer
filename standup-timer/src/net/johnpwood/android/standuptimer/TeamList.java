@@ -1,6 +1,5 @@
 package net.johnpwood.android.standuptimer;
 
-import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import net.johnpwood.android.standuptimer.model.Team;
 import net.johnpwood.android.standuptimer.utils.Logger;
 import android.app.AlertDialog;
@@ -10,17 +9,24 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class TeamList extends ListActivity {
+    private static final int CREATE_TEAM_DIALOG = 1;
+    private static final int CONFIRM_DELETE_DIALOG = 2;
+
     private View textEntryView = null;
     private Dialog createTeamDialog = null;
+    private Integer positionOfTeamToDelete = null;
 
     private Handler updateTeamListHandler = new Handler() {
         @Override
@@ -33,6 +39,8 @@ public class TeamList extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teams);
+        registerForContextMenu(getListView());
+
         updateTeamList();
         getTextEntryView();
     }
@@ -58,25 +66,64 @@ public class TeamList extends ListActivity {
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.teams_context_menu, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+        case R.id.delete_team:
+            positionOfTeamToDelete = info.position;
+            showDialog(CONFIRM_DELETE_DIALOG);
+            return true;
+        default:
+            return super.onContextItemSelected(item);
+        }
+    }
+
+    private void deleteTeam(int listPosition) {
+        String teamName = (String) getListAdapter().getItem(listPosition);
+        Team team = Team.findByName(teamName, this);
+        team.delete(this);
+        updateTeamListHandler.sendEmptyMessage(0);
+    }
+
     protected void displayAddTeamDialog() {
-        showDialog(0);
+        showDialog(CREATE_TEAM_DIALOG);
     }
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        if (createTeamDialog == null) {
+        switch (id) {
+        case CREATE_TEAM_DIALOG:
+            if (createTeamDialog == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.add_team);
+                builder.setView(getTextEntryView());
+                builder.setCancelable(true);
+                builder.setPositiveButton(R.string.ok, addTeamButtonListener());
+                builder.setNegativeButton(R.string.revert, cancelListener());
+                createTeamDialog = builder.create();
+            }
+            return createTeamDialog;
+
+        case CONFIRM_DELETE_DIALOG:
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.add_team);
-            builder.setView(getTextEntryView());
-            builder.setCancelable(true);
-            builder.setPositiveButton(R.string.ok, addTeamButtonListener());
-            builder.setNegativeButton(R.string.revert, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
-            createTeamDialog = builder.create();
+            builder.setMessage("Are you sure you want to delete this team?");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Yes", deleteTeamConfirmationListener());
+            builder.setNegativeButton("No", cancelListener());
+            AlertDialog alert = builder.create();
+            return alert;
+
+        default:
+            Logger.e("Attempting to create an unkonwn dialog with an id of " + id);
+            return null;
         }
-        return createTeamDialog;
     }
 
     @Override
@@ -86,16 +133,8 @@ public class TeamList extends ListActivity {
     }
 
     protected void updateTeamList() {
-        TeamDAO dao = null;
-        try {
-            dao = createTeamDAO();
-            setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dao.findAllTeamNames()));
-            getListView().setTextFilterEnabled(true);
-        } finally {
-            if (dao != null) {
-                dao.close();
-            }
-        }
+        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Team.findAllTeamNames(this)));
+        getListView().setTextFilterEnabled(true);
     }
 
     synchronized protected View getTextEntryView() {
@@ -108,24 +147,28 @@ public class TeamList extends ListActivity {
 
     protected DialogInterface.OnClickListener addTeamButtonListener() {
         return new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+            public void onClick(DialogInterface dialog, int id) {
                 EditText collectedTextView = (EditText) getTextEntryView().findViewById(R.id.collected_text);
                 String name = collectedTextView.getText().toString();
-                TeamDAO dao = null;
-                try {
-                    dao = createTeamDAO();
-                    dao.save(new Team(name));
-                    updateTeamListHandler.sendEmptyMessage(0);
-                } catch (Exception e) {
-                    Logger.e(e.getMessage());
-                } finally {
-                    dao.close();
-                }
+                Team.create(name, TeamList.this);
+                updateTeamListHandler.sendEmptyMessage(0);
             }
         };
     }
 
-    protected TeamDAO createTeamDAO() {
-        return new TeamDAO(this);
+    protected DialogInterface.OnClickListener deleteTeamConfirmationListener() {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteTeam(positionOfTeamToDelete);
+            }
+        };
+    }
+
+    protected DialogInterface.OnClickListener cancelListener() {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        };
     }
 }

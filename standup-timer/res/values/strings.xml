@@ -18,6 +18,7 @@
    <string name="add">Add</string>
    <string name="revert">Revert</string>
    <string name="done">Done</string>
+   <string name="delete">Delete</string>
 
    <string name="participant">Participant</string>
    <string name="individual_status_complete">Individual status complete</string>
