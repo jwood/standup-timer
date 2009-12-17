@@ -1,15 +1,12 @@
 package net.johnpwood.android.standuptimer.mock;
 
 import net.johnpwood.android.standuptimer.TeamList;
-import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.test.RenamingDelegatingContext;
 import android.view.View;
 
 public class TeamListMock extends TeamList {
     private boolean displayAddTeamDialogCalled = false;
-    private TeamDAO dao;
 
     @Override
     protected void displayAddTeamDialog() {
@@ -39,12 +36,4 @@ public class TeamListMock extends TeamList {
     public DialogInterface.OnClickListener addTeamButtonListener() {
         return super.addTeamButtonListener();
     }
-
-    @Override
-    public TeamDAO createTeamDAO() {
-        if (dao == null) {
-            dao = new TeamDAO(new RenamingDelegatingContext(this, "test_"));
-        }
-        return dao;
-    }    
 }

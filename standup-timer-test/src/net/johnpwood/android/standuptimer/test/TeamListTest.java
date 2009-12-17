@@ -1,15 +1,16 @@
 package net.johnpwood.android.standuptimer.test;
 
 import net.johnpwood.android.standuptimer.R;
+import net.johnpwood.android.standuptimer.dao.DAOFactory;
 import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import net.johnpwood.android.standuptimer.mock.TeamListMock;
-import net.johnpwood.android.standuptimer.model.Team;
 
 import org.easymock.EasyMock;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.test.ActivityUnitTestCase;
+import android.test.RenamingDelegatingContext;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 public class TeamListTest extends ActivityUnitTestCase<TeamListMock> {
     private TeamListMock a = null;
     private TeamDAO dao = null;
+    private DAOFactory daoFactory = DAOFactory.getInstance();
 
     public TeamListTest() {
         super(TeamListMock.class);
@@ -27,7 +29,10 @@ public class TeamListTest extends ActivityUnitTestCase<TeamListMock> {
         super.setUp();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         a = startActivity(intent, null, null);
-        dao = a.createTeamDAO();
+
+        daoFactory.setGlobalContext(new RenamingDelegatingContext(a, "test_"));
+        daoFactory.setCacheDAOInstances(true);
+        dao = daoFactory.getTeamDAO(a);
     }
 
     @Override
@@ -58,4 +63,22 @@ public class TeamListTest extends ActivityUnitTestCase<TeamListMock> {
         assertNotNull(dao.findByName("New Team"));
         assertEquals(1, dao.findAllTeamNames().size());            
     }
+
+//    public void test_can_delete_an_existing_team() {
+//        dao.save(new Team("Team to delete"));
+//
+//        ContextMenuInfo contextMenuInfo = EasyMock.createMock(ContextMenuInfo.class);
+//        EasyMock.expect(contextMenuInfo);
+//                
+//        AdapterContextMenuInfo adapterContextMenuInfo = EasyMock.createMock(AdapterContextMenuInfo.class);
+//        EasyMock.expect(adapterContextMenuInfo.getMenuInfo()).andReturn(contextMenuInfo);
+//        
+//        MenuItem menuItem = EasyMock.createMock(MenuItem.class);
+//        EasyMock.expect(menuItem.getItemId()).andReturn(R.id.delete_team);
+//        
+//
+//        EasyMock.replay(menuItem);
+//        a.onContextItemSelected(menuItem);
+//        
+//    }
 }
