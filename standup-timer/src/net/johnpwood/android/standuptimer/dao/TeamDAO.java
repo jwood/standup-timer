@@ -67,6 +67,7 @@ public class TeamDAO extends DAOHelper {
     public Team findByName(String name) {
         Cursor cursor = null;
         Team team = null;
+        name = name.trim();
 
         try {
             SQLiteDatabase db = getReadableDatabase();
