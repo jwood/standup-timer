@@ -44,16 +44,19 @@ public class Team {
         }
     }
 
-    public static void create(String name, Context context) {
+    public static Team create(String name, Context context) {
         TeamDAO dao = null;
+        Team team = null;
         try {
             dao = daoFactory.getTeamDAO(context);
-            dao.save(new Team(name));
+            team = dao.save(new Team(name));
         } catch (Exception e) {
             Logger.e(e.getMessage());
         } finally {
             dao.close();
         }
+
+        return team;
     }
 
     public static Team findByName(String teamName, Context context) {
