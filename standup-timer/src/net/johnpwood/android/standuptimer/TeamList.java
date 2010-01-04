@@ -26,6 +26,7 @@ public class TeamList extends ListActivity {
 
     private View textEntryView = null;
     private Dialog createTeamDialog = null;
+    private Dialog confirmDeleteTeamDialog = null;
     private Integer positionOfTeamToDelete = null;
 
     private Handler updateTeamListHandler = new Handler() {
@@ -112,13 +113,15 @@ public class TeamList extends ListActivity {
             return createTeamDialog;
 
         case CONFIRM_DELETE_DIALOG:
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to delete this team?");
-            builder.setCancelable(false);
-            builder.setPositiveButton("Yes", deleteTeamConfirmationListener());
-            builder.setNegativeButton("No", cancelListener());
-            AlertDialog alert = builder.create();
-            return alert;
+            if (confirmDeleteTeamDialog == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to delete this team?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Yes", deleteTeamConfirmationListener());
+                builder.setNegativeButton("No", cancelListener());
+                confirmDeleteTeamDialog = builder.create();
+            }
+            return confirmDeleteTeamDialog;
 
         default:
             Logger.e("Attempting to create an unkonwn dialog with an id of " + id);
@@ -174,5 +177,9 @@ public class TeamList extends ListActivity {
 
     public AlertDialog getCreateTeamDialog() {
         return (AlertDialog) createTeamDialog;
+    }
+
+    public AlertDialog getConfirmDeleteTeamDialog() {
+        return (AlertDialog) confirmDeleteTeamDialog;
     }
 }
