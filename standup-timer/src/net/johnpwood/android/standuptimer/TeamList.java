@@ -171,4 +171,8 @@ public class TeamList extends ListActivity {
             }
         };
     }
+
+    public AlertDialog getCreateTeamDialog() {
+        return (AlertDialog) createTeamDialog;
+    }
 }
