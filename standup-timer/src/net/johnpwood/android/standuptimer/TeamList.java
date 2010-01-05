@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class TeamList extends ListActivity {
@@ -84,6 +86,15 @@ public class TeamList extends ListActivity {
         default:
             return super.onContextItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onListItemClick(ListView listView, View view, int position, long id) {
+        String teamName = (String) getListAdapter().getItem(position);
+
+        Intent intent = new Intent(this, TeamDetails.class);
+        intent.putExtra("teamName", teamName);
+        startActivity(intent);
     }
 
     private void deleteTeam(int listPosition) {

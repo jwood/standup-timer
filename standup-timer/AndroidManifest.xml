@@ -21,6 +21,9 @@
          android:theme="@android:style/Theme.Dialog">
       </activity>
 
+      <activity android:name=".TeamDetails" android:theme="@android:style/Theme.NoTitleBar">
+      </activity>
+
       <activity android:name=".Prefs" android:label="@string/settings_title"></activity>
       <activity android:name=".TeamList" android:label="@string/team_label"></activity>
 
