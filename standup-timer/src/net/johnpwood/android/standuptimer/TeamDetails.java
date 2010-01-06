@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 public class TeamDetails extends TabActivity {
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_details);
