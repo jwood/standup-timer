@@ -2,7 +2,9 @@ package net.johnpwood.android.standuptimer.dao;
 
 import static android.provider.BaseColumns._ID;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.johnpwood.android.standuptimer.model.Meeting;
 import net.johnpwood.android.standuptimer.model.Team;
@@ -50,11 +52,7 @@ public class MeetingDAO extends DAOHelper {
 
     public Meeting save(Meeting meeting) {
         SQLiteDatabase db = getWritableDatabase();
-        if (meeting.getId() != null) {
-            return updateExistingMeeting(db, meeting);
-        } else {
-            return createNewMeeting(db, meeting);
-        }
+        return createNewMeeting(db, meeting);
     }
 
     public Meeting findById(Long id) {
@@ -66,15 +64,7 @@ public class MeetingDAO extends DAOHelper {
             cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = ?", new String[]{id.toString()}, null, null, null);
             if (cursor.getCount() == 1) {
                 if (cursor.moveToFirst()) {
-                    String teamName = cursor.getString(1);
-                    Date meetingTime = new Date(cursor.getLong(2));
-                    int numParticipants = cursor.getInt(3);
-                    int individualStatusLength = cursor.getInt(4);
-                    int meetingLength = cursor.getInt(5);
-                    int quickestStatus = cursor.getInt(6);
-                    int longestStatus = cursor.getInt(7);
-                    meeting = new Meeting(id, new Team(teamName), meetingTime, numParticipants, 
-                            individualStatusLength, meetingLength, quickestStatus, longestStatus);
+                    meeting = createMeetingFromCursorData(cursor);
                 }
             }
         } finally {
@@ -84,23 +74,42 @@ public class MeetingDAO extends DAOHelper {
         return meeting;
     }
 
+    public List<Meeting> findAllByTeam(Team team) {
+        List<Meeting> meetings = new ArrayList<Meeting>();
+        Cursor cursor = null;
+
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(TABLE_NAME, ALL_COLUMS, TEAM_NAME + " = ?", new String[]{team.getName()}, null, null, MEETING_TIME);
+            while (cursor.moveToNext()) {
+                meetings.add(createMeetingFromCursorData(cursor));
+            }
+        } finally {
+            closeCursor(cursor);
+        }
+
+        Logger.d("Found " + meetings.size() + " meetings");
+        return meetings;
+    }
+
     public void deleteAll() {
         Logger.d("Deleting all meetings");
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NAME, null, null);
     }
 
+    public void delete(Meeting meeting) {
+        Logger.d("Deleting meeting for " + meeting.getTeam().getName() + " with a date/time of '" + meeting.getDateTime() + "'");
+        if (meeting.getId() != null) {
+            SQLiteDatabase db = getWritableDatabase();
+            db.delete(TABLE_NAME, _ID + " = ?", new String[]{meeting.getId().toString()});
+        }
+    }
+
     private Meeting createNewMeeting(SQLiteDatabase db, Meeting meeting) {
         Logger.d("Creating new meeting for " + meeting.getTeam().getName() + " with a date/time of '" + meeting.getDateTime() + "'");
         ContentValues values = createContentValues(meeting);
         long id = db.insertOrThrow(TABLE_NAME, null, values);
-        return new Meeting(id, meeting);
-    }
-
-    private Meeting updateExistingMeeting(SQLiteDatabase db, Meeting meeting) {
-        Logger.d("Updating meeting for " + meeting.getTeam().getName() + " with a date/time of '" + meeting.getDateTime() + "'");
-        ContentValues values = createContentValues(meeting);
-        long id = db.update(TABLE_NAME, values, _ID + " = ?", new String[]{meeting.getId().toString()});
         return new Meeting(id, meeting);
     }
 
@@ -114,5 +123,18 @@ public class MeetingDAO extends DAOHelper {
         values.put(QUICKEST_STATUS, meeting.getQuickestStatus());
         values.put(LONGEST_STATUS, meeting.getLongestStatus());
         return values;
+    }
+
+    private Meeting createMeetingFromCursorData(Cursor cursor) {
+        long id = cursor.getLong(0);
+        String teamName = cursor.getString(1);
+        Date meetingTime = new Date(cursor.getLong(2));
+        int numParticipants = cursor.getInt(3);
+        int individualStatusLength = cursor.getInt(4);
+        int meetingLength = cursor.getInt(5);
+        int quickestStatus = cursor.getInt(6);
+        int longestStatus = cursor.getInt(7);
+        return new Meeting(id, new Team(teamName), meetingTime, numParticipants, 
+                individualStatusLength, meetingLength, quickestStatus, longestStatus);
     }
 }

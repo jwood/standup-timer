@@ -1,6 +1,7 @@
 package net.johnpwood.android.standuptimer.test.dao;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import net.johnpwood.android.standuptimer.dao.MeetingDAO;
 import net.johnpwood.android.standuptimer.model.Meeting;
@@ -38,5 +39,35 @@ public class MeetingDAOTest extends AndroidTestCase {
         assertEquals(300, meeting.getMeetingLength());
         assertEquals(30, meeting.getQuickestStatus());
         assertEquals(120, meeting.getLongestStatus());
+    }
+
+    @MediumTest
+    public void test_find_all_meetings_by_team_in_cronological_order() {
+        Team team = new Team("Test Team");
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 4, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 1, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 2, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+
+        List<Meeting> meetings = dao.findAllByTeam(team);
+        assertEquals(5, meetings.size());
+        assertEquals(new GregorianCalendar(2010, 1, 1, 10, 15, 0).getTime(), meetings.get(0).getDateTime());
+        assertEquals(new GregorianCalendar(2010, 1, 2, 10, 15, 0).getTime(), meetings.get(1).getDateTime());
+        assertEquals(new GregorianCalendar(2010, 1, 4, 10, 15, 0).getTime(), meetings.get(2).getDateTime());
+        assertEquals(new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), meetings.get(3).getDateTime());
+        assertEquals(new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime(), meetings.get(4).getDateTime());
+    }
+
+    @MediumTest
+    public void test_delete_a_single_meeting() {
+        Meeting meeting = new Meeting(new Team("Test Team"), new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120);
+        meeting = dao.save(meeting);
+        meeting = dao.findById(meeting.getId());
+        assertNotNull(meeting.getId());
+
+        dao.delete(meeting);
+        meeting = dao.findById(meeting.getId());
+        assertNull(meeting);
     }
 }
