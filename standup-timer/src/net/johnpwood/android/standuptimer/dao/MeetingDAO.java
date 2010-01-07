@@ -51,8 +51,14 @@ public class MeetingDAO extends DAOHelper {
     }
 
     public Meeting save(Meeting meeting) {
-        SQLiteDatabase db = getWritableDatabase();
-        return createNewMeeting(db, meeting);
+        if (meeting.getId() == null) {
+            SQLiteDatabase db = getWritableDatabase();
+            return createNewMeeting(db, meeting);
+        } else {
+            String msg = "Attempting to update an existing meeting.  Meeting entries cannot be updated.";
+            Logger.w(msg);
+            throw new CannotUpdateMeetingException(msg);
+        }
     }
 
     public Meeting findById(Long id) {

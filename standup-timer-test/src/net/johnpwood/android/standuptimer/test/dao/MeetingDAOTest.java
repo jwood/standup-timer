@@ -3,6 +3,7 @@ package net.johnpwood.android.standuptimer.test.dao;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import net.johnpwood.android.standuptimer.dao.CannotUpdateMeetingException;
 import net.johnpwood.android.standuptimer.dao.MeetingDAO;
 import net.johnpwood.android.standuptimer.model.Meeting;
 import net.johnpwood.android.standuptimer.model.Team;
@@ -39,6 +40,19 @@ public class MeetingDAOTest extends AndroidTestCase {
         assertEquals(300, meeting.getMeetingLength());
         assertEquals(30, meeting.getQuickestStatus());
         assertEquals(120, meeting.getLongestStatus());
+    }
+
+    @MediumTest
+    public void test_cannot_update_a_meeting_that_has_already_been_created() {
+        Meeting meeting = new Meeting(new Team("Test Team"), new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120);
+        meeting = dao.save(meeting);
+
+        try {
+            dao.save(meeting);
+            fail("Should have thrown an exception");
+        } catch (CannotUpdateMeetingException e) {
+            assertTrue(true);
+        }
     }
 
     @MediumTest
