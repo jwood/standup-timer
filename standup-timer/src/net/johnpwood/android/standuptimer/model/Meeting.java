@@ -1,8 +1,12 @@
 package net.johnpwood.android.standuptimer.model;
 
 import java.util.Date;
+import java.util.List;
 
 import net.johnpwood.android.standuptimer.dao.DAOFactory;
+import net.johnpwood.android.standuptimer.dao.MeetingDAO;
+import net.johnpwood.android.standuptimer.utils.Logger;
+import android.content.Context;
 
 public class Meeting {
     private Long id = null;
@@ -58,6 +62,45 @@ public class Meeting {
         this.meetingLength = meeting.meetingLength;
         this.quickestStatus = meeting.quickestStatus;
         this.longestStatus = meeting.longestStatus;
+    }
+
+    public void delete(Context context) {
+        MeetingDAO dao = null;
+        try {
+            dao = daoFactory.getMeetingDAO(context);
+            dao.delete(this);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
+    public Meeting save(Context context) {
+        MeetingDAO dao = null;
+        Meeting meeting = null;
+        try {
+            dao = daoFactory.getMeetingDAO(context);
+            meeting = dao.save(this);
+        } catch (Exception e) {
+            Logger.e(e.getMessage());
+        } finally {
+            dao.close();
+        }
+
+        return meeting;
+    }
+
+    public static List<Meeting> findAllByTeam(Team team, Context context) {
+        MeetingDAO dao = null;
+        try {
+            dao = daoFactory.getMeetingDAO(context);
+            return dao.findAllByTeam(team);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
     }
 
     public Long getId() {
