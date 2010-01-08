@@ -12,11 +12,7 @@ public class Meeting {
     private Long id = null;
     private Team team = null;
     private Date dateTime = null;
-    private int numParticipants = 0;
-    private int individualStatusLength = 0;
-    private int meetingLength = 0;
-    private int quickestStatus = 0;
-    private int longestStatus = Integer.MAX_VALUE;
+    private MeetingStats meetingStats = null;
 
     private static DAOFactory daoFactory = DAOFactory.getInstance();
 
@@ -37,14 +33,9 @@ public class Meeting {
 
         if (numParticipants < 2) {
             throw new IllegalArgumentException("Meeting must have at least 2 participants");
-        } else {
-            this.numParticipants = numParticipants;
         }
-        
-        this.individualStatusLength = individualStatusLength;
-        this.meetingLength = meetingLength;
-        this.quickestStatus = quickestStatus;
-        this.longestStatus = longestStatus;
+
+        meetingStats = new MeetingStats(numParticipants, individualStatusLength, meetingLength, quickestStatus, longestStatus);
     }
 
     public Meeting(Long id, Team team, Date dateTime, int numParticipants, int individualStatusLength,
@@ -57,11 +48,7 @@ public class Meeting {
         this.id = id;
         this.team = new Team(meeting.getTeam().getName());
         this.dateTime = meeting.dateTime;
-        this.numParticipants = meeting.numParticipants;
-        this.individualStatusLength = meeting.individualStatusLength;
-        this.meetingLength = meeting.meetingLength;
-        this.quickestStatus = meeting.quickestStatus;
-        this.longestStatus = meeting.longestStatus;
+        this.meetingStats = meeting.meetingStats;
     }
 
     public void delete(Context context) {
@@ -115,23 +102,7 @@ public class Meeting {
         return dateTime;
     }
 
-    public int getNumParticipants() {
-        return numParticipants;
-    }
-
-    public int getIndividualStatusLength() {
-        return individualStatusLength;
-    }
-
-    public int getMeetingLength() {
-        return meetingLength;
-    }
-
-    public int getQuickestStatus() {
-        return quickestStatus;
-    }
-
-    public int getLongestStatus() {
-        return longestStatus;
+    public MeetingStats getMeetingStats() {
+        return meetingStats;
     }
 }

@@ -123,11 +123,11 @@ public class MeetingDAO extends DAOHelper {
         ContentValues values = new ContentValues();
         values.put(TEAM_NAME, meeting.getTeam().getName());
         values.put(MEETING_TIME, meeting.getDateTime().getTime());
-        values.put(NUM_PARTICIPANTS, meeting.getNumParticipants());
-        values.put(INDIVIDUAL_STATUS_LENGTH, meeting.getIndividualStatusLength());
-        values.put(MEETING_LENGTH, meeting.getMeetingLength());
-        values.put(QUICKEST_STATUS, meeting.getQuickestStatus());
-        values.put(LONGEST_STATUS, meeting.getLongestStatus());
+        values.put(NUM_PARTICIPANTS, meeting.getMeetingStats().getNumParticipants());
+        values.put(INDIVIDUAL_STATUS_LENGTH, meeting.getMeetingStats().getIndividualStatusLength());
+        values.put(MEETING_LENGTH, meeting.getMeetingStats().getMeetingLength());
+        values.put(QUICKEST_STATUS, meeting.getMeetingStats().getQuickestStatus());
+        values.put(LONGEST_STATUS, meeting.getMeetingStats().getLongestStatus());
         return values;
     }
 
