@@ -1,5 +1,6 @@
 package net.johnpwood.android.standuptimer.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.johnpwood.android.standuptimer.dao.DAOFactory;
@@ -57,6 +58,19 @@ public class Team {
         }
 
         return team;
+    }
+
+    public MeetingStats getAverageMeetingStats(Context context) {
+        List<MeetingStats> meetingStats = new ArrayList<MeetingStats>();
+        List<Meeting> meetings = findAllMeetings(context);
+        for (Meeting meeting : meetings) {
+            meetingStats.add(meeting.getMeetingStats());
+        }
+        return MeetingStats.getAverageStats(meetingStats);
+    }
+
+    public List<Meeting> findAllMeetings(Context context) {
+        return Meeting.findAllByTeam(this, context);
     }
 
     public static Team findByName(String teamName, Context context) {

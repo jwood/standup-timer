@@ -35,11 +35,11 @@ public class MeetingDAOTest extends AndroidTestCase {
         meeting = dao.findById(meeting.getId());
         assertEquals("Test Team", meeting.getTeam().getName());
         assertEquals(new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), meeting.getDateTime());
-        assertEquals(5, meeting.getMeetingStats().getNumParticipants());
-        assertEquals(240, meeting.getMeetingStats().getIndividualStatusLength());
-        assertEquals(300, meeting.getMeetingStats().getMeetingLength());
-        assertEquals(30, meeting.getMeetingStats().getQuickestStatus());
-        assertEquals(120, meeting.getMeetingStats().getLongestStatus());
+        assertEquals(5f, meeting.getMeetingStats().getNumParticipants());
+        assertEquals(240.f, meeting.getMeetingStats().getIndividualStatusLength());
+        assertEquals(300f, meeting.getMeetingStats().getMeetingLength());
+        assertEquals(30f, meeting.getMeetingStats().getQuickestStatus());
+        assertEquals(120f, meeting.getMeetingStats().getLongestStatus());
     }
 
     @MediumTest

@@ -60,4 +60,22 @@ public class TeamTest extends AndroidTestCase implements DatabaseConstants {
         assertTrue(teamNames.contains("Test Team 2"));
         assertTrue(teamNames.contains("Test Team 3"));
     }
+
+//    @MediumTest
+//    public void test_get_average_meeting_stats() {
+//        Team team = Team.create("Test Team", mContext);
+//        Date dateTime = new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime();
+//        new Meeting(team, dateTime, 5, 301, 343, 30, 65).save(mContext);
+//        new Meeting(team, dateTime, 8, 534, 550, 32, 120).save(mContext);
+//        new Meeting(team, dateTime, 2, 234, 300, 23, 122).save(mContext);
+//        new Meeting(team, dateTime, 3, 765, 765, 15, 78).save(mContext);
+//        new Meeting(team, dateTime, 9, 444, 445, 10, 93).save(mContext);
+//
+//        MeetingStats averageStats = team.getAverageMeetingStats(mContext);
+//        assertEquals(5.4f, averageStats.getNumParticipants());
+//        assertEquals(455.6f, averageStats.getIndividualStatusLength());
+//        assertEquals(480.6f, averageStats.getMeetingLength());
+//        assertEquals(22f, averageStats.getQuickestStatus());
+//        assertEquals(95.6f, averageStats.getLongestStatus());
+//    }
 }

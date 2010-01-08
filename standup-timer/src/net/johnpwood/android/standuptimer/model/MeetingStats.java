@@ -1,13 +1,15 @@
 package net.johnpwood.android.standuptimer.model;
 
-public class MeetingStats {
-    private int numParticipants = 0;
-    private int individualStatusLength = 0;
-    private int meetingLength = 0;
-    private int quickestStatus = 0;
-    private int longestStatus = Integer.MAX_VALUE;
+import java.util.List;
 
-    public MeetingStats(int numParticipants, int individualStatusLength, int meetingLength, int quickestStatus, int longestStatus) {
+public class MeetingStats {
+    private float numParticipants = 0;
+    private float individualStatusLength = 0;
+    private float meetingLength = 0;
+    private float quickestStatus = 0;
+    private float longestStatus = Integer.MAX_VALUE;
+
+    public MeetingStats(float numParticipants, float individualStatusLength, float meetingLength, float quickestStatus, float longestStatus) {
         this.numParticipants = numParticipants;
         this.individualStatusLength = individualStatusLength;
         this.meetingLength = meetingLength;
@@ -15,23 +17,45 @@ public class MeetingStats {
         this.longestStatus = longestStatus;
     }
 
-    public int getNumParticipants() {
+    public static MeetingStats getAverageStats(List<MeetingStats> meetingStatsList) {
+        float totalNumParticipants = 0;
+        float totalIndividualStatusLength = 0;
+        float totalMeetingLength = 0;
+        float totalQuickestStatus = 0;
+        float totalLongestStatus = 0;
+
+        for (MeetingStats meetingStats : meetingStatsList) {
+            totalNumParticipants += meetingStats.getNumParticipants();
+            totalIndividualStatusLength += meetingStats.getIndividualStatusLength();
+            totalMeetingLength += meetingStats.getMeetingLength();
+            totalQuickestStatus += meetingStats.getQuickestStatus();
+            totalLongestStatus += meetingStats.getLongestStatus();
+        }
+
+        return new MeetingStats(totalNumParticipants / meetingStatsList.size(),
+                totalIndividualStatusLength / meetingStatsList.size(),
+                totalMeetingLength / meetingStatsList.size(),
+                totalQuickestStatus / meetingStatsList.size(),
+                totalLongestStatus / meetingStatsList.size());
+    }
+
+    public float getNumParticipants() {
         return numParticipants;
     }
 
-    public int getIndividualStatusLength() {
+    public float getIndividualStatusLength() {
         return individualStatusLength;
     }
 
-    public int getMeetingLength() {
+    public float getMeetingLength() {
         return meetingLength;
     }
 
-    public int getQuickestStatus() {
+    public float getQuickestStatus() {
         return quickestStatus;
     }
 
-    public int getLongestStatus() {
+    public float getLongestStatus() {
         return longestStatus;
     }
 }
