@@ -3,18 +3,20 @@ package net.johnpwood.android.standuptimer.test.model;
 import java.util.List;
 
 import net.johnpwood.android.standuptimer.dao.DAOFactory;
+import net.johnpwood.android.standuptimer.dao.DatabaseConstants;
 import net.johnpwood.android.standuptimer.dao.TeamDAO;
 import net.johnpwood.android.standuptimer.model.Team;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 import android.test.suitebuilder.annotation.MediumTest;
 
-public class TeamTest extends AndroidTestCase {
+public class TeamTest extends AndroidTestCase implements DatabaseConstants {
     private TeamDAO dao = null;
     private DAOFactory daoFactory = DAOFactory.getInstance();
 
     @Override
     protected void setUp() {
+        mContext.deleteDatabase("test_" + DATABASE_NAME);
         daoFactory.setGlobalContext(new RenamingDelegatingContext(mContext, "test_"));
         daoFactory.setCacheDAOInstances(true);
         dao = daoFactory.getTeamDAO(mContext);
