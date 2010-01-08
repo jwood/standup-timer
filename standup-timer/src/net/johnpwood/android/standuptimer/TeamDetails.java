@@ -13,9 +13,12 @@ public class TeamDetails extends TabActivity {
 
         TabHost mTabHost = getTabHost();
         
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test1").setIndicator("TAB 1").setContent(R.id.textview1));
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test2").setIndicator("TAB 2").setContent(R.id.textview2));
-        mTabHost.addTab(mTabHost.newTabSpec("tab_test3").setIndicator("TAB 3").setContent(R.id.textview3));
+        mTabHost.addTab(mTabHost.newTabSpec("stats_tab").
+                setIndicator(this.getString(R.string.stats)).
+                setContent(R.id.team_stats));
+        mTabHost.addTab(mTabHost.newTabSpec("meetings_tab").
+                setIndicator(this.getString(R.string.meetings)).
+                setContent(R.id.team_meetings_list));
         
         mTabHost.setCurrentTab(0);
     }

@@ -9,5 +9,5 @@
    <item android:id="@+id/quit" android:title="@string/quit"
       android:icon="@android:drawable/ic_menu_close_clear_cancel" />
    <item android:id="@+id/teams" android:title="@string/team_label"
-      android:icon="@android:drawable/ic_menu_edit" />
+      android:icon="@android:drawable/ic_menu_edit" android:alphabeticShortcut="t" />
 </menu>

@@ -57,4 +57,7 @@ started. On the timer screen, press <b>Next</b>
 to restart the timer for a new meeting participant,
 or <b>Finish</b> to stop the timer.
    </string>
+
+   <string name="stats">Stats</string>
+   <string name="meetings">Meetings</string>
 </resources>

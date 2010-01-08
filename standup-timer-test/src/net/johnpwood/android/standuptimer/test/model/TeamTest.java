@@ -61,6 +61,7 @@ public class TeamTest extends AndroidTestCase implements DatabaseConstants {
         assertTrue(teamNames.contains("Test Team 3"));
     }
 
+// TODO: Why does this fail?
 //    @MediumTest
 //    public void test_get_average_meeting_stats() {
 //        Team team = Team.create("Test Team", mContext);
