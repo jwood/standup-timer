@@ -1,8 +1,11 @@
 package net.johnpwood.android.standuptimer;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.johnpwood.android.standuptimer.model.Meeting;
+import net.johnpwood.android.standuptimer.model.Team;
 import net.johnpwood.android.standuptimer.utils.Logger;
 import net.johnpwood.android.standuptimer.utils.TimeFormatHelper;
 import android.app.Activity;
@@ -27,6 +30,7 @@ public class StandupTimer extends Activity implements OnClickListener {
     protected static final String COMPLETED_PARTICIPANTS = "completedParticipants";
     protected static final String TOTAL_PARTICIPANTS = "totalParticipants";
 
+    private int currentIndividualStatusSeconds = 0;
     private int remainingIndividualSeconds = 0;
     private int remainingMeetingSeconds = 0;
     private int startingIndividualSeconds = 0;
@@ -37,6 +41,13 @@ public class StandupTimer extends Activity implements OnClickListener {
     private boolean finished = false;
     private Timer timer = null;
     private PowerManager.WakeLock wakeLock = null;
+
+    private Team team = null;
+    private long meetingStartTime = 0;
+    private long individualStatusStartTime = 0;
+    private long individualStatusEndTime = 0;
+    private int quickestStatus = Integer.MAX_VALUE;
+    private int longestStatus = 0;
 
     private static MediaPlayer bell = null;
     private static MediaPlayer airhorn = null;
@@ -60,10 +71,15 @@ public class StandupTimer extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timer);
 
+        team = Team.findByName(getIntent().getStringExtra("teamName"), this);
+
         initializeSounds();
         initializeButtonListeners();
         initializeTimerValues();
         updateDisplay();
+
+        meetingStartTime = System.currentTimeMillis();
+        individualStatusStartTime = meetingStartTime;
     }
 
     @Override
@@ -182,6 +198,8 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     protected synchronized void updateTimerValues() {
+        currentIndividualStatusSeconds++;
+
         if (remainingIndividualSeconds > 0) {
             remainingIndividualSeconds--;
 
@@ -206,8 +224,10 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private synchronized void processNextButtonClick() {
         completedParticipants++;
+        calculateIndividualStatusStats();
 
         if (completedParticipants == totalParticipants) {
+            individualStatusEndTime = System.currentTimeMillis();
             disableIndividualTimerHandler.sendEmptyMessage(0);
         } else {
             if (startingIndividualSeconds < remainingMeetingSeconds) {
@@ -217,6 +237,18 @@ public class StandupTimer extends Activity implements OnClickListener {
             }
             updateDisplay();
         }
+    }
+
+    private synchronized void calculateIndividualStatusStats() {
+        if (currentIndividualStatusSeconds > longestStatus) {
+            longestStatus = currentIndividualStatusSeconds;
+        }
+
+        if (currentIndividualStatusSeconds < quickestStatus) {
+            quickestStatus = currentIndividualStatusSeconds;
+        }
+
+        currentIndividualStatusSeconds = 0;
     }
 
     private synchronized void disableIndividualTimer() {
@@ -282,6 +314,7 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     private synchronized void processFinishedButtonClick() {
         shutdownTimer();
+        storeMeetingStats();
         finish();
     }
 
@@ -322,6 +355,17 @@ public class StandupTimer extends Activity implements OnClickListener {
             case 3: minutes = 20; break;
         }
         return minutes * 60;
+    }
+
+    private void storeMeetingStats() {
+        if (team != null) {
+            long meetingEndTime = System.currentTimeMillis();
+            Meeting meeting = new Meeting(team, new Date(meetingStartTime), totalParticipants,
+                    (int)((individualStatusEndTime - individualStatusStartTime) * 1000),
+                    (int)((meetingEndTime - meetingStartTime) * 1000),
+                    quickestStatus, longestStatus);
+            meeting.save(this);
+        }
     }
 
     protected synchronized int getRemainingIndividualSeconds() {
