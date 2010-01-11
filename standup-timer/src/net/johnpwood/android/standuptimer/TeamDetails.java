@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class TeamDetails extends TabActivity {
 
@@ -25,24 +26,26 @@ public class TeamDetails extends TabActivity {
         team = Team.findByName(getIntent().getStringExtra("teamName"), this);
         teamList = new ListView(this);
 
-        TabHost mTabHost = getTabHost();
+        TabHost tabHost = getTabHost();
         if (team.hasMeetings(this)) {
-            mTabHost.addTab(mTabHost.newTabSpec("stats_tab").
+            tabHost.addTab(tabHost.newTabSpec("stats_tab").
                     setIndicator(this.getString(R.string.stats)).
                     setContent(R.id.team_stats));
-            mTabHost.addTab(mTabHost.newTabSpec("meetings_tab").
+            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
                     setIndicator(this.getString(R.string.meetings)).
                     setContent(createMeetingList()));
         } else {
-            mTabHost.addTab(mTabHost.newTabSpec("stats_tab").
+            ((TextView) this.findViewById(R.id.no_team_meeting_stats)).setText(getString(R.string.no_meeting_stats));
+            tabHost.addTab(tabHost.newTabSpec("stats_tab").
                     setIndicator(this.getString(R.string.stats)).
                     setContent(R.id.no_team_meeting_stats));
-            mTabHost.addTab(mTabHost.newTabSpec("meetings_tab").
+
+            ((TextView) this.findViewById(R.id.no_team_meetings)).setText(getString(R.string.no_meetings));
+            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
                     setIndicator(this.getString(R.string.meetings)).
                     setContent(R.id.no_team_meetings));
         }
-
-        mTabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(0);
     }
 
     private TabHost.TabContentFactory createMeetingList() {

@@ -7,6 +7,7 @@ import net.johnpwood.android.standuptimer.dao.DAOFactory;
 import net.johnpwood.android.standuptimer.dao.MeetingDAO;
 import net.johnpwood.android.standuptimer.utils.Logger;
 import android.content.Context;
+import android.text.format.DateFormat;
 
 public class Meeting {
     private Long id = null;
@@ -107,6 +108,6 @@ public class Meeting {
     }
 
     public String getDescription() {
-        return dateTime.toString();
+        return DateFormat.format("MM/dd/yyyy h:mmaa", dateTime).toString();
     }
 }
