@@ -73,6 +73,10 @@ public class Team {
         return Meeting.findAllByTeam(this, context);
     }
 
+    public boolean hasMeetings(Context context) {
+        return findAllMeetings(context).size() > 0;
+    }
+
     public static Team findByName(String teamName, Context context) {
         TeamDAO dao = null;
         try {

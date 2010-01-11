@@ -105,4 +105,8 @@ public class Meeting {
     public MeetingStats getMeetingStats() {
         return meetingStats;
     }
+
+    public String getDescription() {
+        return dateTime.toString();
+    }
 }

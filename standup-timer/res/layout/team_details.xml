@@ -15,8 +15,16 @@
          <TextView android:id="@+id/team_stats"
             android:layout_width="fill_parent" android:layout_height="fill_parent" />
 
-         <TextView android:id="@+id/team_meetings_list"
+         <ListView android:id="@+id/team_meetings_list"
             android:layout_width="fill_parent" android:layout_height="fill_parent" />
+
+         <TextView android:id="@+id/no_team_meetings"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:text="@string/no_meetings" />
+
+         <TextView android:id="@+id/no_team_meeting_stats"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:text="@string/no_meeting_stats" />
 
       </FrameLayout>
    </LinearLayout>

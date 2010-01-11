@@ -81,4 +81,12 @@ public class TeamTest extends AndroidTestCase implements DatabaseConstants {
         assertEquals(22f, averageStats.getQuickestStatus());
         assertEquals(95.6f, averageStats.getLongestStatus());
     }
+
+    @MediumTest
+    public void test_has_meetings() {
+        Team team = Team.create("Test Team No Meetings", mContext);
+        assertFalse(team.hasMeetings(mContext));
+        new Meeting(team, new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 301, 343, 30, 65).save(mContext);
+        assertTrue(team.hasMeetings(mContext));
+    }
 }

@@ -60,4 +60,6 @@ or <b>Finish</b> to stop the timer.
 
    <string name="stats">Stats</string>
    <string name="meetings">Meetings</string>
+   <string name="no_meetings">This team has no meetings</string>
+   <string name="no_meeting_stats">There are no stats for this team</string>
 </resources>
