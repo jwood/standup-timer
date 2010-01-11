@@ -1,10 +1,14 @@
 package net.johnpwood.android.standuptimer.test.model;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import net.johnpwood.android.standuptimer.dao.DAOFactory;
 import net.johnpwood.android.standuptimer.dao.DatabaseConstants;
 import net.johnpwood.android.standuptimer.dao.TeamDAO;
+import net.johnpwood.android.standuptimer.model.Meeting;
+import net.johnpwood.android.standuptimer.model.MeetingStats;
 import net.johnpwood.android.standuptimer.model.Team;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
@@ -16,7 +20,6 @@ public class TeamTest extends AndroidTestCase implements DatabaseConstants {
 
     @Override
     protected void setUp() {
-        mContext.deleteDatabase("test_" + DATABASE_NAME);
         daoFactory.setGlobalContext(new RenamingDelegatingContext(mContext, "test_"));
         daoFactory.setCacheDAOInstances(true);
         dao = daoFactory.getTeamDAO(mContext);
@@ -61,22 +64,21 @@ public class TeamTest extends AndroidTestCase implements DatabaseConstants {
         assertTrue(teamNames.contains("Test Team 3"));
     }
 
-// TODO: Why does this fail?
-//    @MediumTest
-//    public void test_get_average_meeting_stats() {
-//        Team team = Team.create("Test Team", mContext);
-//        Date dateTime = new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime();
-//        new Meeting(team, dateTime, 5, 301, 343, 30, 65).save(mContext);
-//        new Meeting(team, dateTime, 8, 534, 550, 32, 120).save(mContext);
-//        new Meeting(team, dateTime, 2, 234, 300, 23, 122).save(mContext);
-//        new Meeting(team, dateTime, 3, 765, 765, 15, 78).save(mContext);
-//        new Meeting(team, dateTime, 9, 444, 445, 10, 93).save(mContext);
-//
-//        MeetingStats averageStats = team.getAverageMeetingStats(mContext);
-//        assertEquals(5.4f, averageStats.getNumParticipants());
-//        assertEquals(455.6f, averageStats.getIndividualStatusLength());
-//        assertEquals(480.6f, averageStats.getMeetingLength());
-//        assertEquals(22f, averageStats.getQuickestStatus());
-//        assertEquals(95.6f, averageStats.getLongestStatus());
-//    }
+    @MediumTest
+    public void test_get_average_meeting_stats() {
+        Team team = Team.create("Test Team", mContext);
+        Date dateTime = new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime();
+        new Meeting(team, dateTime, 5, 301, 343, 30, 65).save(mContext);
+        new Meeting(team, dateTime, 8, 534, 550, 32, 120).save(mContext);
+        new Meeting(team, dateTime, 2, 234, 300, 23, 122).save(mContext);
+        new Meeting(team, dateTime, 3, 765, 765, 15, 78).save(mContext);
+        new Meeting(team, dateTime, 9, 444, 445, 10, 93).save(mContext);
+
+        MeetingStats averageStats = team.getAverageMeetingStats(mContext);
+        assertEquals(5.4f, averageStats.getNumParticipants());
+        assertEquals(455.6f, averageStats.getIndividualStatusLength());
+        assertEquals(480.6f, averageStats.getMeetingLength());
+        assertEquals(22f, averageStats.getQuickestStatus());
+        assertEquals(95.6f, averageStats.getLongestStatus());
+    }
 }

@@ -13,26 +13,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class TeamDAO extends DAOHelper {
-    private static final String TABLE_NAME = "teams";
-    private static final String NAME = "name";
-    private static final String[] ALL_COLUMS = { _ID, NAME };
 
     public TeamDAO(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NAME + " TEXT NOT NULL" +
-                ");");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
     }
 
     public Team save(Team team) {
@@ -50,7 +33,7 @@ public class TeamDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = ?", new String[]{id.toString()}, null, null, null);
+            cursor = db.query(TEAMS_TABLE_NAME, TEAMS_ALL_COLUMS, _ID + " = ?", new String[]{id.toString()}, null, null, null);
             if (cursor.getCount() == 1) {
                 if (cursor.moveToFirst()) {
                     String name = cursor.getString(1);
@@ -71,7 +54,7 @@ public class TeamDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, NAME + " = ?", new String[]{name}, null, null, null);
+            cursor = db.query(TEAMS_TABLE_NAME, TEAMS_ALL_COLUMS, TEAMS_NAME + " = ?", new String[]{name}, null, null, null);
             if (cursor.getCount() == 1) {
                 if (cursor.moveToFirst()) {
                     long id = cursor.getLong(0);
@@ -93,7 +76,7 @@ public class TeamDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, new String[]{NAME}, null, null, null, null, NAME);
+            cursor = db.query(TEAMS_TABLE_NAME, new String[]{TEAMS_NAME}, null, null, null, null, TEAMS_NAME);
             while (cursor.moveToNext()) {
                 teamNames.add(cursor.getString(0));
             }
@@ -108,14 +91,14 @@ public class TeamDAO extends DAOHelper {
     public void deleteAll() {
         Logger.d("Deleting all teams");
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_NAME, null, null);
+        db.delete(TEAMS_TABLE_NAME, null, null);
     }
 
     public void delete(Team team) {
         Logger.d("Deleting team with the name of '" + team.getName() + "'");
         if (team.getId() != null) {
             SQLiteDatabase db = getWritableDatabase();
-            db.delete(TABLE_NAME, _ID + " = ?", new String[]{team.getId().toString()});
+            db.delete(TEAMS_TABLE_NAME, _ID + " = ?", new String[]{team.getId().toString()});
         }
     }
 
@@ -138,16 +121,16 @@ public class TeamDAO extends DAOHelper {
 
         Logger.d("Creating new team with a name of '" + team.getName() + "'");
         ContentValues values = new ContentValues();
-        values.put(NAME, team.getName());
-        long id = db.insertOrThrow(TABLE_NAME, null, values);
+        values.put(TEAMS_NAME, team.getName());
+        long id = db.insertOrThrow(TEAMS_TABLE_NAME, null, values);
         return new Team(id, team.getName());
     }
 
     private Team updateExistingTeam(SQLiteDatabase db, Team team) {
         Logger.d("Updating team with the name of '" + team.getName() + "'");
         ContentValues values = new ContentValues();
-        values.put(NAME, team.getName());
-        long id = db.update(TABLE_NAME, values, _ID + " = ?", new String[]{team.getId().toString()});
+        values.put(TEAMS_NAME, team.getName());
+        long id = db.update(TEAMS_TABLE_NAME, values, _ID + " = ?", new String[]{team.getId().toString()});
         return new Team(id, team.getName());
     }
 }

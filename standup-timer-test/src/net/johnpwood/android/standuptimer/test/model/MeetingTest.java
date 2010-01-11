@@ -18,7 +18,6 @@ public class MeetingTest extends AndroidTestCase implements DatabaseConstants {
 
     @Override
     protected void setUp() {
-        mContext.deleteDatabase("test_" + DATABASE_NAME);
         daoFactory.setGlobalContext(new RenamingDelegatingContext(mContext, "test_"));
         daoFactory.setCacheDAOInstances(true);
         dao = daoFactory.getMeetingDAO(mContext);

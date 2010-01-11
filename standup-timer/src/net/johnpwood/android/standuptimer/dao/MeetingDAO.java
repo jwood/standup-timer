@@ -15,39 +15,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class MeetingDAO extends DAOHelper {
-    private static final String TABLE_NAME = "meetings";
-    private static final String TEAM_NAME = "team_name";
-    private static final String MEETING_TIME = "meeting_time";
-    private static final String NUM_PARTICIPANTS = "num_participants";
-    private static final String INDIVIDUAL_STATUS_LENGTH = "individual_status_length";
-    private static final String MEETING_LENGTH = "meeting_length";
-    private static final String QUICKEST_STATUS = "quickest_status";
-    private static final String LONGEST_STATUS = "longest_status";
-    private static final String[] ALL_COLUMS = { _ID, TEAM_NAME, MEETING_TIME, NUM_PARTICIPANTS,
-        INDIVIDUAL_STATUS_LENGTH, MEETING_LENGTH, QUICKEST_STATUS, LONGEST_STATUS};
 
     public MeetingDAO(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                TEAM_NAME + " TEXT NOT NULL, " +                
-                MEETING_TIME + " INTEGER NOT NULL, " +
-                NUM_PARTICIPANTS + " INTEGER NOT NULL, " +
-                INDIVIDUAL_STATUS_LENGTH + " INTEGER NOT NULL, " +
-                MEETING_LENGTH + " INTEGER NOT NULL, " +
-                QUICKEST_STATUS + " INTEGER NOT NULL, " +
-                LONGEST_STATUS + " INTEGER NOT NULL" +
-                ");");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
     }
 
     public Meeting save(Meeting meeting) {
@@ -67,7 +37,7 @@ public class MeetingDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, _ID + " = ?", new String[]{id.toString()}, null, null, null);
+            cursor = db.query(MEETINGS_TABLE_NAME, MEETINGS_ALL_COLUMS, _ID + " = ?", new String[]{id.toString()}, null, null, null);
             if (cursor.getCount() == 1) {
                 if (cursor.moveToFirst()) {
                     meeting = createMeetingFromCursorData(cursor);
@@ -86,7 +56,7 @@ public class MeetingDAO extends DAOHelper {
 
         try {
             SQLiteDatabase db = getReadableDatabase();
-            cursor = db.query(TABLE_NAME, ALL_COLUMS, TEAM_NAME + " = ?", new String[]{team.getName()}, null, null, MEETING_TIME);
+            cursor = db.query(MEETINGS_TABLE_NAME, MEETINGS_ALL_COLUMS, MEETINGS_TEAM_NAME + " = ?", new String[]{team.getName()}, null, null, MEETINGS_MEETING_TIME);
             while (cursor.moveToNext()) {
                 meetings.add(createMeetingFromCursorData(cursor));
             }
@@ -101,33 +71,33 @@ public class MeetingDAO extends DAOHelper {
     public void deleteAll() {
         Logger.d("Deleting all meetings");
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_NAME, null, null);
+        db.delete(MEETINGS_TABLE_NAME, null, null);
     }
 
     public void delete(Meeting meeting) {
         Logger.d("Deleting meeting for " + meeting.getTeam().getName() + " with a date/time of '" + meeting.getDateTime() + "'");
         if (meeting.getId() != null) {
             SQLiteDatabase db = getWritableDatabase();
-            db.delete(TABLE_NAME, _ID + " = ?", new String[]{meeting.getId().toString()});
+            db.delete(MEETINGS_TABLE_NAME, _ID + " = ?", new String[]{meeting.getId().toString()});
         }
     }
 
     private Meeting createNewMeeting(SQLiteDatabase db, Meeting meeting) {
         Logger.d("Creating new meeting for " + meeting.getTeam().getName() + " with a date/time of '" + meeting.getDateTime() + "'");
         ContentValues values = createContentValues(meeting);
-        long id = db.insertOrThrow(TABLE_NAME, null, values);
+        long id = db.insertOrThrow(MEETINGS_TABLE_NAME, null, values);
         return new Meeting(id, meeting);
     }
 
     private ContentValues createContentValues(Meeting meeting) {
         ContentValues values = new ContentValues();
-        values.put(TEAM_NAME, meeting.getTeam().getName());
-        values.put(MEETING_TIME, meeting.getDateTime().getTime());
-        values.put(NUM_PARTICIPANTS, meeting.getMeetingStats().getNumParticipants());
-        values.put(INDIVIDUAL_STATUS_LENGTH, meeting.getMeetingStats().getIndividualStatusLength());
-        values.put(MEETING_LENGTH, meeting.getMeetingStats().getMeetingLength());
-        values.put(QUICKEST_STATUS, meeting.getMeetingStats().getQuickestStatus());
-        values.put(LONGEST_STATUS, meeting.getMeetingStats().getLongestStatus());
+        values.put(MEETINGS_TEAM_NAME, meeting.getTeam().getName());
+        values.put(MEETINGS_MEETING_TIME, meeting.getDateTime().getTime());
+        values.put(MEETINGS_NUM_PARTICIPANTS, meeting.getMeetingStats().getNumParticipants());
+        values.put(MEETINGS_INDIVIDUAL_STATUS_LENGTH, meeting.getMeetingStats().getIndividualStatusLength());
+        values.put(MEETINGS_MEETING_LENGTH, meeting.getMeetingStats().getMeetingLength());
+        values.put(MEETINGS_QUICKEST_STATUS, meeting.getMeetingStats().getQuickestStatus());
+        values.put(MEETINGS_LONGEST_STATUS, meeting.getMeetingStats().getLongestStatus());
         return values;
     }
 
