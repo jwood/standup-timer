@@ -61,5 +61,13 @@ or <b>Finish</b> to stop the timer.
    <string name="stats">Stats</string>
    <string name="meetings">Meetings</string>
    <string name="no_meetings">This team has no meetings</string>
-   <string name="no_meeting_stats">There are no stats for this team</string>
+   <string name="no_meeting_stats">This team has no stats</string>
+
+   <string name="team_name">Team name</string>
+   <string name="avg_number_of_participants">Average number of participants</string>
+   <string name="avg_meeting_length">Average meeting length</string>
+   <string name="avg_individual_status_length">Average individual status length</string>
+   <string name="avg_quickest_status">Average quickest individual status</string>
+   <string name="avg_longest_status">Average longest individual status</string>
+
 </resources>
