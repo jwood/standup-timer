@@ -3,7 +3,7 @@
    package="net.johnpwood.android.standuptimer.test"
    android:versionCode="1" android:versionName="1.0">
    <application><uses-library android:name="android.test.runner" /></application>
-   <uses-sdk android:minSdkVersion="6" />
+   <uses-sdk android:minSdkVersion="7" />
    <instrumentation android:targetPackage="net.johnpwood.android.standuptimer"
       android:name="android.test.InstrumentationTestRunner" />
 </manifest>
