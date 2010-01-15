@@ -15,8 +15,6 @@ import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,13 +37,6 @@ public class TeamDetails extends TabActivity {
     private Dialog confirmDeleteMeetingDialog = null;
     private Dialog confirmDeleteTeamDialog = null;
     private Integer positionOfMeetingToDelete = null;
-
-    private Handler updateMeetingListHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            updateMeetingList();
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,29 +154,7 @@ public class TeamDetails extends TabActivity {
     private TabHost.TabContentFactory createMeetingDetails(final Team team) {
         return new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                MeetingStats stats = team.getAverageMeetingStats(TeamDetails.this);
-
-                ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.team_name));
-                ((TextView) findViewById(R.id.meeting_team_name)).setText(team.getName());
-
-                ((TextView) findViewById(R.id.number_of_meetings_label)).setText(getString(R.string.number_of_meetings));
-                ((TextView) findViewById(R.id.number_of_meetings)).setText(Integer.toString(team.getNumberOfMeetings(TeamDetails.this)));
-
-                ((TextView) findViewById(R.id.avg_number_of_participants_label)).setText(getString(R.string.avg_number_of_participants));
-                ((TextView) findViewById(R.id.avg_number_of_participants)).setText(Float.toString(stats.getNumParticipants()));
-
-                ((TextView) findViewById(R.id.avg_meeting_length_label)).setText(getString(R.string.avg_meeting_length));
-                ((TextView) findViewById(R.id.avg_meeting_length)).setText(Float.toString(stats.getMeetingLength()));
-
-                ((TextView) findViewById(R.id.avg_individual_status_length_label)).setText(getString(R.string.avg_individual_status_length));
-                ((TextView) findViewById(R.id.avg_individual_status_length)).setText(Float.toString(stats.getIndividualStatusLength()));
-
-                ((TextView) findViewById(R.id.avg_quickest_status_label)).setText(getString(R.string.avg_quickest_status));
-                ((TextView) findViewById(R.id.avg_quickest_status)).setText(Float.toString(stats.getQuickestStatus()));
-
-                ((TextView) findViewById(R.id.avg_longest_status_label)).setText(getString(R.string.avg_longest_status));
-                ((TextView) findViewById(R.id.avg_longest_status)).setText(Float.toString(stats.getLongestStatus()));
-
+                setStatsTabContent();
                 return findViewById(R.id.team_stats);
             }
         };
@@ -194,7 +163,9 @@ public class TeamDetails extends TabActivity {
     protected DialogInterface.OnClickListener deleteMeetingConfirmationListener() {
         return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deleteMeeting(positionOfMeetingToDelete);
+                String dateString = (String) meetingList.getAdapter().getItem(positionOfMeetingToDelete);
+                deleteMeeting(dateString);
+                updateTabContents(dateString);
             }
         };
     }
@@ -216,9 +187,7 @@ public class TeamDetails extends TabActivity {
         };
     }
 
-    private void deleteMeeting(int position) {
-        String dateString = (String) meetingList.getAdapter().getItem(position);
-
+    private void deleteMeeting(String dateString) {
         try {
             Date date = new SimpleDateFormat(Meeting.DESCRIPTION_FORMAT).parse(dateString);
             Meeting meeting = Meeting.findByTeamAndDate(team, date, this);
@@ -227,12 +196,40 @@ public class TeamDetails extends TabActivity {
             Logger.e(e.getMessage());
             Logger.e("Could not parse the date string '" + dateString + "'.  Will not attempt to delete the meeting.");
         }
-
-        updateMeetingListHandler.sendEmptyMessage(0);
     }
 
-    protected void updateMeetingList() {
-        //TODO: Figure out how to update the tab contents
+    private void updateTabContents(String dateString) {
+        setStatsTabContent();
+
+        @SuppressWarnings("unchecked")
+        ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) meetingList.getAdapter();
+        arrayAdapter.remove(dateString);
+    }
+
+    private void setStatsTabContent() {
+        // TODO: Need to gracefully handle the case when the last meeting is deleted
+
+        MeetingStats stats = team.getAverageMeetingStats(TeamDetails.this);
+        ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.team_name));
+        ((TextView) findViewById(R.id.meeting_team_name)).setText(team.getName());
+
+        ((TextView) findViewById(R.id.number_of_meetings_label)).setText(getString(R.string.number_of_meetings));
+        ((TextView) findViewById(R.id.number_of_meetings)).setText(Integer.toString(team.getNumberOfMeetings(TeamDetails.this)));
+
+        ((TextView) findViewById(R.id.avg_number_of_participants_label)).setText(getString(R.string.avg_number_of_participants));
+        ((TextView) findViewById(R.id.avg_number_of_participants)).setText(Float.toString(stats.getNumParticipants()));
+
+        ((TextView) findViewById(R.id.avg_meeting_length_label)).setText(getString(R.string.avg_meeting_length));
+        ((TextView) findViewById(R.id.avg_meeting_length)).setText(Float.toString(stats.getMeetingLength()));
+
+        ((TextView) findViewById(R.id.avg_individual_status_length_label)).setText(getString(R.string.avg_individual_status_length));
+        ((TextView) findViewById(R.id.avg_individual_status_length)).setText(Float.toString(stats.getIndividualStatusLength()));
+
+        ((TextView) findViewById(R.id.avg_quickest_status_label)).setText(getString(R.string.avg_quickest_status));
+        ((TextView) findViewById(R.id.avg_quickest_status)).setText(Float.toString(stats.getQuickestStatus()));
+
+        ((TextView) findViewById(R.id.avg_longest_status_label)).setText(getString(R.string.avg_longest_status));
+        ((TextView) findViewById(R.id.avg_longest_status)).setText(Float.toString(stats.getLongestStatus()));
     }
 
     private ListAdapter createMeetingListAdapter() {
