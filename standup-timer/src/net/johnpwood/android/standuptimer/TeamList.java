@@ -8,8 +8,6 @@ import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,13 +28,7 @@ public class TeamList extends ListActivity {
     private Dialog createTeamDialog = null;
     private Dialog confirmDeleteTeamDialog = null;
     private Integer positionOfTeamToDelete = null;
-
-    private Handler updateTeamListHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            updateTeamList();
-        }
-    };
+    private ArrayAdapter<String> teamListAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +40,9 @@ public class TeamList extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateTeamList();
+        teamListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Team.findAllTeamNames(this));
+        setListAdapter(teamListAdapter);
+        getListView().setTextFilterEnabled(true);
         getTextEntryView();
     }
 
@@ -94,18 +88,16 @@ public class TeamList extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView listView, View view, int position, long id) {
-        String teamName = (String) getListAdapter().getItem(position);
+        String teamName = teamListAdapter.getItem(position);
 
         Intent intent = new Intent(this, TeamDetails.class);
         intent.putExtra("teamName", teamName);
         startActivity(intent);
     }
 
-    private void deleteTeam(int listPosition) {
-        String teamName = (String) getListAdapter().getItem(listPosition);
+    private void deleteTeam(String teamName) {
         Team team = Team.findByName(teamName, this);
         team.delete(this);
-        updateTeamListHandler.sendEmptyMessage(0);
     }
 
     protected void displayAddTeamDialog() {
@@ -150,11 +142,6 @@ public class TeamList extends ListActivity {
         collectedTextView.setText("");
     }
 
-    protected void updateTeamList() {
-        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Team.findAllTeamNames(this)));
-        getListView().setTextFilterEnabled(true);
-    }
-
     synchronized protected View getTextEntryView() {
         if (textEntryView == null) {
             LayoutInflater factory = LayoutInflater.from(this);
@@ -169,7 +156,7 @@ public class TeamList extends ListActivity {
                 EditText collectedTextView = (EditText) getTextEntryView().findViewById(R.id.collected_text);
                 String name = collectedTextView.getText().toString();
                 Team.create(name, TeamList.this);
-                updateTeamListHandler.sendEmptyMessage(0);
+                teamListAdapter.add(name);
             }
         };
     }
@@ -177,7 +164,9 @@ public class TeamList extends ListActivity {
     protected DialogInterface.OnClickListener deleteTeamConfirmationListener() {
         return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deleteTeam(positionOfTeamToDelete);
+                String teamName = teamListAdapter.getItem(positionOfTeamToDelete);
+                deleteTeam(teamName);
+                teamListAdapter.remove(teamName);
             }
         };
     }
