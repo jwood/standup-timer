@@ -10,6 +10,8 @@ import android.content.Context;
 import android.text.format.DateFormat;
 
 public class Meeting {
+    public static String DESCRIPTION_FORMAT = "MM/dd/yyyy h:mm:ssaa";
+
     private Long id = null;
     private Team team = null;
     private Date dateTime = null;
@@ -91,6 +93,18 @@ public class Meeting {
         }
     }
 
+    public static Meeting findByTeamAndDate(Team team, Date date, Context context) {
+        MeetingDAO dao = null;
+        try {
+            dao = daoFactory.getMeetingDAO(context);
+            return dao.findByTeamAndDate(team, date);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -108,6 +122,6 @@ public class Meeting {
     }
 
     public String getDescription() {
-        return DateFormat.format("MM/dd/yyyy h:mmaa", dateTime).toString();
+        return DateFormat.format(DESCRIPTION_FORMAT, dateTime).toString();
     }
 }

@@ -1,23 +1,48 @@
 package net.johnpwood.android.standuptimer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.johnpwood.android.standuptimer.model.Meeting;
 import net.johnpwood.android.standuptimer.model.MeetingStats;
 import net.johnpwood.android.standuptimer.model.Team;
+import net.johnpwood.android.standuptimer.utils.Logger;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class TeamDetails extends TabActivity {
+    private static final int CONFIRM_DELETE_DIALOG = 1;
 
     private Team team = null;
-    private ListView teamList = null;
+    private ListView meetingList = null;
+    private Dialog confirmDeleteMeetingDialog = null;
+    private Integer positionOfMeetingToDelete = null;
+
+    private Handler updateMeetingListHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            updateMeetingList();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,18 +50,18 @@ public class TeamDetails extends TabActivity {
         setContentView(R.layout.team_details);
 
         team = Team.findByName(getIntent().getStringExtra("teamName"), this);
-        teamList = new ListView(this);
+        meetingList = new ListView(this);
+        registerForContextMenu(meetingList);
 
         TabHost tabHost = getTabHost();
-        List<Meeting> meetings = team.findAllMeetings(TeamDetails.this);
-        if (meetings.size() > 0) {
+        if (team.hasMeetings(this)) {
             tabHost.addTab(tabHost.newTabSpec("stats_tab").
                     setIndicator(this.getString(R.string.stats)).
                     setContent(createMeetingDetails(team)));
 
             tabHost.addTab(tabHost.newTabSpec("meetings_tab").
                     setIndicator(this.getString(R.string.meetings)).
-                    setContent(createMeetingList(meetings)));
+                    setContent(createMeetingList()));
         } else {
             ((TextView) this.findViewById(R.id.no_team_meeting_stats)).setText(getString(R.string.no_meeting_stats));
             tabHost.addTab(tabHost.newTabSpec("stats_tab").
@@ -48,21 +73,53 @@ public class TeamDetails extends TabActivity {
                     setIndicator(this.getString(R.string.meetings)).
                     setContent(R.id.no_team_meetings));
         }
-        tabHost.setCurrentTab(0);
+        getTabHost().setCurrentTab(0);
     }
 
-    private TabHost.TabContentFactory createMeetingList(final List<Meeting> meetings) {
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.meetings_context_menu, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+        case R.id.delete_meeting:
+            positionOfMeetingToDelete = info.position;
+            showDialog(CONFIRM_DELETE_DIALOG);
+            return true;
+        default:
+            return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case CONFIRM_DELETE_DIALOG:
+            if (confirmDeleteMeetingDialog == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to delete this meeting?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Yes", deleteMeetingConfirmationListener());
+                builder.setNegativeButton("No", cancelListener());
+                confirmDeleteMeetingDialog = builder.create();
+            }
+            return confirmDeleteMeetingDialog;
+
+        default:
+            Logger.e("Attempting to create an unkonwn dialog with an id of " + id);
+            return null;
+        }
+    }
+
+    private TabHost.TabContentFactory createMeetingList() {
         return new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                List<String> meetingDescriptions = new ArrayList<String>();
-                for (Meeting meeting : meetings) {
-                    meetingDescriptions.add(meeting.getDescription());
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(TeamDetails.this,
-                        android.R.layout.simple_list_item_1, meetingDescriptions);
-                teamList.setAdapter(adapter);
-                return teamList;
+                meetingList.setAdapter(createMeetingListAdapter());
+                return meetingList;
             }
         };
     }
@@ -93,5 +150,52 @@ public class TeamDetails extends TabActivity {
                 return findViewById(R.id.team_stats);
             }
         };
+    }
+
+    protected DialogInterface.OnClickListener deleteMeetingConfirmationListener() {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteMeeting(positionOfMeetingToDelete);
+            }
+        };
+    }
+
+    protected DialogInterface.OnClickListener cancelListener() {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        };
+    }
+
+    private void deleteMeeting(int position) {
+        String dateString = (String) meetingList.getAdapter().getItem(position);
+
+        try {
+            Date date = new SimpleDateFormat(Meeting.DESCRIPTION_FORMAT).parse(dateString);
+            Meeting meeting = Meeting.findByTeamAndDate(team, date, this);
+            meeting.delete(this);
+        } catch (ParseException e) {
+            Logger.e(e.getMessage());
+            Logger.e("Could not parse the date string '" + dateString + "'.  Will not attempt to delete the meeting.");
+        }
+
+        updateMeetingListHandler.sendEmptyMessage(0);
+    }
+
+    protected void updateMeetingList() {
+        //TODO: Figure out how to update the tab contents
+    }
+
+    private ListAdapter createMeetingListAdapter() {
+        List<String> meetingDescriptions = new ArrayList<String>();
+        List<Meeting> meetings = team.findAllMeetings(TeamDetails.this);
+        for (Meeting meeting : meetings) {
+            meetingDescriptions.add(meeting.getDescription());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(TeamDetails.this,
+                android.R.layout.simple_list_item_1, meetingDescriptions);
+        return adapter;
     }
 }

@@ -65,4 +65,17 @@ public class MeetingTest extends AndroidTestCase implements DatabaseConstants {
         assertEquals(new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), meetings.get(3).getDateTime());
         assertEquals(new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime(), meetings.get(4).getDateTime());
     }
+
+    @MediumTest
+    public void test_find_by_team_and_date() {
+        Team team = new Team("Test Team");
+        new Meeting(team, new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);
+        new Meeting(team, new GregorianCalendar(2010, 1, 4, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);;
+        Meeting expected = new Meeting(team, new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);;
+        new Meeting(team, new GregorianCalendar(2010, 1, 1, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);;
+        new Meeting(team, new GregorianCalendar(2010, 1, 2, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);;
+
+        Meeting actual = Meeting.findByTeamAndDate(team, new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime(), mContext);
+        assertEquals(expected.getId(), actual.getId());
+    }
 }

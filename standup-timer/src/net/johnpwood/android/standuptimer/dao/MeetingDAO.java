@@ -68,6 +68,33 @@ public class MeetingDAO extends DAOHelper {
         return meetings;
     }
 
+    public Meeting findByTeamAndDate(Team team, Date date) {
+        Cursor cursor = null;
+        Meeting meeting = null;
+
+        try {
+            long startTime = date.getTime();
+            Date endDate = new Date(date.getTime());
+            endDate.setSeconds(endDate.getSeconds() + 1);
+            long endTime = endDate.getTime();
+
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(MEETINGS_TABLE_NAME, MEETINGS_ALL_COLUMS,
+                    MEETINGS_TEAM_NAME + " = ? and " + MEETINGS_MEETING_TIME + " >= ? and " + MEETINGS_MEETING_TIME + " < ?",
+                    new String[] {team.getName(), Long.toString(startTime), Long.toString(endTime)},
+                    null, null, null);
+            if (cursor.getCount() == 1) {
+                if (cursor.moveToFirst()) {
+                    meeting = createMeetingFromCursorData(cursor);
+                }
+            }
+        } finally {
+            closeCursor(cursor);
+        }
+
+        return meeting;
+    }
+
     public void deleteAll() {
         Logger.d("Deleting all meetings");
         SQLiteDatabase db = getWritableDatabase();

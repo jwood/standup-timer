@@ -7,7 +7,7 @@ public class MeetingStats {
     private float individualStatusLength = 0;
     private float meetingLength = 0;
     private float quickestStatus = 0;
-    private float longestStatus = Integer.MAX_VALUE;
+    private float longestStatus = 0;
 
     public MeetingStats(float numParticipants, float individualStatusLength, float meetingLength, float quickestStatus, float longestStatus) {
         this.numParticipants = numParticipants;

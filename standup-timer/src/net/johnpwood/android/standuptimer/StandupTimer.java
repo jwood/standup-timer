@@ -361,8 +361,8 @@ public class StandupTimer extends Activity implements OnClickListener {
         if (team != null) {
             long meetingEndTime = System.currentTimeMillis();
             Meeting meeting = new Meeting(team, new Date(meetingStartTime), totalParticipants,
-                    (int)((individualStatusEndTime - individualStatusStartTime) * 1000),
-                    (int)((meetingEndTime - meetingStartTime) * 1000),
+                    (int)((individualStatusEndTime - individualStatusStartTime) / 1000),
+                    (int)((meetingEndTime - meetingStartTime) / 1000),
                     quickestStatus, longestStatus);
             meeting.save(this);
         }
