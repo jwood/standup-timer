@@ -36,6 +36,7 @@ public class Team {
     public void delete(Context context) {
         TeamDAO dao = null;
         try {
+            Meeting.deleteAllByTeam(this, context);
             dao = daoFactory.getTeamDAO(context);
             dao.delete(this);
         } finally {

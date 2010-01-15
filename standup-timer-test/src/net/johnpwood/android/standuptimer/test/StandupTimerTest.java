@@ -27,6 +27,7 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.putExtra("meetingLengthPos", 1);
         intent.putExtra("numParticipants", 5);
+        intent.putExtra("teamName", "Test Team");
         a = startActivity(intent, null, null);
     }
 

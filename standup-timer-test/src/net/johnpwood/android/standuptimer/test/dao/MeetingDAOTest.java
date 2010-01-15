@@ -97,4 +97,15 @@ public class MeetingDAOTest extends AndroidTestCase {
         Meeting actual = dao.findByTeamAndDate(team, new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime());
         assertEquals(expected.getId(), actual.getId());
     }
+
+    @MediumTest
+    public void test_delete_all_by_team() {
+        Team team = new Team("Test Team");
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+        dao.save(new Meeting(team, new GregorianCalendar(2010, 1, 4, 10, 15, 0).getTime(), 5, 240, 300, 30, 120));
+
+        assertFalse(dao.findAllByTeam(team).isEmpty());
+        dao.deleteAllByTeam(team);
+        assertTrue(dao.findAllByTeam(team).isEmpty());
+    }
 }

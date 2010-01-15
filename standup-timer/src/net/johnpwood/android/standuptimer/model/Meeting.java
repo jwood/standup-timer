@@ -66,6 +66,18 @@ public class Meeting {
         }
     }
 
+    public static void deleteAllByTeam(Team team, Context context) {
+        MeetingDAO dao = null;
+        try {
+            dao = daoFactory.getMeetingDAO(context);
+            dao.deleteAllByTeam(team);
+        } finally {
+            if (dao != null) {
+                dao.close();
+            }
+        }
+    }
+
     public Meeting save(Context context) {
         MeetingDAO dao = null;
         Meeting meeting = null;

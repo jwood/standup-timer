@@ -101,6 +101,12 @@ public class MeetingDAO extends DAOHelper {
         db.delete(MEETINGS_TABLE_NAME, null, null);
     }
 
+    public void deleteAllByTeam(Team team) {
+        Logger.d("Deleting all meetings for team " + team.getName());
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(MEETINGS_TABLE_NAME, MEETINGS_TEAM_NAME + " = ?", new String[]{team.getName()});
+    }
+
     public void delete(Meeting meeting) {
         Logger.d("Deleting meeting for " + meeting.getTeam().getName() + " with a date/time of '" + meeting.getDateTime() + "'");
         if (meeting.getId() != null) {

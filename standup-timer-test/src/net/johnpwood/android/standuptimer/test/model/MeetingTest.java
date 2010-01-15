@@ -78,4 +78,15 @@ public class MeetingTest extends AndroidTestCase implements DatabaseConstants {
         Meeting actual = Meeting.findByTeamAndDate(team, new GregorianCalendar(2010, 1, 7, 10, 15, 0).getTime(), mContext);
         assertEquals(expected.getId(), actual.getId());
     }
+
+    @MediumTest
+    public void test_delete_all_by_team() {
+        Team team = new Team("Test Team");
+        new Meeting(team, new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);
+        new Meeting(team, new GregorianCalendar(2010, 1, 4, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);;
+
+        assertFalse(Meeting.findAllByTeam(team, mContext).isEmpty());
+        Meeting.deleteAllByTeam(team, mContext);
+        assertTrue(Meeting.findAllByTeam(team, mContext).isEmpty());
+    }
 }

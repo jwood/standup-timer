@@ -46,6 +46,18 @@ public class TeamTest extends AndroidTestCase implements DatabaseConstants {
     }
 
     @MediumTest
+    public void test_deleting_a_team_deletes_its_meetings_as_well() {
+        Team team = Team.create("Test Team", mContext);
+        new Meeting(team, new GregorianCalendar(2010, 1, 5, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);
+        new Meeting(team, new GregorianCalendar(2010, 1, 4, 10, 15, 0).getTime(), 5, 240, 300, 30, 120).save(mContext);;
+
+        assertFalse(Meeting.findAllByTeam(team, mContext).isEmpty());
+        team.delete(mContext);
+        assertEquals(0, Team.findAllTeamNames(mContext).size());
+        assertTrue(Meeting.findAllByTeam(team, mContext).isEmpty());
+    }
+
+    @MediumTest
     public void test_find_a_team_by_name() {
         Team.create("Test Team", mContext);
         assertNotNull(Team.findByName("Test Team", mContext));
