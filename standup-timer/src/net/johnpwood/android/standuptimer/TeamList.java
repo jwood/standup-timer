@@ -43,7 +43,11 @@ public class TeamList extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teams);
         registerForContextMenu(getListView());
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         updateTeamList();
         getTextEntryView();
     }
