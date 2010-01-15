@@ -61,6 +61,10 @@ public class Team {
         return team;
     }
 
+    public int getNumberOfMeetings(Context context) {
+        return findAllMeetings(context).size();
+    }
+
     public MeetingStats getAverageMeetingStats(Context context) {
         List<MeetingStats> meetingStats = new ArrayList<MeetingStats>();
         List<Meeting> meetings = findAllMeetings(context);

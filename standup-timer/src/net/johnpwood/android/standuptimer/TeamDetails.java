@@ -168,6 +168,9 @@ public class TeamDetails extends TabActivity {
                 ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.team_name));
                 ((TextView) findViewById(R.id.meeting_team_name)).setText(team.getName());
 
+                ((TextView) findViewById(R.id.number_of_meetings_label)).setText(getString(R.string.number_of_meetings));
+                ((TextView) findViewById(R.id.number_of_meetings)).setText(Integer.toString(team.getNumberOfMeetings(TeamDetails.this)));
+
                 ((TextView) findViewById(R.id.avg_number_of_participants_label)).setText(getString(R.string.avg_number_of_participants));
                 ((TextView) findViewById(R.id.avg_number_of_participants)).setText(Float.toString(stats.getNumParticipants()));
 
