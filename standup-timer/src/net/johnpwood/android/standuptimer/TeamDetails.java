@@ -207,29 +207,50 @@ public class TeamDetails extends TabActivity {
     }
 
     private void setStatsTabContent() {
-        // TODO: Need to gracefully handle the case when the last meeting is deleted
+        if (team.hasMeetings(this)) {
+            MeetingStats stats = team.getAverageMeetingStats(TeamDetails.this);
+            ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.team_name));
+            ((TextView) findViewById(R.id.meeting_team_name)).setText(team.getName());
 
-        MeetingStats stats = team.getAverageMeetingStats(TeamDetails.this);
-        ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.team_name));
-        ((TextView) findViewById(R.id.meeting_team_name)).setText(team.getName());
+            ((TextView) findViewById(R.id.number_of_meetings_label)).setText(getString(R.string.number_of_meetings));
+            ((TextView) findViewById(R.id.number_of_meetings)).setText(Integer.toString(team.getNumberOfMeetings(TeamDetails.this)));
 
-        ((TextView) findViewById(R.id.number_of_meetings_label)).setText(getString(R.string.number_of_meetings));
-        ((TextView) findViewById(R.id.number_of_meetings)).setText(Integer.toString(team.getNumberOfMeetings(TeamDetails.this)));
+            ((TextView) findViewById(R.id.avg_number_of_participants_label)).setText(getString(R.string.avg_number_of_participants));
+            ((TextView) findViewById(R.id.avg_number_of_participants)).setText(Float.toString(stats.getNumParticipants()));
 
-        ((TextView) findViewById(R.id.avg_number_of_participants_label)).setText(getString(R.string.avg_number_of_participants));
-        ((TextView) findViewById(R.id.avg_number_of_participants)).setText(Float.toString(stats.getNumParticipants()));
+            ((TextView) findViewById(R.id.avg_meeting_length_label)).setText(getString(R.string.avg_meeting_length));
+            ((TextView) findViewById(R.id.avg_meeting_length)).setText(Float.toString(stats.getMeetingLength()));
 
-        ((TextView) findViewById(R.id.avg_meeting_length_label)).setText(getString(R.string.avg_meeting_length));
-        ((TextView) findViewById(R.id.avg_meeting_length)).setText(Float.toString(stats.getMeetingLength()));
+            ((TextView) findViewById(R.id.avg_individual_status_length_label)).setText(getString(R.string.avg_individual_status_length));
+            ((TextView) findViewById(R.id.avg_individual_status_length)).setText(Float.toString(stats.getIndividualStatusLength()));
 
-        ((TextView) findViewById(R.id.avg_individual_status_length_label)).setText(getString(R.string.avg_individual_status_length));
-        ((TextView) findViewById(R.id.avg_individual_status_length)).setText(Float.toString(stats.getIndividualStatusLength()));
+            ((TextView) findViewById(R.id.avg_quickest_status_label)).setText(getString(R.string.avg_quickest_status));
+            ((TextView) findViewById(R.id.avg_quickest_status)).setText(Float.toString(stats.getQuickestStatus()));
 
-        ((TextView) findViewById(R.id.avg_quickest_status_label)).setText(getString(R.string.avg_quickest_status));
-        ((TextView) findViewById(R.id.avg_quickest_status)).setText(Float.toString(stats.getQuickestStatus()));
+            ((TextView) findViewById(R.id.avg_longest_status_label)).setText(getString(R.string.avg_longest_status));
+            ((TextView) findViewById(R.id.avg_longest_status)).setText(Float.toString(stats.getLongestStatus()));
+        } else {
+            ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.no_meeting_stats));
+            ((TextView) findViewById(R.id.meeting_team_name)).setText("");
 
-        ((TextView) findViewById(R.id.avg_longest_status_label)).setText(getString(R.string.avg_longest_status));
-        ((TextView) findViewById(R.id.avg_longest_status)).setText(Float.toString(stats.getLongestStatus()));
+            ((TextView) findViewById(R.id.number_of_meetings_label)).setText("");
+            ((TextView) findViewById(R.id.number_of_meetings)).setText("");
+
+            ((TextView) findViewById(R.id.avg_number_of_participants_label)).setText("");
+            ((TextView) findViewById(R.id.avg_number_of_participants)).setText("");
+
+            ((TextView) findViewById(R.id.avg_meeting_length_label)).setText("");
+            ((TextView) findViewById(R.id.avg_meeting_length)).setText("");
+
+            ((TextView) findViewById(R.id.avg_individual_status_length_label)).setText("");
+            ((TextView) findViewById(R.id.avg_individual_status_length)).setText("");
+
+            ((TextView) findViewById(R.id.avg_quickest_status_label)).setText("");
+            ((TextView) findViewById(R.id.avg_quickest_status)).setText("");
+
+            ((TextView) findViewById(R.id.avg_longest_status_label)).setText("");
+            ((TextView) findViewById(R.id.avg_longest_status)).setText("");
+        }
     }
 
     private ListAdapter createMeetingListAdapter() {
