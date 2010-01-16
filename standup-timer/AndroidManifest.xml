@@ -11,21 +11,17 @@
          </intent-filter>
       </activity>
 
-      <activity android:name=".StandupTimer" android:label="@string/app_name"></activity>
-
       <activity android:name=".About" android:label="@string/about_title"
-         android:theme="@android:style/Theme.Dialog">
-      </activity>
+         android:theme="@android:style/Theme.Dialog" />
 
       <activity android:name=".Help" android:label="@string/help_title"
-         android:theme="@android:style/Theme.Dialog">
-      </activity>
+         android:theme="@android:style/Theme.Dialog" />
 
-      <activity android:name=".TeamDetails" android:theme="@android:style/Theme.NoTitleBar">
-      </activity>
-
-      <activity android:name=".Prefs" android:label="@string/settings_title"></activity>
-      <activity android:name=".TeamList" android:label="@string/team_label"></activity>
+      <activity android:name=".StandupTimer" android:label="@string/app_name" />
+      <activity android:name=".TeamDetails" android:theme="@android:style/Theme.NoTitleBar" />
+      <activity android:name=".MeetingDetails" android:label="@string/meeting_details" />
+      <activity android:name=".Prefs" android:label="@string/settings_title" />
+      <activity android:name=".TeamList" android:label="@string/team_label" />
 
    </application>
    <uses-permission android:name="android.permission.WAKE_LOCK" />

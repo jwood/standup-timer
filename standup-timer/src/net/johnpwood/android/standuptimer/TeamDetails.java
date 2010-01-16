@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -21,12 +22,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class TeamDetails extends TabActivity {
     private static final int CONFIRM_DELETE_MEETING_DIALOG = 1;
@@ -37,6 +39,7 @@ public class TeamDetails extends TabActivity {
     private Dialog confirmDeleteMeetingDialog = null;
     private Dialog confirmDeleteTeamDialog = null;
     private Integer positionOfMeetingToDelete = null;
+    private ArrayAdapter<String> meetingListAdapter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,29 +48,10 @@ public class TeamDetails extends TabActivity {
 
         team = Team.findByName(getIntent().getStringExtra("teamName"), this);
         meetingList = new ListView(this);
+        meetingList.setOnItemClickListener(createMeetingListClickListener());
+
         registerForContextMenu(meetingList);
-
-        TabHost tabHost = getTabHost();
-        if (team.hasMeetings(this)) {
-            tabHost.addTab(tabHost.newTabSpec("stats_tab").
-                    setIndicator(this.getString(R.string.stats)).
-                    setContent(createMeetingDetails(team)));
-
-            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
-                    setIndicator(this.getString(R.string.meetings)).
-                    setContent(createMeetingList()));
-        } else {
-            ((TextView) this.findViewById(R.id.no_team_meeting_stats)).setText(getString(R.string.no_meeting_stats));
-            tabHost.addTab(tabHost.newTabSpec("stats_tab").
-                    setIndicator(this.getString(R.string.stats)).
-                    setContent(R.id.no_team_meeting_stats));
-
-            ((TextView) this.findViewById(R.id.no_team_meetings)).setText(getString(R.string.no_meetings));
-            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
-                    setIndicator(this.getString(R.string.meetings)).
-                    setContent(R.id.no_team_meetings));
-        }
-        getTabHost().setCurrentTab(0);
+        createTabs();
     }
 
     @Override
@@ -76,13 +60,6 @@ public class TeamDetails extends TabActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.team_details_options_menu, menu);
         return true;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.meetings_context_menu, menu);
     }
 
     @Override
@@ -96,6 +73,13 @@ public class TeamDetails extends TabActivity {
             Logger.e("Unknown menu item selected");
             return false;
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.meetings_context_menu, menu);
     }
 
     @Override
@@ -142,10 +126,48 @@ public class TeamDetails extends TabActivity {
         }
     }
 
+    private OnItemClickListener createMeetingListClickListener() {
+        return new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String meetingTime = meetingListAdapter.getItem(position);
+
+                Intent intent = new Intent(TeamDetails.this, MeetingDetails.class);
+                intent.putExtra("teamName", team.getName());
+                intent.putExtra("meetingTime", meetingTime);
+                startActivity(intent);
+            }
+        };
+    }
+
+    private void createTabs() {
+        TabHost tabHost = getTabHost();
+        if (team.hasMeetings(this)) {
+            tabHost.addTab(tabHost.newTabSpec("stats_tab").
+                    setIndicator(this.getString(R.string.stats)).
+                    setContent(createMeetingDetails(team)));
+
+            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
+                    setIndicator(this.getString(R.string.meetings)).
+                    setContent(createMeetingList()));
+        } else {
+            ((TextView) this.findViewById(R.id.no_team_meeting_stats)).setText(getString(R.string.no_meeting_stats));
+            tabHost.addTab(tabHost.newTabSpec("stats_tab").
+                    setIndicator(this.getString(R.string.stats)).
+                    setContent(R.id.no_team_meeting_stats));
+
+            ((TextView) this.findViewById(R.id.no_team_meetings)).setText(getString(R.string.no_meetings));
+            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
+                    setIndicator(this.getString(R.string.meetings)).
+                    setContent(R.id.no_team_meetings));
+        }
+        getTabHost().setCurrentTab(0);
+    }
+
     private TabHost.TabContentFactory createMeetingList() {
         return new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
-                meetingList.setAdapter(createMeetingListAdapter());
+                meetingListAdapter = createMeetingListAdapter();
+                meetingList.setAdapter(meetingListAdapter);
                 return meetingList;
             }
         };
@@ -200,10 +222,7 @@ public class TeamDetails extends TabActivity {
 
     private void updateTabContents(String dateString) {
         setStatsTabContent();
-
-        @SuppressWarnings("unchecked")
-        ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) meetingList.getAdapter();
-        arrayAdapter.remove(dateString);
+        meetingListAdapter.remove(dateString);
     }
 
     private void setStatsTabContent() {
@@ -253,7 +272,7 @@ public class TeamDetails extends TabActivity {
         }
     }
 
-    private ListAdapter createMeetingListAdapter() {
+    private ArrayAdapter<String> createMeetingListAdapter() {
         List<String> meetingDescriptions = new ArrayList<String>();
         List<Meeting> meetings = team.findAllMeetings(TeamDetails.this);
         for (Meeting meeting : meetings) {

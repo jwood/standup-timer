@@ -71,4 +71,9 @@ or <b>Finish</b> to stop the timer.
    <string name="avg_quickest_status">Average quickest individual status</string>
    <string name="avg_longest_status">Average longest individual status</string>
 
+   <string name="meeting_details">Meeting details</string>
+   <string name="meeting_length">Meeting length</string>
+   <string name="individual_status_length">Individual status length</string>
+   <string name="quickest_status">Quickest individual status</string>
+   <string name="longest_status">Longest individual status</string>
 </resources>
