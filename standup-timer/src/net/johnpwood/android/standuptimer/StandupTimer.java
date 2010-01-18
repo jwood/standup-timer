@@ -29,6 +29,12 @@ public class StandupTimer extends Activity implements OnClickListener {
     protected static final String STARTING_INDIVIDUAL_SECONDS = "startingIndividualSeconds";
     protected static final String COMPLETED_PARTICIPANTS = "completedParticipants";
     protected static final String TOTAL_PARTICIPANTS = "totalParticipants";
+    protected static final String CURRENT_INDIVIDUAL_STATUS_SECONDS = "currentIndividualStatusSeconds";
+    protected static final String MEETING_START_TIME = "meetingStartTime";
+    protected static final String INDIVIDUAL_STATUS_START_TIME = "individualStatusStartTime";
+    protected static final String INDIVIDUAL_STATUS_END_TIME = "individualStatusEndTime";
+    protected static final String QUICKEST_STATUS = "quickestStatus";
+    protected static final String LONGEST_STATUS = "longestStatus";
 
     private int currentIndividualStatusSeconds = 0;
     private int remainingIndividualSeconds = 0;
@@ -292,6 +298,14 @@ public class StandupTimer extends Activity implements OnClickListener {
         startingIndividualSeconds = preferences.getInt(STARTING_INDIVIDUAL_SECONDS, remainingMeetingSeconds / totalParticipants);
         remainingIndividualSeconds = preferences.getInt(REMAINING_INDIVIDUAL_SECONDS, startingIndividualSeconds);
         completedParticipants = preferences.getInt(COMPLETED_PARTICIPANTS, 0);
+        currentIndividualStatusSeconds = preferences.getInt(CURRENT_INDIVIDUAL_STATUS_SECONDS, 0);
+        meetingStartTime = preferences.getLong(MEETING_START_TIME, 0);
+        individualStatusStartTime = preferences.getLong(INDIVIDUAL_STATUS_START_TIME, 0);
+        individualStatusEndTime = preferences.getLong(INDIVIDUAL_STATUS_END_TIME, 0);
+        quickestStatus = preferences.getInt(QUICKEST_STATUS, 0);
+        longestStatus = preferences.getInt(LONGEST_STATUS, 0);
+
+        team = Team.findByName(getIntent().getStringExtra("teamName"), this);
     }
 
     private synchronized void saveState() {
@@ -301,6 +315,12 @@ public class StandupTimer extends Activity implements OnClickListener {
         preferences.putInt(STARTING_INDIVIDUAL_SECONDS, startingIndividualSeconds);
         preferences.putInt(COMPLETED_PARTICIPANTS, completedParticipants);
         preferences.putInt(TOTAL_PARTICIPANTS, totalParticipants);
+        preferences.putInt(CURRENT_INDIVIDUAL_STATUS_SECONDS, currentIndividualStatusSeconds);
+        preferences.putLong(MEETING_START_TIME, meetingStartTime);
+        preferences.putLong(INDIVIDUAL_STATUS_START_TIME, individualStatusStartTime);
+        preferences.putLong(INDIVIDUAL_STATUS_END_TIME, individualStatusEndTime);
+        preferences.putInt(QUICKEST_STATUS, quickestStatus);
+        preferences.putInt(LONGEST_STATUS, longestStatus);
         preferences.commit();
     }
 
