@@ -55,6 +55,12 @@ public class TeamDetails extends TabActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateTabContents();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
@@ -141,25 +147,15 @@ public class TeamDetails extends TabActivity {
 
     private void createTabs() {
         TabHost tabHost = getTabHost();
-        if (team.hasMeetings(this)) {
-            tabHost.addTab(tabHost.newTabSpec("stats_tab").
-                    setIndicator(this.getString(R.string.stats)).
-                    setContent(createMeetingDetails(team)));
 
-            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
-                    setIndicator(this.getString(R.string.meetings)).
-                    setContent(createMeetingList()));
-        } else {
-            ((TextView) this.findViewById(R.id.no_team_meeting_stats)).setText(getString(R.string.no_meeting_stats));
-            tabHost.addTab(tabHost.newTabSpec("stats_tab").
-                    setIndicator(this.getString(R.string.stats)).
-                    setContent(R.id.no_team_meeting_stats));
+        tabHost.addTab(tabHost.newTabSpec("stats_tab").
+                setIndicator(this.getString(R.string.stats)).
+                setContent(createMeetingDetails(team)));
 
-            ((TextView) this.findViewById(R.id.no_team_meetings)).setText(getString(R.string.no_meetings));
-            tabHost.addTab(tabHost.newTabSpec("meetings_tab").
-                    setIndicator(this.getString(R.string.meetings)).
-                    setContent(R.id.no_team_meetings));
-        }
+        tabHost.addTab(tabHost.newTabSpec("meetings_tab").
+                setIndicator(this.getString(R.string.meetings)).
+                setContent(createMeetingList()));
+
         getTabHost().setCurrentTab(0);
     }
 
@@ -187,7 +183,7 @@ public class TeamDetails extends TabActivity {
             public void onClick(DialogInterface dialog, int id) {
                 String dateString = (String) meetingList.getAdapter().getItem(positionOfMeetingToDelete);
                 deleteMeeting(dateString);
-                updateTabContents(dateString);
+                updateTabContents();
             }
         };
     }
@@ -220,9 +216,10 @@ public class TeamDetails extends TabActivity {
         }
     }
 
-    private void updateTabContents(String dateString) {
+    private void updateTabContents() {
         setStatsTabContent();
-        meetingListAdapter.remove(dateString);
+        meetingListAdapter = createMeetingListAdapter();
+        meetingList.setAdapter(meetingListAdapter);
     }
 
     private void setStatsTabContent() {

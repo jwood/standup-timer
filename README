@@ -6,7 +6,6 @@ equal share of time to state their progress.
 Standup Timer is free, open source, and available under the Apache V2 license.
 
 == TODO
-- Add meeting details view
 - Let user specify the team for the given meeting
 
 - Let user specify a list of participants for each team

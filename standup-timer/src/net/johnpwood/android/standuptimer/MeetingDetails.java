@@ -7,11 +7,22 @@ import java.util.Date;
 import net.johnpwood.android.standuptimer.model.Meeting;
 import net.johnpwood.android.standuptimer.model.MeetingStats;
 import net.johnpwood.android.standuptimer.model.Team;
+import net.johnpwood.android.standuptimer.utils.Logger;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MeetingDetails extends Activity {
+    private static final int CONFIRM_DELETE_MEETING_DIALOG = 1;
+
+    private Dialog confirmDeleteMeetingDialog = null;
+    private Meeting meeting = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,19 +32,86 @@ public class MeetingDetails extends Activity {
         String teamName = getIntent().getStringExtra("teamName");
         String meetingTime = getIntent().getStringExtra("meetingTime");
 
-        Team team = Team.findByName(teamName, this);
         Date date = null;
         try {
             date = new SimpleDateFormat(Meeting.DESCRIPTION_FORMAT).parse(meetingTime);
         } catch (ParseException e) {
-            throw new RuntimeException();
+            String msg = "Could not parse the date/time '" + meetingTime + "'. " + e.getMessage();
+            Logger.e(msg);
+            throw new RuntimeException(msg);
         }
 
-        Meeting meeting = Meeting.findByTeamAndDate(team, date, this);
+        Team team = Team.findByName(teamName, this);
+        meeting = Meeting.findByTeamAndDate(team, date, this);
+        displayMeetingStats(team, date);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.meeting_details_options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.delete_meeting_from_details:
+            Logger.d("Displaying the delete meeting dialog box");
+            showDialog(CONFIRM_DELETE_MEETING_DIALOG);
+            return true;
+        default:
+            Logger.e("Unknown menu item selected");
+            return false;
+        }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case CONFIRM_DELETE_MEETING_DIALOG:
+            if (confirmDeleteMeetingDialog == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to delete this meeting?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Yes", deleteMeetingConfirmationListener());
+                builder.setNegativeButton("No", cancelListener());
+                confirmDeleteMeetingDialog = builder.create();
+            }
+            return confirmDeleteMeetingDialog;
+
+        default:
+            Logger.e("Attempting to create an unkonwn dialog with an id of " + id);
+            return null;
+        }
+    }
+
+    protected DialogInterface.OnClickListener deleteMeetingConfirmationListener() {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                meeting.delete(MeetingDetails.this);
+                finish();
+            }
+        };
+    }
+
+    protected DialogInterface.OnClickListener cancelListener() {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        };
+    }
+
+    private void displayMeetingStats(Team team, Date date) {
         MeetingStats stats = meeting.getMeetingStats();
 
         ((TextView) findViewById(R.id.meeting_details_team_name_label)).setText(getString(R.string.team_name));
         ((TextView) findViewById(R.id.meeting_details_team_name)).setText(team.getName());
+
+        ((TextView) findViewById(R.id.meeting_time_label)).setText(getString(R.string.meeting_time));
+        ((TextView) findViewById(R.id.meeting_time)).setText(meeting.getDescription());
 
         ((TextView) findViewById(R.id.number_of_participants_label)).setText(getString(R.string.number_of_participants));
         ((TextView) findViewById(R.id.number_of_participants)).setText(Integer.toString((int) stats.getNumParticipants()));
