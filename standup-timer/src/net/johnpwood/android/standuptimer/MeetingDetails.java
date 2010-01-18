@@ -8,6 +8,7 @@ import net.johnpwood.android.standuptimer.model.Meeting;
 import net.johnpwood.android.standuptimer.model.MeetingStats;
 import net.johnpwood.android.standuptimer.model.Team;
 import net.johnpwood.android.standuptimer.utils.Logger;
+import net.johnpwood.android.standuptimer.utils.TimeFormatHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -114,18 +115,18 @@ public class MeetingDetails extends Activity {
         ((TextView) findViewById(R.id.meeting_time)).setText(meeting.getDescription());
 
         ((TextView) findViewById(R.id.number_of_participants_label)).setText(getString(R.string.number_of_participants));
-        ((TextView) findViewById(R.id.number_of_participants)).setText(Integer.toString((int) stats.getNumParticipants()));
+        ((TextView) findViewById(R.id.number_of_participants)).setText(TimeFormatHelper.formatTime(stats.getNumParticipants()));
 
         ((TextView) findViewById(R.id.meeting_length_label)).setText(getString(R.string.meeting_length));
-        ((TextView) findViewById(R.id.meeting_length)).setText(Integer.toString((int) stats.getMeetingLength()));
+        ((TextView) findViewById(R.id.meeting_length)).setText(TimeFormatHelper.formatTime(stats.getMeetingLength()));
 
         ((TextView) findViewById(R.id.individual_status_length_label)).setText(getString(R.string.individual_status_length));
-        ((TextView) findViewById(R.id.individual_status_length)).setText(Integer.toString((int) stats.getIndividualStatusLength()));
+        ((TextView) findViewById(R.id.individual_status_length)).setText(TimeFormatHelper.formatTime(stats.getIndividualStatusLength()));
 
         ((TextView) findViewById(R.id.quickest_status_label)).setText(getString(R.string.quickest_status));
-        ((TextView) findViewById(R.id.quickest_status)).setText(Integer.toString((int) stats.getQuickestStatus()));
+        ((TextView) findViewById(R.id.quickest_status)).setText(TimeFormatHelper.formatTime(stats.getQuickestStatus()));
 
         ((TextView) findViewById(R.id.longest_status_label)).setText(getString(R.string.longest_status));
-        ((TextView) findViewById(R.id.longest_status)).setText(Integer.toString((int) stats.getLongestStatus()));
+        ((TextView) findViewById(R.id.longest_status)).setText(TimeFormatHelper.formatTime(stats.getLongestStatus()));
     }
 }

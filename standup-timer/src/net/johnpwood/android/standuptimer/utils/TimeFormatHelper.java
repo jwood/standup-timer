@@ -18,6 +18,10 @@ public abstract class TimeFormatHelper {
         return Integer.toString(seconds / 60) + ":" + padWithZeros(seconds % 60);
     }
 
+    public static String formatTime(float seconds) {
+        return formatTime((int) seconds);
+    }
+
     private static String padWithZeros(int seconds) {
         return seconds < 10 ? "0" + seconds : Integer.toString(seconds);
     }
