@@ -3,6 +3,7 @@ package net.johnpwood.android.standuptimer.dao;
 import static android.provider.BaseColumns._ID;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class MeetingDAO extends DAOHelper {
         }
 
         Logger.d("Found " + meetings.size() + " meetings");
+        Collections.reverse(meetings);
         return meetings;
     }
 
