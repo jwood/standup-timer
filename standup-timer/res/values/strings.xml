@@ -41,12 +41,13 @@
    <string name="about_title">About</string>
    <string name="about_text">\
 Standup Timer is a simple application that can be
-used to keep your stand-up meetings on track.
+used to keep your stand-up meetings on track.  It is free
+and open source.
    </string>
    <string name="about_version">Standup Timer v1.1</string>
    <string name="about_copywright">&#169;2009 by John Wood</string>
-   <string name="about_author_email">john_p_wood@yahoo.com</string>
-   <string name="about_source_code">http://github.com/jwood/standup-timer</string>
+   <string name="about_author_email"><a href="mailto:john_p_wood@yahoo.com">john_p_wood@yahoo.com</a></string>
+   <string name="about_project_url"><a href="http://johnpwood.net/standup-timer">http://johnpwood.net/standup-timer</a></string>
 
    <string name="help_label">Help</string>
    <string name="help_title">Help</string>
