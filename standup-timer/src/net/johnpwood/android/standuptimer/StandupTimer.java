@@ -302,7 +302,7 @@ public class StandupTimer extends Activity implements OnClickListener {
         meetingStartTime = preferences.getLong(MEETING_START_TIME, 0);
         individualStatusStartTime = preferences.getLong(INDIVIDUAL_STATUS_START_TIME, 0);
         individualStatusEndTime = preferences.getLong(INDIVIDUAL_STATUS_END_TIME, 0);
-        quickestStatus = preferences.getInt(QUICKEST_STATUS, 0);
+        quickestStatus = preferences.getInt(QUICKEST_STATUS, Integer.MAX_VALUE);
         longestStatus = preferences.getInt(LONGEST_STATUS, 0);
 
         team = Team.findByName(getIntent().getStringExtra("teamName"), this);
