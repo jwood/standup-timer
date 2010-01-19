@@ -148,7 +148,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     private void initializeTeamNamesSpinner() {
         Spinner s = (Spinner) findViewById(R.id.team_names);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Team.findAllTeamNames(this));
-        adapter.add("");
+        adapter.add(" [No Team] ");
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
         s.setSelection(teamNamesPos);
