@@ -115,7 +115,7 @@ public class MeetingDetails extends Activity {
         ((TextView) findViewById(R.id.meeting_time)).setText(meeting.getDescription());
 
         ((TextView) findViewById(R.id.number_of_participants_label)).setText(getString(R.string.number_of_participants));
-        ((TextView) findViewById(R.id.number_of_participants)).setText(TimeFormatHelper.formatTime(stats.getNumParticipants()));
+        ((TextView) findViewById(R.id.number_of_participants)).setText(Integer.toString((int) stats.getNumParticipants()));
 
         ((TextView) findViewById(R.id.meeting_length_label)).setText(getString(R.string.meeting_length));
         ((TextView) findViewById(R.id.meeting_length)).setText(TimeFormatHelper.formatTime(stats.getMeetingLength()));
