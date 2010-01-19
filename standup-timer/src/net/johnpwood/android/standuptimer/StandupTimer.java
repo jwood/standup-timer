@@ -78,6 +78,9 @@ public class StandupTimer extends Activity implements OnClickListener {
         setContentView(R.layout.timer);
 
         team = Team.findByName(getIntent().getStringExtra("teamName"), this);
+        if (team != null) {
+            Logger.i("Starting new meeting for team '" + team.getName() + "'");
+        }
 
         initializeSounds();
         initializeButtonListeners();

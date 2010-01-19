@@ -14,24 +14,35 @@
       <EditText android:id="@+id/num_participants" android:layout_width="60dp"
          android:layout_height="wrap_content" android:layout_gravity="center"
          android:digits="0123456789" android:gravity="center"
-         android:layout_marginTop="10dp" android:inputType="phone">
+         android:layout_marginTop="5dp" android:inputType="phone">
       </EditText>
 
       <TextView android:text="@string/length_of_meeting"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center" android:paddingTop="30dp"
+         android:layout_gravity="center" android:paddingTop="20dp"
          android:textSize="17sp"></TextView>
 
       <Spinner android:id="@+id/meeting_length"
          android:layout_width="fill_parent" android:layout_height="wrap_content"
          android:prompt="@string/length_of_meeting"
-         android:layout_marginTop="10dp" android:layout_marginLeft="100dp"
+         android:layout_marginTop="5dp" android:layout_marginLeft="100dp"
          android:layout_marginRight="100dp" />
+
+      <TextView android:text="@string/team"
+         android:layout_width="wrap_content" android:layout_height="wrap_content"
+         android:layout_gravity="center" android:paddingTop="20dp"
+         android:textSize="17sp"></TextView>
+
+      <Spinner android:id="@+id/team_names"
+         android:layout_width="fill_parent" android:layout_height="wrap_content"
+         android:prompt="@string/team"
+         android:layout_marginTop="5dp" android:layout_marginLeft="70dp"
+         android:layout_marginRight="70dp" />
 
       <Button android:text="@string/start" android:id="@+id/start_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
          android:layout_gravity="center"
-         android:layout_marginTop="30dp" android:width="80dp"></Button>
+         android:layout_marginTop="20dp" android:width="80dp"></Button>
 
    </LinearLayout>
 </LinearLayout>

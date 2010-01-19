@@ -5,6 +5,7 @@
 
    <string name="number_of_participants">Number of participants</string>
    <string name="length_of_meeting">Length of meeting</string>
+   <string name="team">Team</string>
    <string name="start">Start</string>
    <string name="quit">Quit</string>
 

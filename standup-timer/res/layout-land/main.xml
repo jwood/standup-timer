@@ -4,42 +4,31 @@
    xmlns:android="http://schemas.android.com/apk/res/android"
    android:gravity="center">
 
-   <TableRow android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:gravity="center">
-      <TextView android:text="@string/number_of_participants"
-         android:textSize="17sp" android:layout_width="wrap_content"
-         android:layout_height="wrap_content">
-      </TextView>
-
-      <View android:layout_width="40dp" android:layout_height="1dp"></View>
-
-      <TextView android:text="@string/length_of_meeting"
-         android:textSize="17sp" android:layout_width="wrap_content"
-         android:layout_height="wrap_content"></TextView>
+   <TableRow android:gravity="center">
+      <TextView android:text="@string/number_of_participants" android:padding="3dip" android:textSize="17sp"/>
+      <View android:layout_width="30dp" android:layout_height="1dp" />
+      <EditText android:id="@+id/num_participants" android:digits="0123456789"
+         android:inputType="phone" android:padding="3dip" android:layout_width="200dp" />
    </TableRow>
 
-   <TableRow android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:gravity="center">
-      <EditText android:id="@+id/num_participants"
-         android:layout_height="wrap_content" android:layout_gravity="center"
-         android:digits="0123456789" android:inputType="phone"
-         android:layout_marginTop="10dp" android:width="60dp" android:gravity="center">
-      </EditText>
-
-      <View android:layout_width="40dp" android:layout_height="1dp"></View>
-
-      <Spinner android:id="@+id/meeting_length"
-         android:layout_width="fill_parent" android:layout_height="wrap_content"
-         android:drawSelectorOnTop="true" android:prompt="@string/length_of_meeting"
-         android:layout_marginTop="10dp" android:layout_marginLeft="20dp"
-         android:layout_marginRight="20dp" />
+   <TableRow android:gravity="center" android:paddingTop="10dp">
+      <TextView android:text="@string/length_of_meeting" android:padding="3dip" android:textSize="17sp"/>
+      <View android:layout_width="30dp" android:layout_height="1dp" />
+      <Spinner android:id="@+id/meeting_length" android:drawSelectorOnTop="true"
+         android:prompt="@string/length_of_meeting" android:padding="3dip" />
    </TableRow>
 
-   <TableRow android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:gravity="center"
-      android:paddingTop="10dp">
+   <TableRow android:gravity="center" android:paddingTop="10dp">
+      <TextView android:text="@string/team" android:padding="3dip" android:textSize="17sp"/>
+      <View android:layout_width="30dp" android:layout_height="1dp" />
+      <Spinner android:id="@+id/team_names" android:drawSelectorOnTop="true"
+         android:prompt="@string/team" android:padding="3dip" />
+   </TableRow>
+
+   <TableRow android:gravity="center" android:paddingTop="10dp">
       <Button android:text="@string/start" android:id="@+id/start_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal" android:width="80dp"></Button>
+         android:layout_gravity="center_horizontal" android:width="80dp" />
    </TableRow>
+
 </TableLayout>
