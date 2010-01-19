@@ -20,6 +20,8 @@
    <string name="revert">Revert</string>
    <string name="done">Done</string>
    <string name="delete">Delete</string>
+   <string name="delete_meeting">Delete Meeting</string>
+   <string name="delete_team">Delete Team</string>
 
    <string name="participant">Participant</string>
    <string name="individual_status_complete">Individual status complete</string>
