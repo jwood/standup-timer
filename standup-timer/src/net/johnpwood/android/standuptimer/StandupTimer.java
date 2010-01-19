@@ -333,6 +333,11 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     private synchronized void processFinishedButtonClick() {
+        if (completedParticipants != totalParticipants) {
+            completedParticipants++;
+            calculateIndividualStatusStats();
+        }
+
         shutdownTimer();
         storeMeetingStats();
         finish();
@@ -380,11 +385,19 @@ public class StandupTimer extends Activity implements OnClickListener {
     private void storeMeetingStats() {
         if (team != null) {
             long meetingEndTime = System.currentTimeMillis();
-            Meeting meeting = new Meeting(team, new Date(meetingStartTime), totalParticipants,
-                    (int)((individualStatusEndTime - individualStatusStartTime) / 1000),
-                    (int)((meetingEndTime - meetingStartTime) / 1000),
-                    quickestStatus, longestStatus);
-            meeting.save(this);
+            if (individualStatusEndTime == 0) {
+                individualStatusEndTime = meetingEndTime;
+            }
+
+            try {
+                Meeting meeting = new Meeting(team, new Date(meetingStartTime), completedParticipants,
+                        (int)((individualStatusEndTime - individualStatusStartTime) / 1000),
+                        (int)((meetingEndTime - meetingStartTime) / 1000),
+                        quickestStatus, longestStatus);
+                meeting.save(this);
+            } catch (IllegalArgumentException e) {
+                Logger.e("Could not store the meeting in the database.  " + e);
+            }
         }
     }
 
