@@ -25,6 +25,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         super.setUp();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         a = startActivity(intent, null, null);
+        a.onResume();
     }
 
     @MediumTest

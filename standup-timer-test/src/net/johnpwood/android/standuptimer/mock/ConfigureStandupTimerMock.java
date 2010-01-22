@@ -12,6 +12,11 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     private boolean displayTeamConfigurationCalled = false;
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void showInvalidNumberOfParticipantsDialog() {
         showInvalidNumberOfParticipantsDialogCalled = true;
     }
