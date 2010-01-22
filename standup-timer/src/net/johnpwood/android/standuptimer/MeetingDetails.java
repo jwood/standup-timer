@@ -108,10 +108,7 @@ public class MeetingDetails extends Activity {
     private void displayMeetingStats(Team team, Date date) {
         MeetingStats stats = meeting.getMeetingStats();
 
-        ((TextView) findViewById(R.id.meeting_details_team_name_label)).setText(getString(R.string.team_name));
         ((TextView) findViewById(R.id.meeting_details_team_name)).setText(team.getName());
-
-        ((TextView) findViewById(R.id.meeting_time_label)).setText(getString(R.string.meeting_time));
         ((TextView) findViewById(R.id.meeting_time)).setText(meeting.getDescription());
 
         ((TextView) findViewById(R.id.number_of_participants_label)).setText(getString(R.string.number_of_participants));

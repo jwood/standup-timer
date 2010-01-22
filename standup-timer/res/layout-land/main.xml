@@ -5,21 +5,21 @@
    android:gravity="center">
 
    <TableRow android:gravity="center">
-      <TextView android:text="@string/number_of_participants" android:padding="3dip" android:textSize="17sp"/>
+      <TextView android:text="@string/number_of_participants" android:padding="3dp" android:textSize="17dp"/>
       <View android:layout_width="30dp" android:layout_height="1dp" />
       <EditText android:id="@+id/num_participants" android:digits="0123456789"
          android:inputType="phone" android:padding="10dp" android:layout_width="200dp" />
    </TableRow>
 
    <TableRow android:gravity="center" android:paddingTop="10dp">
-      <TextView android:text="@string/length_of_meeting" android:padding="3dip" android:textSize="17sp"/>
+      <TextView android:text="@string/length_of_meeting" android:padding="3dp" android:textSize="17dp"/>
       <View android:layout_width="30dp" android:layout_height="1dp" />
       <Spinner android:id="@+id/meeting_length" android:drawSelectorOnTop="true"
          android:prompt="@string/length_of_meeting" android:padding="10dp" />
    </TableRow>
 
    <TableRow android:gravity="center" android:paddingTop="10dp">
-      <TextView android:text="@string/team" android:padding="3dip" android:textSize="17sp"/>
+      <TextView android:text="@string/team" android:padding="3dp" android:textSize="17dp"/>
       <View android:layout_width="30dp" android:layout_height="1dp" />
       <Spinner android:id="@+id/team_names" android:drawSelectorOnTop="true"
          android:prompt="@string/team" android:padding="10dp" />

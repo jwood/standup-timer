@@ -49,8 +49,8 @@ and open source.
    </string>
    <string name="about_version">Standup Timer v1.1</string>
    <string name="about_copywright">&#169;2009 by John Wood</string>
-   <string name="about_author_email"><a href="mailto:john_p_wood@yahoo.com">john_p_wood@yahoo.com</a></string>
-   <string name="about_project_url"><a href="http://johnpwood.net/standup-timer">http://johnpwood.net/standup-timer</a></string>
+   <string name="about_author_email">john_p_wood@yahoo.com</string>
+   <string name="about_project_url">http://johnpwood.net/standup-timer</string>
 
    <string name="help_label">Help</string>
    <string name="help_title">Help</string>
@@ -69,12 +69,13 @@ or <b>Finish</b> to stop the timer.
 
    <string name="team_name">Team name</string>
    <string name="number_of_meetings">Number of meetings</string>
-   <string name="avg_number_of_participants">Average number of participants</string>
-   <string name="avg_meeting_length">Average meeting length</string>
-   <string name="avg_individual_status_length">Average individual status length</string>
-   <string name="avg_quickest_status">Average quickest individual status</string>
-   <string name="avg_longest_status">Average longest individual status</string>
+   <string name="avg_number_of_participants">Average number\nof participants</string>
+   <string name="avg_meeting_length">Average meeting\nlength</string>
+   <string name="avg_individual_status_length">Average individual\nstatus length</string>
+   <string name="avg_quickest_status">Average quickest\nindividual status</string>
+   <string name="avg_longest_status">Average longest\nindividual status</string>
 
+   <string name="meeting_stats">Meeting Stats</string>
    <string name="meeting_details">Meeting details</string>
    <string name="meeting_time">Meeting time</string>
    <string name="meeting_length">Meeting length</string>

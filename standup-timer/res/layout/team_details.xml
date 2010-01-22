@@ -12,40 +12,82 @@
       <FrameLayout android:id="@android:id/tabcontent"
          android:layout_width="fill_parent" android:layout_height="fill_parent">
 
-         <TableLayout android:id="@+id/team_stats"
-            android:layout_width="fill_parent" android:layout_height="fill_parent"
-            android:stretchColumns="1">
+         <ScrollView android:id="@+id/team_stats"
+            android:layout_height="fill_parent" android:layout_width="fill_parent">
 
-            <TableRow>
-               <TextView android:id="@+id/meeting_team_name_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/meeting_team_name" android:gravity="right" android:padding="3dip" />
-            </TableRow>
-            <TableRow>
-               <TextView android:id="@+id/number_of_meetings_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/number_of_meetings" android:gravity="right" android:padding="3dip" />
-            </TableRow>
-            <TableRow>
-               <TextView android:id="@+id/avg_number_of_participants_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/avg_number_of_participants" android:gravity="right" android:padding="3dip" />
-            </TableRow>
-            <TableRow>
-               <TextView android:id="@+id/avg_meeting_length_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/avg_meeting_length" android:gravity="right" android:padding="3dip" />
-            </TableRow>
-v            <TableRow>
-               <TextView android:id="@+id/avg_individual_status_length_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/avg_individual_status_length" android:gravity="right" android:padding="3dip" />
-            </TableRow>
-v            <TableRow>
-               <TextView android:id="@+id/avg_quickest_status_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/avg_quickest_status" android:gravity="right" android:padding="3dip" />
-            </TableRow>
-v            <TableRow>
-               <TextView android:id="@+id/avg_longest_status_label" android:layout_column="1" android:padding="3dip" />
-               <TextView android:id="@+id/avg_longest_status" android:gravity="right" android:padding="3dip" />
-            </TableRow>
+            <LinearLayout android:layout_height="fill_parent"
+               android:layout_width="fill_parent" android:orientation="vertical">
 
-         </TableLayout>
+               <TableLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:stretchColumns="1">
+
+                  <TableRow>
+                     <TextView android:id="@+id/meeting_team_name_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/meeting_team_name"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+                  <TableRow>
+                     <TextView android:id="@+id/number_of_meetings_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/number_of_meetings"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+                  <TableRow>
+                     <TextView android:id="@+id/avg_number_of_participants_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/avg_number_of_participants"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+                  <TableRow>
+                     <TextView android:id="@+id/avg_meeting_length_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/avg_meeting_length"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+                  <TableRow>
+                     <TextView android:id="@+id/avg_individual_status_length_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/avg_individual_status_length"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+                  <TableRow>
+                     <TextView android:id="@+id/avg_quickest_status_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/avg_quickest_status"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+                  <TableRow>
+                     <TextView android:id="@+id/avg_longest_status_label"
+                        android:layout_column="1" android:padding="3dp"
+                        android:textSize="18dp" />
+                     <TextView android:id="@+id/avg_longest_status"
+                        android:gravity="right" android:padding="3dp"
+                        android:textSize="18dp" />
+                  </TableRow>
+
+               </TableLayout>
+            </LinearLayout>
+         </ScrollView>
 
          <ListView android:id="@+id/team_meetings_list"
             android:layout_width="fill_parent" android:layout_height="fill_parent" />
