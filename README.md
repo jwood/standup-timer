@@ -41,6 +41,6 @@ Sounds downloaded from http://soundbible.com, and modified for this application.
 
 ## Author
 John Wood  
-john_p_wood@yahoo.com  
-http://johnpwood.net/standup-timer  
+[john_p_wood@yahoo.com](mailto:john_p_wood@yahoo.com)   
+[http://johnpwood.net/standup-timer](http://johnpwood.net/standup-timer)   
 
