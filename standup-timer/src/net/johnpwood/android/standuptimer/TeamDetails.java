@@ -158,6 +158,7 @@ public class TeamDetails extends TabActivity {
                 setContent(createMeetingList()));
 
         getTabHost().setCurrentTab(0);
+        findViewById(R.id.team_stats).bringToFront();
     }
 
     private TabHost.TabContentFactory createMeetingList() {
