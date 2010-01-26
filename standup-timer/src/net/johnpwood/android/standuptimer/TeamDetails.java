@@ -284,4 +284,8 @@ public class TeamDetails extends TabActivity {
                 android.R.layout.simple_list_item_1, meetingDescriptions);
         return adapter;
     }
+
+    public AlertDialog getConfirmDeleteTeamDialog() {
+        return (AlertDialog) confirmDeleteTeamDialog;
+    }
 }
