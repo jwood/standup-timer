@@ -85,9 +85,6 @@
             </TableLayout>
          </ScrollView>
 
-         <ListView android:id="@+id/team_meetings_list"
-            android:layout_width="fill_parent" android:layout_height="fill_parent" />
-
          <TextView android:id="@+id/no_team_meetings" android:textSize="18dp"
             android:layout_width="fill_parent" android:layout_height="fill_parent" />
 
