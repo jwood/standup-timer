@@ -225,7 +225,7 @@ public class TeamDetails extends TabActivity {
     }
 
     private void setStatsTabContent() {
-        if (team.hasMeetings(this)) {
+        if (team != null && team.hasMeetings(this)) {
             MeetingStats stats = team.getAverageMeetingStats(TeamDetails.this);
             ((TextView) findViewById(R.id.meeting_team_name_label)).setText(getString(R.string.team_name));
             ((TextView) findViewById(R.id.meeting_team_name)).setText(team.getName());
@@ -273,9 +273,11 @@ public class TeamDetails extends TabActivity {
 
     private ArrayAdapter<String> createMeetingListAdapter() {
         List<String> meetingDescriptions = new ArrayList<String>();
-        List<Meeting> meetings = team.findAllMeetings(TeamDetails.this);
-        for (Meeting meeting : meetings) {
-            meetingDescriptions.add(meeting.getDescription());
+        if (team != null) {
+            List<Meeting> meetings = team.findAllMeetings(TeamDetails.this);
+            for (Meeting meeting : meetings) {
+                meetingDescriptions.add(meeting.getDescription());
+            }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(TeamDetails.this,
