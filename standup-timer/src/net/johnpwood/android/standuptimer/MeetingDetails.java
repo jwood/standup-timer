@@ -33,6 +33,8 @@ public class MeetingDetails extends Activity {
         String teamName = getIntent().getStringExtra("teamName");
         String meetingTime = getIntent().getStringExtra("meetingTime");
 
+        Logger.i("Looking for meeting for '" + teamName + "' at '" + meetingTime + "'");
+
         Date date = null;
         try {
             date = new SimpleDateFormat(Meeting.DESCRIPTION_FORMAT).parse(meetingTime);
@@ -125,5 +127,9 @@ public class MeetingDetails extends Activity {
 
         ((TextView) findViewById(R.id.longest_status_label)).setText(getString(R.string.longest_status));
         ((TextView) findViewById(R.id.longest_status)).setText(TimeFormatHelper.formatTime(stats.getLongestStatus()));
+    }
+
+    public AlertDialog getConfirmDeleteMeetingDialog() {
+        return (AlertDialog) confirmDeleteMeetingDialog;
     }
 }
