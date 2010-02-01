@@ -70,6 +70,8 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         t.setText("13");
         Spinner s = (Spinner) a.findViewById(R.id.meeting_length);
         s.setSelection(2);
+        Spinner s2 = (Spinner) a.findViewById(R.id.team_names);
+        s2.setSelection(1);
 
         Button b = (Button) a.findViewById(R.id.start_button);
         b.performClick();
@@ -77,6 +79,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         a.loadState();
         assertEquals(13, a.getNumParticipants());
         assertEquals(2, a.getMeetingLengthPos());
+        assertEquals(1, a.getTeamNamesPos());
     }
 
     @MediumTest

@@ -84,4 +84,9 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     public int getNumParticipants() {
         return super.getNumParticipants();
     }
+
+    @Override
+    public int getTeamNamesPos() {
+        return super.getTeamNamesPos();
+    }
 }
