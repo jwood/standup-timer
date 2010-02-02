@@ -5,19 +5,6 @@ equal share of time to state their progress.
 
 Standup Timer is free, open source, and available under the Apache V2 license.
 
-## TODO
-- Paginate meetings in the TeamDetails activity
-
-- Let user specify a list of participants for each team
-- Keep stats on participants
-  - Number of meeting attended
-  - Average status time
-  - Number of times warned
-  - Number of times time ran out
-- Change "next" button to be a swipe from right to left
-- Allow a swipe from left to right to select the previous participant, and
-  resume their time.
-
 ## License
 Copyright 2009 John Wood
 
