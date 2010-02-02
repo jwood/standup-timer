@@ -48,18 +48,58 @@ used to keep your stand-up meetings on track.  It is free
 and open source.
    </string>
    <string name="about_version">Standup Timer v1.1</string>
-   <string name="about_copywright">&#169;2009 by John Wood</string>
+   <string name="about_copywright">&#169;2010 by John Wood</string>
    <string name="about_author_email">john_p_wood@yahoo.com</string>
    <string name="about_project_url">http://johnpwood.net/standup-timer</string>
 
    <string name="help_label">Help</string>
    <string name="help_title">Help</string>
    <string name="help_text">\
+<b>General</b>
+\n\n\
 Simply specify the number of participants and the
 meeting length, and press <b>Start</b> to get
 started. On the timer screen, press <b>Next</b>
 to restart the timer for a new meeting participant,
-or <b>Finish</b> to stop the timer.
+or <b>Finish</b> to stop the timer and end the meeting.
+\n\n\
+<b>Teams</b>
+\n\n\
+Standup Timer can be configured to keep track of
+stand-up meetings for one or more teams.  Keeping
+track of meetings for teams allows you to see average
+statistics (average meeting length, average individual
+status length, etc) for a given team.  You are also
+able to see the detailed statistics for each meeting
+that team has held.
+\n\n\
+<b>Creating a team</b>
+\n\n\
+To create a new team, select the <b>Teams</b> option from the
+main menu.  On the Teams screen, select the <b>Add</b> option
+from the menu to add a new team.
+\n\n\
+<b>Specifying a team when starting a timer</b>
+\n\n\
+Once a team has been created, you will be able to select
+that team from the <b>Team</b> drop down menu when starting
+a new meeting timer.  When the meeting is finished, statistics
+for that meeting will be written to the database.
+\n\n\
+<b>Average meeting statistics for a team</b>
+\n\n\
+To access the statistics for a particular team, select
+the <b>Teams</b> option from the main menu, and select
+the team you wish to see statistics for.  The <b>Stats</b>
+tab will show you the average statistics for that team.
+The <b>Meetings</b> tab will show you the list of
+meetings that team has held.
+\n\n\
+<b>Statistics for a specific meeting</b>
+\n\n\
+To see details about a specific meeting, select the meeting
+from the list of meetings in the <b>Meetings</b> tab for
+a given team.
    </string>
 
    <string name="stats">Stats</string>
