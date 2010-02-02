@@ -236,9 +236,11 @@ public class StandupTimer extends Activity implements OnClickListener {
         calculateIndividualStatusStats();
 
         if (completedParticipants == totalParticipants) {
+            Logger.d("Individual status complete");
             individualStatusEndTime = System.currentTimeMillis();
             disableIndividualTimerHandler.sendEmptyMessage(0);
         } else {
+            Logger.d("Setting up the next participant");
             if (startingIndividualSeconds < remainingMeetingSeconds) {
                 remainingIndividualSeconds = startingIndividualSeconds;
             } else {
@@ -260,7 +262,9 @@ public class StandupTimer extends Activity implements OnClickListener {
         currentIndividualStatusSeconds = 0;
     }
 
-    private synchronized void disableIndividualTimer() {
+    protected synchronized void disableIndividualTimer() {
+        Logger.d("Disabling the individual timer");
+
         remainingIndividualSeconds = 0;
 
         TextView participantNumber = (TextView) findViewById(R.id.participant_number);
@@ -397,11 +401,15 @@ public class StandupTimer extends Activity implements OnClickListener {
                         (int)((individualStatusEndTime - individualStatusStartTime) / 1000),
                         (int)((meetingEndTime - meetingStartTime) / 1000),
                         quickestStatus, longestStatus);
-                meeting.save(this);
+                persistMeeting(meeting);
             } catch (IllegalArgumentException e) {
                 Logger.e("Could not store the meeting in the database.  " + e);
             }
         }
+    }
+
+    protected void persistMeeting(Meeting meeting) {
+        meeting.save(this);
     }
 
     protected synchronized int getRemainingIndividualSeconds() {
@@ -438,5 +446,37 @@ public class StandupTimer extends Activity implements OnClickListener {
 
     protected synchronized PowerManager.WakeLock getWakeLock() {
         return wakeLock;
+    }
+
+    protected synchronized Team getTeam() {
+        return team;
+    }
+
+    protected synchronized void setTeam(Team team) {
+        this.team = team;
+    }
+
+    protected synchronized long getMeetingStartTime() {
+        return meetingStartTime;
+    }
+
+    protected synchronized long getIndividualStatusStartTime() {
+        return individualStatusStartTime;
+    }
+
+    protected synchronized long getIndividualStatusEndTime() {
+        return individualStatusEndTime;
+    }
+
+    protected synchronized int getQuickestStatus() {
+        return quickestStatus;
+    }
+
+    protected synchronized int getLongestStatus() {
+        return longestStatus;
+    }
+
+    protected synchronized int getCurrentIndividualStatusSeconds() {
+        return currentIndividualStatusSeconds;
     }
 }

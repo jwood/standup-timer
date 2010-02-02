@@ -3,6 +3,7 @@ package net.johnpwood.android.standuptimer.test;
 import net.johnpwood.android.standuptimer.Prefs;
 import net.johnpwood.android.standuptimer.R;
 import net.johnpwood.android.standuptimer.mock.StandupTimerMock;
+import net.johnpwood.android.standuptimer.model.Team;
 import android.content.Intent;
 import android.graphics.Color;
 import android.test.ActivityUnitTestCase;
@@ -56,23 +57,47 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
     public void test_onPause_saves_state_if_not_finished() {
         a.setRemainingMeetingSeconds(123);
         a.setTotalParticipants(456);
+        a.setCurrentIndividualStatusSeconds(43);
+        a.setMeetingStartTime(123456789);
+        a.setIndividualStatusStartTime(333444555);
+        a.setIndividualStatusEndTime(666777888);
+        a.setQuickestStatus(789);
+        a.setLongestStatus(999);
         a.onPause();
 
         a.loadState();
         assertEquals(123, a.getRemainingMeetingSeconds());
         assertEquals(456, a.getTotalParticipants());
+        assertEquals(43, a.getCurrentIndividualStatusSeconds());
+        assertEquals(123456789, a.getMeetingStartTime());
+        assertEquals(333444555, a.getIndividualStatusStartTime());
+        assertEquals(666777888, a.getIndividualStatusEndTime());
+        assertEquals(789, a.getQuickestStatus());
+        assertEquals(999, a.getLongestStatus());
     }
 
     @MediumTest
     public void test_onPause_clears_state_if_finished() {
         a.setRemainingMeetingSeconds(123);
         a.setTotalParticipants(456);
+        a.setCurrentIndividualStatusSeconds(43);
+        a.setMeetingStartTime(123456789);
+        a.setIndividualStatusStartTime(333444555);
+        a.setIndividualStatusEndTime(666777888);
+        a.setQuickestStatus(789);
+        a.setLongestStatus(999);
         clickFinishedButton();
         a.onPause();
 
         a.loadState();
         assertEquals(DEFAULT_MEETING_LENGTH, a.getRemainingMeetingSeconds());
         assertEquals(DEFAULT_NUM_PARTICIPANTS, a.getTotalParticipants());
+        assertEquals(0, a.getCurrentIndividualStatusSeconds());
+        assertEquals(0, a.getMeetingStartTime());
+        assertEquals(0, a.getIndividualStatusStartTime());
+        assertEquals(0, a.getIndividualStatusEndTime());
+        assertEquals(Integer.MAX_VALUE, a.getQuickestStatus());
+        assertEquals(0, a.getLongestStatus());
     }
 
     @MediumTest
@@ -87,13 +112,55 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
     }
 
     @MediumTest
-    public void test_click_next_button_advances_to_next_participant_and_resets_individual_timer() {
+    public void test_click_next_button_advances_to_next_participant_and_resets_individual_timer_and_calculates_individual_stats() {
+        a.setLongestStatus(120);
+        a.setQuickestStatus(60);
+        a.setCurrentIndividualStatusSeconds(75);
         a.setRemainingIndividualSeconds(4);
         assertEquals(0, a.getCompletedParticipants());
         clickNextButton();
 
         assertEquals(a.getStartingIndividualSeconds(), a.getRemainingIndividualSeconds());
         assertEquals(1, a.getCompletedParticipants());
+        assertEquals(0, a.getCurrentIndividualStatusSeconds());
+        assertEquals(120, a.getLongestStatus());
+        assertEquals(60, a.getQuickestStatus());
+    }
+
+    @MediumTest
+    public void test_new_longest_individual_status_determined_properly() {
+        a.clearState();
+
+        a.setLongestStatus(120);
+        a.setQuickestStatus(60);
+        a.setCurrentIndividualStatusSeconds(125);
+        a.setRemainingIndividualSeconds(4);
+        assertEquals(0, a.getCompletedParticipants());
+        clickNextButton();
+
+        assertEquals(a.getStartingIndividualSeconds(), a.getRemainingIndividualSeconds());
+        assertEquals(1, a.getCompletedParticipants());
+        assertEquals(0, a.getCurrentIndividualStatusSeconds());
+        assertEquals(125, a.getLongestStatus());
+        assertEquals(60, a.getQuickestStatus());
+    }
+
+    @MediumTest
+    public void test_new_quickest_individual_status_determined_properly() {
+        a.clearState();
+
+        a.setLongestStatus(120);
+        a.setQuickestStatus(60);
+        a.setCurrentIndividualStatusSeconds(55);
+        a.setRemainingIndividualSeconds(4);
+        assertEquals(0, a.getCompletedParticipants());
+        clickNextButton();
+
+        assertEquals(a.getStartingIndividualSeconds(), a.getRemainingIndividualSeconds());
+        assertEquals(1, a.getCompletedParticipants());
+        assertEquals(0, a.getCurrentIndividualStatusSeconds());
+        assertEquals(120, a.getLongestStatus());
+        assertEquals(55, a.getQuickestStatus());
     }
 
     @MediumTest
@@ -106,11 +173,16 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
     }
 
     @MediumTest
-    public void test_individual_timer_is_disabled_when_there_are_no_more_participants() {
+    public void test_individual_timer_is_disabled_when_there_are_no_more_participants() throws Throwable {
         a.setCompletedParticipants(4);
+        a.setTotalParticipants(5);
         clickNextButton();
 
+        // Test is not executing the thread that updates the UI, so do it manually
+        a.disableIndividualTimer();
+
         assertEquals(0, a.getRemainingIndividualSeconds());
+        assertTrue(0L != a.getIndividualStatusEndTime());
 
         TextView participantNumber = (TextView) a.findViewById(R.id.participant_number);
         assertEquals(a.getString(R.string.individual_status_complete), participantNumber.getText());
@@ -206,6 +278,41 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         a.updateTimerValues();
 
         assertFalse(a.wasFinishedSoundPlayed());
+    }
+
+    @MediumTest
+    public void test_meeting_stats_are_stored_when_finish_is_clicked() {
+        a.setMeetingStartTime(System.currentTimeMillis());
+        a.setCompletedParticipants(5);
+        a.setIndividualStatusStartTime(System.currentTimeMillis());
+        a.setIndividualStatusEndTime(System.currentTimeMillis());
+        a.setQuickestStatus(60);
+        a.setLongestStatus(120);
+        a.setTeam(new Team("Test team"));
+
+        clickFinishedButton();
+        assertTrue(a.wasPersistMeetingCalled());
+    }
+
+    @MediumTest
+    public void test_individual_status_end_time_is_set_if_finish_is_clicked_early() {
+        a.setMeetingStartTime(System.currentTimeMillis());
+        a.setCompletedParticipants(5);
+        a.setIndividualStatusStartTime(System.currentTimeMillis());
+        a.setQuickestStatus(60);
+        a.setLongestStatus(120);
+        a.setTeam(new Team("Test team"));
+
+        clickFinishedButton();
+        assertTrue(0L != a.getIndividualStatusEndTime());
+        assertTrue(a.wasPersistMeetingCalled());
+    }
+
+    @MediumTest
+    public void test_finishing_a_meeting_with_no_team_specified_doesnt_try_to_persist_the_results() {
+        a.setTeam(null);
+        clickFinishedButton();
+        assertFalse(a.wasPersistMeetingCalled());
     }
 
     private void clickFinishedButton() {
