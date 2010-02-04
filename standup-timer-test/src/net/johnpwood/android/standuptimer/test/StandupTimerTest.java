@@ -59,7 +59,6 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         a.setTotalParticipants(456);
         a.setCurrentIndividualStatusSeconds(43);
         a.setMeetingStartTime(123456789);
-        a.setIndividualStatusStartTime(333444555);
         a.setIndividualStatusEndTime(666777888);
         a.setQuickestStatus(789);
         a.setLongestStatus(999);
@@ -70,7 +69,7 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         assertEquals(456, a.getTotalParticipants());
         assertEquals(43, a.getCurrentIndividualStatusSeconds());
         assertEquals(123456789, a.getMeetingStartTime());
-        assertEquals(333444555, a.getIndividualStatusStartTime());
+        assertEquals(123456789, a.getIndividualStatusStartTime());
         assertEquals(666777888, a.getIndividualStatusEndTime());
         assertEquals(789, a.getQuickestStatus());
         assertEquals(999, a.getLongestStatus());
@@ -82,7 +81,6 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         a.setTotalParticipants(456);
         a.setCurrentIndividualStatusSeconds(43);
         a.setMeetingStartTime(123456789);
-        a.setIndividualStatusStartTime(333444555);
         a.setIndividualStatusEndTime(666777888);
         a.setQuickestStatus(789);
         a.setLongestStatus(999);
@@ -93,8 +91,8 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
         assertEquals(DEFAULT_MEETING_LENGTH, a.getRemainingMeetingSeconds());
         assertEquals(DEFAULT_NUM_PARTICIPANTS, a.getTotalParticipants());
         assertEquals(0, a.getCurrentIndividualStatusSeconds());
-        assertEquals(0, a.getMeetingStartTime());
-        assertEquals(0, a.getIndividualStatusStartTime());
+        assertTrue(a.getMeetingStartTime() > (System.currentTimeMillis() - 1000) && a.getMeetingStartTime() < System.currentTimeMillis());
+        assertTrue(a.getIndividualStatusStartTime() > (System.currentTimeMillis() - 1000) && a.getIndividualStatusStartTime() < System.currentTimeMillis());
         assertEquals(0, a.getIndividualStatusEndTime());
         assertEquals(Integer.MAX_VALUE, a.getQuickestStatus());
         assertEquals(0, a.getLongestStatus());
@@ -284,7 +282,6 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
     public void test_meeting_stats_are_stored_when_finish_is_clicked() {
         a.setMeetingStartTime(System.currentTimeMillis());
         a.setCompletedParticipants(5);
-        a.setIndividualStatusStartTime(System.currentTimeMillis());
         a.setIndividualStatusEndTime(System.currentTimeMillis());
         a.setQuickestStatus(60);
         a.setLongestStatus(120);
@@ -298,7 +295,6 @@ public class StandupTimerTest extends ActivityUnitTestCase<StandupTimerMock> {
     public void test_individual_status_end_time_is_set_if_finish_is_clicked_early() {
         a.setMeetingStartTime(System.currentTimeMillis());
         a.setCompletedParticipants(5);
-        a.setIndividualStatusStartTime(System.currentTimeMillis());
         a.setQuickestStatus(60);
         a.setLongestStatus(120);
         a.setTeam(new Team("Test team"));

@@ -79,10 +79,6 @@ public class StandupTimerMock extends StandupTimer {
         return super.getIndividualStatusStartTime();
     }
 
-    public void setIndividualStatusStartTime(long value) {
-        setPreference(INDIVIDUAL_STATUS_START_TIME, value);
-    }
-
     @Override
     public long getIndividualStatusEndTime() {
         return super.getIndividualStatusEndTime();
