@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ## Credits
-"Teams" icon courtesy of Ivan Soto (http://ivansotof.com)
+"Teams" icon courtesy of Ivan Soto [http://ivansotof.com](http://ivansotof.com)
 
 Sounds downloaded from http://soundbible.com, and modified for this application.
 - Air horn sound (Sampling Plus 1.0 license) courtesy of guitarguy1985
