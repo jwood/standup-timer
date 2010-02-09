@@ -25,7 +25,7 @@ limitations under the License.
 "Teams" icon courtesy of Ivan Soto [http://ivansotof.com](http://ivansotof.com)
 
 Sounds downloaded from [http://soundbible.com](http://soundbible.com), and modified for this application.   
-- Air horn sound (Sampling Plus 1.0 license) courtesy of guitarguy1985
+- Air horn sound (Sampling Plus 1.0 license) courtesy of guitarguy1985   
 - Bell sound (Attribution 3.0 license) courtesy of Mike Koenig
 
 ## Author
