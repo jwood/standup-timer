@@ -1,12 +1,13 @@
 ## Description
-Standup Timer is a simple, stand-up meeting stop watch that can be used to ensure
-your stand-up meeting finishes on time, and gives all the participants an
-equal share of time to state their progress.
+Standup Timer is an [Android](http://www.android.com) application
+that acts as a simple, stand-up meeting stop watch.  It can be used to
+ensure your stand-up meeting finishes on time, and gives all the
+participants an equal share of time to state their progress.
 
 Standup Timer is free, open source, and available under the Apache V2 license.
 
 ## License
-Copyright 2009 John Wood
+Copyright 2010 John Wood
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
