@@ -13,7 +13,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+  [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,7 @@ limitations under the License.
 ## Credits
 "Teams" icon courtesy of Ivan Soto [http://ivansotof.com](http://ivansotof.com)
 
-Sounds downloaded from http://soundbible.com, and modified for this application.
+Sounds downloaded from [http://soundbible.com](http://soundbible.com), and modified for this application.   
 - Air horn sound (Sampling Plus 1.0 license) courtesy of guitarguy1985
 - Bell sound (Attribution 3.0 license) courtesy of Mike Koenig
 
