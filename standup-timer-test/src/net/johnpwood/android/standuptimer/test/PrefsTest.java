@@ -41,4 +41,12 @@ public class PrefsTest extends ActivityUnitTestCase<Prefs> {
         assertEquals(15, Prefs.getWarningTime(a));
         assertEquals("15", PreferenceManager.getDefaultSharedPreferences(a).getString("warning_time", "1"));        
     }
+
+    @MediumTest
+    public void test_can_get_and_set_unlimited_participants() {
+        Prefs.setUnlimitedParticipants(a, false);
+        assertFalse(Prefs.unlimitedParticipants(a));
+        Prefs.setUnlimitedParticipants(a, true);
+        assertTrue(Prefs.unlimitedParticipants(a));
+    }
 }

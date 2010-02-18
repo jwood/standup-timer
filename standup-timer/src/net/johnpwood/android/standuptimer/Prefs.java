@@ -7,9 +7,11 @@ import android.preference.PreferenceManager;
 
 public class Prefs extends PreferenceActivity {
     private static final String SOUNDS = "sounds";
-    private static boolean SOUNDS_DEFAULT = true;
+    private static final boolean SOUNDS_DEFAULT = true;
     private static final String WARNING_TIME = "warning_time";
     private static final int WARNING_TIME_DEFAULT = 15;
+    private static final String UNLIMITED_PARTICIPANTS = "unlimited_participants";
+    private static final boolean UNLIMITED_PARTICIPANTS_DEFAULT = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +39,13 @@ public class Prefs extends PreferenceActivity {
 
     public static void setWarningTime(Context context, int warningTime) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(WARNING_TIME, Integer.toString(warningTime)).commit();
+    }
+
+    public static boolean unlimitedParticipants(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(UNLIMITED_PARTICIPANTS, UNLIMITED_PARTICIPANTS_DEFAULT);
+    }
+
+    public static void setUnlimitedParticipants(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(UNLIMITED_PARTICIPANTS, value).commit();
     }
 }
