@@ -41,11 +41,11 @@ public class Prefs extends PreferenceActivity {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(WARNING_TIME, Integer.toString(warningTime)).commit();
     }
 
-    public static boolean unlimitedParticipants(Context context) {
+    public static boolean allowUnlimitedParticipants(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(UNLIMITED_PARTICIPANTS, UNLIMITED_PARTICIPANTS_DEFAULT);
     }
 
-    public static void setUnlimitedParticipants(Context context, boolean value) {
+    public static void setAllowUnlimitedParticipants(Context context, boolean value) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(UNLIMITED_PARTICIPANTS, value).commit();
     }
 }

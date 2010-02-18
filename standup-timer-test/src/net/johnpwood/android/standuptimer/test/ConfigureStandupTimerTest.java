@@ -1,5 +1,6 @@
 package net.johnpwood.android.standuptimer.test;
 
+import net.johnpwood.android.standuptimer.Prefs;
 import net.johnpwood.android.standuptimer.R;
 import net.johnpwood.android.standuptimer.mock.ConfigureStandupTimerMock;
 
@@ -41,7 +42,8 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
     }
 
     @MediumTest
-    public void test_greater_than_20_meeting_participants_displays_error_dialog() {
+    public void test_greater_than_20_meeting_participants_displays_error_dialog_if_unlimited_participants_not_allowed() {
+        Prefs.setAllowUnlimitedParticipants(a, false);
         TextView t = (TextView) a.findViewById(R.id.num_participants);
         t.setText("21");
 
@@ -50,6 +52,19 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
 
         assertTrue(a.showInvalidNumberOfParticipantsDialogCalled());
         assertFalse(a.startTimerCalled());
+    }
+
+    @MediumTest
+    public void test_greater_than_20_meeting_participants_succeeds_if_unlimited_participants_is_allowed() {
+        Prefs.setAllowUnlimitedParticipants(a, true);
+        TextView t = (TextView) a.findViewById(R.id.num_participants);
+        t.setText("21");
+
+        Button b = (Button) a.findViewById(R.id.start_button);
+        b.performClick();
+
+        assertFalse(a.showInvalidNumberOfParticipantsDialogCalled());
+        assertTrue(a.startTimerCalled());
     }
 
     @MediumTest

@@ -44,9 +44,9 @@ public class PrefsTest extends ActivityUnitTestCase<Prefs> {
 
     @MediumTest
     public void test_can_get_and_set_unlimited_participants() {
-        Prefs.setUnlimitedParticipants(a, false);
-        assertFalse(Prefs.unlimitedParticipants(a));
-        Prefs.setUnlimitedParticipants(a, true);
-        assertTrue(Prefs.unlimitedParticipants(a));
+        Prefs.setAllowUnlimitedParticipants(a, false);
+        assertFalse(Prefs.allowUnlimitedParticipants(a));
+        Prefs.setAllowUnlimitedParticipants(a, true);
+        assertTrue(Prefs.allowUnlimitedParticipants(a));
     }
 }
