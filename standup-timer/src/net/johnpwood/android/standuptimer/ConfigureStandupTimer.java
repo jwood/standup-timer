@@ -183,7 +183,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     @Override
     protected Dialog onCreateDialog(int id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.valid_num_participants_warning)
+        builder.setMessage(getWarningMessage())
             .setCancelable(true)
             .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -191,6 +191,19 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
                 }
             });
         return builder.create();
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        ((AlertDialog) dialog).setMessage(this.getString(getWarningMessage()));
+    }
+
+    private int getWarningMessage() {
+        if (Prefs.allowUnlimitedParticipants(this)) {
+            return R.string.valid_num_participants_warning_unlimited;
+        } else {
+            return R.string.valid_num_participants_warning;
+        }
     }
 
     protected int getMeetingLengthPos() {
