@@ -98,6 +98,19 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
     }
 
     @MediumTest
+    public void test_specifying_an_invalid_number_of_participants_shouldnt_crash_the_app() {
+        Prefs.setAllowUnlimitedParticipants(a, true);
+        TextView t = (TextView) a.findViewById(R.id.num_participants);
+        t.setText("2198723498239487239487234987");
+
+        Button b = (Button) a.findViewById(R.id.start_button);
+        b.performClick();
+
+        assertFalse(a.showInvalidNumberOfParticipantsDialogCalled());
+        assertTrue(a.startTimerCalled());
+    }
+
+    @MediumTest
     public void test_about_box_displayed_successfully() {
         MenuItem menuItem = EasyMock.createMock(MenuItem.class);
         EasyMock.expect(menuItem.getItemId()).andReturn(R.id.about);

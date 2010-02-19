@@ -22,6 +22,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     private static final String MEETING_LENGTH_POS = "meetingLengthPos";
     private static final String NUMBER_OF_PARTICIPANTS = "numberOfParticipants";
     private static final String TEAM_NAMES_POS = "teamNamesPos";
+    private static final int MAX_ALLOWED_PARTICIPANTS = Integer.MAX_VALUE;
 
     private int meetingLengthPos = 0;
     private int numParticipants = 0;
@@ -100,7 +101,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         i.putExtra("meetingLengthPos", meetingLengthPos);
 
         TextView t = (TextView) findViewById(R.id.num_participants);
-        numParticipants = Integer.parseInt(t.getText().toString());
+        numParticipants = parseNumberOfParticipants(t);
         i.putExtra("numParticipants", numParticipants);
 
         Spinner teamNameSpinner = (Spinner) findViewById(R.id.team_names);
@@ -203,6 +204,22 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
             return R.string.valid_num_participants_warning_unlimited;
         } else {
             return R.string.valid_num_participants_warning;
+        }
+    }
+
+    private int parseNumberOfParticipants(TextView t) {
+        int numberOfParticipants = numParticipants;
+
+        try {
+            numberOfParticipants = Integer.parseInt(t.getText().toString());
+        } catch (NumberFormatException e) {
+            Logger.w("Invalid number of participants provided.  Defaulting to previous value.");
+        }
+
+        if (numberOfParticipants > MAX_ALLOWED_PARTICIPANTS) {
+            return MAX_ALLOWED_PARTICIPANTS;
+        } else {
+            return numberOfParticipants;
         }
     }
 
