@@ -38,6 +38,8 @@
    <string name="warning_time_summary">When to notify participants time is running out</string>
    <string name="unlimited_participants">Unlimited participants</string>
    <string name="unlimited_participants_summary">Allow meetings with any number of participants</string>
+   <string name="variable_meeting_length">Variable meeting length</string>
+   <string name="variable_meeting_length_summary">Allow meetings with any meeting length</string>
 
    <string name="team_label">Teams</string>
    <string name="add_team">Add Team</string>

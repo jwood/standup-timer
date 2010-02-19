@@ -12,6 +12,8 @@ public class Prefs extends PreferenceActivity {
     private static final int WARNING_TIME_DEFAULT = 15;
     private static final String UNLIMITED_PARTICIPANTS = "unlimited_participants";
     private static final boolean UNLIMITED_PARTICIPANTS_DEFAULT = false;
+    private static final String VARIABLE_MEETING_LENGTH = "variable_meeting_length";
+    private static final boolean VARIABLE_MEETING_LENGTH_DEFAULT = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +49,13 @@ public class Prefs extends PreferenceActivity {
 
     public static void setAllowUnlimitedParticipants(Context context, boolean value) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(UNLIMITED_PARTICIPANTS, value).commit();
+    }
+
+    public static boolean allowVariableMeetingLength(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(VARIABLE_MEETING_LENGTH, VARIABLE_MEETING_LENGTH_DEFAULT);
+    }
+
+    public static void setAllowVariableMeetingLength(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(VARIABLE_MEETING_LENGTH, value).commit();
     }
 }

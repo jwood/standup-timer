@@ -49,4 +49,12 @@ public class PrefsTest extends ActivityUnitTestCase<Prefs> {
         Prefs.setAllowUnlimitedParticipants(a, true);
         assertTrue(Prefs.allowUnlimitedParticipants(a));
     }
+
+    @MediumTest
+    public void test_can_get_and_set_variable_meeting_length() {
+        Prefs.setAllowVariableMeetingLength(a, false);
+        assertFalse(Prefs.allowVariableMeetingLength(a));
+        Prefs.setAllowVariableMeetingLength(a, true);
+        assertTrue(Prefs.allowVariableMeetingLength(a));
+    }
 }

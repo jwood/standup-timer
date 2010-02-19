@@ -9,4 +9,7 @@
    <CheckBoxPreference android:key="unlimited_participants"
       android:title="@string/unlimited_participants" android:summary="@string/unlimited_participants_summary"
       android:defaultValue="false" />
+   <CheckBoxPreference android:key="variable_meeting_length"
+      android:title="@string/variable_meeting_length" android:summary="@string/variable_meeting_length_summary"
+      android:defaultValue="false" />
 </PreferenceScreen> 
