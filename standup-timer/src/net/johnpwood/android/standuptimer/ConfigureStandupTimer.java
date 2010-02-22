@@ -9,12 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.DigitsKeyListener;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,6 +33,9 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     private int meetingLengthPos = 0;
     private int numParticipants = 0;
     private int teamNamesPos = 0;
+
+    private Spinner meetingLengthSpinner = null;
+    private EditText meetingLengthEditText = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +105,6 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     public void onClick(View v) {
         Intent i = new Intent(this, StandupTimer.class);
 
-        Spinner meetingLengthSpinner = (Spinner) findViewById(R.id.meeting_length);
         meetingLengthPos = meetingLengthSpinner.getSelectedItemPosition();
         i.putExtra("meetingLengthPos", meetingLengthPos);
 
@@ -127,7 +135,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     private void initializeGUIElements() {
         loadState();
         initializeNumberOfParticipants();
-        initializeMeetingLengthSpinner();
+        initializeMeetingLength();
         initializeTeamNamesSpinner();
         initializeStartButton();
     }
@@ -137,13 +145,41 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         t.setText(Integer.toString(numParticipants));
     }
 
-    private void initializeMeetingLengthSpinner() {
-        Spinner s = (Spinner) findViewById(R.id.meeting_length);
+    private void initializeMeetingLength() {
+        ViewGroup meetingLengthContainer = (ViewGroup) findViewById(R.id.meeting_length_container);
+        meetingLengthContainer.removeAllViews();
+
+        View meetingLengthView = null;
+        if (Prefs.allowVariableMeetingLength(this)) {
+            meetingLengthView = createMeetingLengthTextBox();
+        } else {
+            meetingLengthView = createMeetingLengthSpinner();
+        }
+
+        meetingLengthContainer.addView(meetingLengthView);
+    }
+
+    private View createMeetingLengthTextBox() {
+        meetingLengthEditText = new EditText(this);
+        meetingLengthEditText.setGravity(Gravity.CENTER);
+        meetingLengthEditText.setKeyListener(new DigitsKeyListener());
+        meetingLengthEditText.setRawInputType(InputType.TYPE_CLASS_PHONE);
+        meetingLengthEditText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        return meetingLengthEditText;
+    }
+
+    private View createMeetingLengthSpinner() {
+        meetingLengthSpinner = new Spinner(this);
+        meetingLengthSpinner.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        meetingLengthSpinner.setPrompt(this.getString(R.string.length_of_meeting));
+
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(this, R.array.meeting_lengths,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-        s.setSelection(meetingLengthPos);
+        meetingLengthSpinner.setAdapter(adapter);
+        meetingLengthSpinner.setSelection(meetingLengthPos);
+
+        return meetingLengthSpinner;
     }
 
     private void initializeTeamNamesSpinner() {

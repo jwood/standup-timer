@@ -21,11 +21,9 @@
          android:layout_gravity="center" android:paddingTop="20dp"
          android:textSize="17dp" />
 
-      <Spinner android:id="@+id/meeting_length"
-         android:layout_width="fill_parent" android:layout_height="wrap_content"
-         android:prompt="@string/length_of_meeting"
-         android:layout_marginTop="5dp" android:layout_marginLeft="100dp"
-         android:layout_marginRight="100dp" />
+      <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+         android:layout_marginTop="5dp" android:id="@+id/meeting_length_container"
+         android:layout_marginLeft="100dp" android:layout_marginRight="100dp" />
 
       <TextView android:text="@string/team"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
