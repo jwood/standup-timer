@@ -27,6 +27,9 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         Intent intent = new Intent(Intent.ACTION_MAIN);
         a = startActivity(intent, null, null);
         a.onResume();
+
+        Prefs.setAllowUnlimitedParticipants(a, false);
+        Prefs.setAllowVariableMeetingLength(a, false);
     }
 
     @MediumTest
@@ -43,7 +46,6 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
 
     @MediumTest
     public void test_greater_than_20_meeting_participants_displays_error_dialog_if_unlimited_participants_not_allowed() {
-        Prefs.setAllowUnlimitedParticipants(a, false);
         TextView t = (TextView) a.findViewById(R.id.num_participants);
         t.setText("21");
 
@@ -83,7 +85,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
     public void test_state_is_saved_when_timer_is_started() {
         TextView t = (TextView) a.findViewById(R.id.num_participants);
         t.setText("13");
-        Spinner s = (Spinner) a.findViewById(R.id.meeting_length);
+        Spinner s = a.getMeetingLengthSpinner();
         s.setSelection(2);
         Spinner s2 = (Spinner) a.findViewById(R.id.team_names);
         s2.setSelection(1);

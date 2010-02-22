@@ -270,4 +270,8 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     protected int getTeamNamesPos() {
         return teamNamesPos;
     }
+
+    protected Spinner getMeetingLengthSpinner() {
+        return meetingLengthSpinner;
+    }
 }

@@ -2,6 +2,7 @@ package net.johnpwood.android.standuptimer.mock;
 
 import net.johnpwood.android.standuptimer.ConfigureStandupTimer;
 import android.content.Intent;
+import android.widget.Spinner;
 
 public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     private boolean showInvalidNumberOfParticipantsDialogCalled = false;
@@ -88,5 +89,10 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     @Override
     public int getTeamNamesPos() {
         return super.getTeamNamesPos();
+    }
+
+    @Override
+    public Spinner getMeetingLengthSpinner() {
+        return super.getMeetingLengthSpinner();
     }
 }
