@@ -154,13 +154,13 @@ public class StandupTimer extends Activity implements OnClickListener {
     }
 
     private void initializeTimerValues() {
-        int meetingLengthPos = getIntent().getIntExtra("meetingLengthPos", 0);
+        int meetingLength = getIntent().getIntExtra("meetingLength", 0);
         int numParticipants = getIntent().getIntExtra("numParticipants", 0);
 
-        Logger.d("Data from Intent: meetingLengthPos = " + meetingLengthPos);
+        Logger.d("Data from Intent: meetingLength = " + meetingLength);
         Logger.d("Data from Intent: numParticipants = " + numParticipants);
 
-        loadState(meetingLengthPos, numParticipants);
+        loadState(meetingLength, numParticipants);
     }
 
     protected synchronized void updateDisplay() {
@@ -292,12 +292,12 @@ public class StandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    protected synchronized void loadState(int meetingLengthPos, int numParticipants) {
+    protected synchronized void loadState(int meetingLength, int numParticipants) {
         warningTime = Prefs.getWarningTime(this);
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         totalParticipants = preferences.getInt(TOTAL_PARTICIPANTS, numParticipants);
-        remainingMeetingSeconds = preferences.getInt(REMAINING_MEETING_SECONDS, getMeetingLength(meetingLengthPos));
+        remainingMeetingSeconds = preferences.getInt(REMAINING_MEETING_SECONDS, (meetingLength * 60));
         startingIndividualSeconds = preferences.getInt(STARTING_INDIVIDUAL_SECONDS, remainingMeetingSeconds / totalParticipants);
         remainingIndividualSeconds = preferences.getInt(REMAINING_INDIVIDUAL_SECONDS, startingIndividualSeconds);
         completedParticipants = preferences.getInt(COMPLETED_PARTICIPANTS, 0);
@@ -371,17 +371,6 @@ public class StandupTimer extends Activity implements OnClickListener {
     private void playSound(MediaPlayer mp) {
         mp.seekTo(0);
         mp.start();
-    }
-
-    private static int getMeetingLength(int meetingLengthPos) {
-        int minutes = 0;
-        switch (meetingLengthPos) {
-            case 0: minutes = 5;  break;
-            case 1: minutes = 10; break;
-            case 2: minutes = 15; break;
-            case 3: minutes = 20; break;
-        }
-        return minutes * 60;
     }
 
     private void storeMeetingStats() {

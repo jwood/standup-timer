@@ -194,7 +194,7 @@ public class StandupTimerMock extends StandupTimer {
     }
 
     public void loadState() {
-        super.loadState(0, 2);
+        super.loadState(5, 2);
     }
 
     public void clearState() {
