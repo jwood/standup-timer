@@ -77,8 +77,8 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     }
 
     @Override
-    public int getMeetingLengthPos() {
-        return super.getMeetingLengthPos();
+    public int getMeetingLength() {
+        return super.getMeetingLength();
     }
 
     @Override

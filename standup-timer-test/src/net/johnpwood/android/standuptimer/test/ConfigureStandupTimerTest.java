@@ -95,7 +95,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
 
         a.loadState();
         assertEquals(13, a.getNumParticipants());
-        assertEquals(2, a.getMeetingLengthPos());
+        assertEquals(15, a.getMeetingLength());
         assertEquals(1, a.getTeamNamesPos());
     }
 

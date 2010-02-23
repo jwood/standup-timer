@@ -25,12 +25,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ConfigureStandupTimer extends Activity implements OnClickListener {
-    private static final String MEETING_LENGTH_POS = "meetingLengthPos";
+    private static final String MEETING_LENGTH = "meetingLength";
     private static final String NUMBER_OF_PARTICIPANTS = "numberOfParticipants";
     private static final String TEAM_NAMES_POS = "teamNamesPos";
     private static final int MAX_ALLOWED_PARTICIPANTS = Integer.MAX_VALUE;
+    private static final int MAX_ALLOWED_MEETING_LENGTH = Integer.MAX_VALUE;
 
-    private int meetingLengthPos = 0;
+    private int meetingLength = 0;
     private int numParticipants = 0;
     private int teamNamesPos = 0;
 
@@ -105,8 +106,8 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     public void onClick(View v) {
         Intent i = new Intent(this, StandupTimer.class);
 
-        meetingLengthPos = meetingLengthSpinner.getSelectedItemPosition();
-        i.putExtra("meetingLengthPos", meetingLengthPos);
+        meetingLength = getMeetingLengthFromUI();
+        i.putExtra("meetingLength", meetingLength);
 
         TextView t = (TextView) findViewById(R.id.num_participants);
         numParticipants = parseNumberOfParticipants(t);
@@ -165,6 +166,9 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         meetingLengthEditText.setKeyListener(new DigitsKeyListener());
         meetingLengthEditText.setRawInputType(InputType.TYPE_CLASS_PHONE);
         meetingLengthEditText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        meetingLengthEditText.setText(Integer.toString(meetingLength));
+
+        meetingLengthSpinner = null;
         return meetingLengthEditText;
     }
 
@@ -177,8 +181,9 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         meetingLengthSpinner.setAdapter(adapter);
-        meetingLengthSpinner.setSelection(meetingLengthPos);
+        meetingLengthSpinner.setSelection(getSpinnerPositionFromMeetingLength(meetingLength));
 
+        meetingLengthEditText = null;
         return meetingLengthSpinner;
     }
 
@@ -197,11 +202,11 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     }
 
     private void saveState() {
-        Logger.i("Saving state.  mettingLengthPos = " + meetingLengthPos +
+        Logger.i("Saving state.  mettingLength = " + meetingLength +
                 ", numParticipants = " + numParticipants +
                 ", teamNamePos = " + teamNamesPos);
         SharedPreferences.Editor preferences = getPreferences(MODE_PRIVATE).edit();
-        preferences.putInt(MEETING_LENGTH_POS, meetingLengthPos);
+        preferences.putInt(MEETING_LENGTH, meetingLength);
         preferences.putInt(NUMBER_OF_PARTICIPANTS, numParticipants);
         preferences.putInt(TEAM_NAMES_POS, teamNamesPos);
         preferences.commit();
@@ -209,10 +214,10 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
 
     protected void loadState() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        meetingLengthPos = preferences.getInt(MEETING_LENGTH_POS, 0);
+        meetingLength = preferences.getInt(MEETING_LENGTH, 5);
         numParticipants = preferences.getInt(NUMBER_OF_PARTICIPANTS, 2);
         teamNamesPos = preferences.getInt(TEAM_NAMES_POS, 0);
-        Logger.i("Retrieved state.  mettingLengthPos = " + meetingLengthPos +
+        Logger.i("Retrieved state.  mettingLengthPos = " + meetingLength +
                 ", numParticipants = " + numParticipants +
                 ", teamNamePos = " + teamNamesPos);
     }
@@ -259,8 +264,54 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         }
     }
 
-    protected int getMeetingLengthPos() {
-        return meetingLengthPos;
+    private int getMeetingLengthFromUI() {
+        if (meetingLengthEditText != null) {
+            return getMeetingLengthFromTextArea();
+        } else {
+            return getMeetingLengthFromSpinner();
+        }
+    }
+
+    private int getMeetingLengthFromTextArea() {
+        int length = meetingLength;
+
+        try {
+            length = Integer.parseInt(meetingLengthEditText.getText().toString());
+        } catch (NumberFormatException e) {
+            Logger.w("Invalid meeting length provided.  Defaulting to previous value.");
+        }
+
+        if (length > MAX_ALLOWED_MEETING_LENGTH) {
+            return MAX_ALLOWED_MEETING_LENGTH;
+        } else {
+            return length;
+        }
+    }
+
+    private int getMeetingLengthFromSpinner() {
+        int minutes = 0;
+        switch (meetingLengthSpinner.getSelectedItemPosition()) {
+            case 0: minutes = 5;  break;
+            case 1: minutes = 10; break;
+            case 2: minutes = 15; break;
+            case 3: minutes = 20; break;
+        }
+        return minutes;
+    }
+
+    private int getSpinnerPositionFromMeetingLength(int meetingLength) {
+        int pos = 0;
+        switch (meetingLength) {
+            case 5:  pos = 0; break;
+            case 10: pos = 1; break;
+            case 15: pos = 2; break;
+            case 20: pos = 3; break;
+        }
+        return pos;
+    }
+
+    protected int getMeetingLength() {
+        return meetingLength;
     }
 
     protected int getNumParticipants() {
