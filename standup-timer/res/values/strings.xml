@@ -39,7 +39,7 @@
    <string name="unlimited_participants">Unlimited participants</string>
    <string name="unlimited_participants_summary">Allow meetings with any number of participants</string>
    <string name="variable_meeting_length">Variable meeting length</string>
-   <string name="variable_meeting_length_summary">Allow meetings with any meeting length</string>
+   <string name="variable_meeting_length_summary">Allow meetings of any length</string>
 
    <string name="team_label">Teams</string>
    <string name="add_team">Add Team</string>
