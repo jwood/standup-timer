@@ -52,7 +52,7 @@ Standup Timer is a simple application that can be
 used to keep your stand-up meetings on track.  It is free
 and open source.
    </string>
-   <string name="about_version">Standup Timer v1.1</string>
+   <string name="about_version">Standup Timer v1.2</string>
    <string name="about_copywright">&#169;2010 by John Wood</string>
    <string name="about_author_email">john_p_wood@yahoo.com</string>
    <string name="about_project_url">http://johnpwood.net/standup-timer</string>
