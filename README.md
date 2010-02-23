@@ -6,6 +6,19 @@ participants an equal share of time to state their progress.
 
 Standup Timer is free, open source, and available under the Apache V2 license.
 
+## ChangeLog
+
+### Version 1.2
+- Added support for meetings of any length
+- Added support for meetings with any number of participants
+
+### Version 1.1
+- Added support for teams
+- Added support for tracking meeting statistics on a per team basis
+
+### Version 1.0
+- Initial release
+
 ## License
 Copyright 2010 John Wood
 
