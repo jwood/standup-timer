@@ -325,4 +325,8 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
     protected Spinner getMeetingLengthSpinner() {
         return meetingLengthSpinner;
     }
+
+    protected EditText getMeetingLengthEditText() {
+        return meetingLengthEditText;
+    }
 }

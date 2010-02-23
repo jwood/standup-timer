@@ -2,6 +2,7 @@ package net.johnpwood.android.standuptimer.mock;
 
 import net.johnpwood.android.standuptimer.ConfigureStandupTimer;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
@@ -11,6 +12,7 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     private boolean displayAboutBoxCalled = false;
     private boolean displayHelpDialogCalled = false;
     private boolean displayTeamConfigurationCalled = false;
+    private Intent intent = null;
 
     @Override
     public void onResume() {
@@ -29,10 +31,15 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     @Override
     protected void startTimer(Intent i) {
         startTimerCalled = true;
+        intent = i;
     }
 
     public boolean startTimerCalled() {
         return startTimerCalled;
+    }
+
+    public Intent getIntent() {
+        return intent;
     }
 
     @Override
@@ -94,5 +101,10 @@ public class ConfigureStandupTimerMock extends ConfigureStandupTimer {
     @Override
     public Spinner getMeetingLengthSpinner() {
         return super.getMeetingLengthSpinner();
+    }
+
+    @Override
+    public EditText getMeetingLengthEditText() {
+        return super.getMeetingLengthEditText();
     }
 }

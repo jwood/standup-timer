@@ -26,10 +26,10 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         super.setUp();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         a = startActivity(intent, null, null);
-        a.onResume();
 
         Prefs.setAllowUnlimitedParticipants(a, false);
         Prefs.setAllowVariableMeetingLength(a, false);
+        a.onResume();
     }
 
     @MediumTest
@@ -104,6 +104,41 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         Prefs.setAllowUnlimitedParticipants(a, true);
         TextView t = (TextView) a.findViewById(R.id.num_participants);
         t.setText("2198723498239487239487234987");
+
+        Button b = (Button) a.findViewById(R.id.start_button);
+        b.performClick();
+
+        assertFalse(a.showInvalidNumberOfParticipantsDialogCalled());
+        assertTrue(a.startTimerCalled());
+    }
+
+    @MediumTest
+    public void test_starting_a_meeting_with_a_non_traditional_meeting_length() {
+        Prefs.setAllowVariableMeetingLength(a, true);
+        a.onResume();
+
+        TextView numParticipants = (TextView) a.findViewById(R.id.num_participants);
+        numParticipants.setText("11");
+        TextView meetingLength = a.getMeetingLengthEditText();
+        meetingLength.setText("13");
+
+        Button b = (Button) a.findViewById(R.id.start_button);
+        b.performClick();
+
+        assertFalse(a.showInvalidNumberOfParticipantsDialogCalled());
+        assertTrue(a.startTimerCalled());
+        assertEquals(13, a.getIntent().getIntExtra("meetingLength", 0));
+    }
+
+    @MediumTest
+    public void test_specifying_an_invalid_meeting_length_shouldnt_crash_the_app() {
+        Prefs.setAllowVariableMeetingLength(a, true);
+        a.onResume();
+
+        TextView numParticipants = (TextView) a.findViewById(R.id.num_participants);
+        numParticipants.setText("11");
+        TextView meetingLength = a.getMeetingLengthEditText();
+        meetingLength.setText("2198723498239487239487234987");
 
         Button b = (Button) a.findViewById(R.id.start_button);
         b.performClick();
