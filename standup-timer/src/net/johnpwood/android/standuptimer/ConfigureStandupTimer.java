@@ -165,7 +165,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         meetingLengthEditText.setGravity(Gravity.CENTER);
         meetingLengthEditText.setKeyListener(new DigitsKeyListener());
         meetingLengthEditText.setRawInputType(InputType.TYPE_CLASS_PHONE);
-        meetingLengthEditText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        meetingLengthEditText.setLayoutParams(new LayoutParams(dipsToPixels(60), LayoutParams.WRAP_CONTENT));
         meetingLengthEditText.setText(Integer.toString(meetingLength));
 
         meetingLengthSpinner = null;
@@ -308,6 +308,10 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
             case 20: pos = 3; break;
         }
         return pos;
+    }
+
+    private int dipsToPixels(int dips) {
+        return (int) (dips * getResources().getDisplayMetrics().density);
     }
 
     protected int getMeetingLength() {
