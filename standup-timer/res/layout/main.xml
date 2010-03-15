@@ -9,7 +9,7 @@
 
       <TextView android:text="@string/number_of_participants"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center" android:textSize="17dp" />
+         android:layout_gravity="center" android:textSize="17sp" />
 
       <EditText android:id="@+id/num_participants" android:layout_width="60dp"
          android:layout_height="wrap_content" android:layout_gravity="center"
@@ -19,7 +19,7 @@
       <TextView android:text="@string/length_of_meeting"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
          android:layout_gravity="center" android:paddingTop="20dp"
-         android:textSize="17dp" />
+         android:textSize="17sp" />
 
       <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
          android:layout_marginTop="5dp" android:id="@+id/meeting_length_container"
@@ -29,7 +29,7 @@
       <TextView android:text="@string/team"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
          android:layout_gravity="center" android:paddingTop="20dp"
-         android:textSize="17dp" />
+         android:textSize="17sp" />
 
       <Spinner android:id="@+id/team_names"
          android:layout_width="fill_parent" android:layout_height="wrap_content"

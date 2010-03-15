@@ -10,12 +10,12 @@
       <TextView android:id="@+id/participant_number"
          android:text="@string/participant" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:textSize="20dp"></TextView>
+         android:textSize="20sp"></TextView>
 
       <TextView android:id="@+id/individual_time_remaining"
          android:text="00:00" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:textSize="50dp" android:layout_marginTop="5dp"></TextView>
+         android:textSize="50sp" android:layout_marginTop="5dp"></TextView>
 
       <Button android:text="@string/next" android:id="@+id/next_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -24,13 +24,13 @@
 
       <TextView android:text="@string/total_time_remaining"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center" android:textSize="15dp"
+         android:layout_gravity="center" android:textSize="15sp"
          android:layout_marginTop="30dp"></TextView>
 
       <TextView android:id="@+id/total_time_remaining"
          android:text="00:00" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:textSize="35dp" android:layout_marginTop="5dp"></TextView>
+         android:textSize="35sp" android:layout_marginTop="5dp"></TextView>
 
       <Button android:text="@string/finished" android:id="@+id/finished_button"
          android:layout_width="wrap_content" android:layout_height="wrap_content"

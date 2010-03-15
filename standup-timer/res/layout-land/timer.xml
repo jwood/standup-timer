@@ -9,13 +9,13 @@
       <TextView android:id="@+id/participant_number"
          android:text="@string/participant" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:textSize="20dp"></TextView>
+         android:textSize="20sp"></TextView>
 
       <View android:layout_width="30dp" android:layout_height="1dp"></View>
 
       <TextView android:text="@string/total_time_remaining"
          android:layout_width="wrap_content" android:layout_height="wrap_content"
-         android:layout_gravity="center" android:textSize="15dp"></TextView>
+         android:layout_gravity="center" android:textSize="15sp"></TextView>
 
    </TableRow>
 
@@ -25,14 +25,14 @@
       <TextView android:id="@+id/individual_time_remaining"
          android:text="00:00" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:textSize="50dp" android:paddingTop="15dp"></TextView>
+         android:textSize="50sp" android:paddingTop="15dp"></TextView>
 
       <View android:layout_width="30dp" android:layout_height="1dp"></View>
 
       <TextView android:id="@+id/total_time_remaining"
          android:text="00:00" android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:layout_gravity="center"
-         android:textSize="35dp" android:paddingTop="15dp"></TextView>
+         android:textSize="35sp" android:paddingTop="15dp"></TextView>
 
    </TableRow>
 

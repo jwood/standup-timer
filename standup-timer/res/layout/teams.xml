@@ -7,6 +7,6 @@
 
    <TextView android:id="@android:id/empty"
       android:layout_width="wrap_content" android:layout_height="wrap_content"
-      android:text="@string/no_teams" android:textSize="18dp" />
+      android:text="@string/no_teams" android:textSize="18sp" />
 
 </LinearLayout> 
