@@ -167,6 +167,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         meetingLengthEditText.setRawInputType(InputType.TYPE_CLASS_PHONE);
         meetingLengthEditText.setLayoutParams(new LayoutParams(dipsToPixels(60), LayoutParams.WRAP_CONTENT));
         meetingLengthEditText.setText(Integer.toString(meetingLength));
+        meetingLengthEditText.setLines(1);
 
         meetingLengthSpinner = null;
         return meetingLengthEditText;
