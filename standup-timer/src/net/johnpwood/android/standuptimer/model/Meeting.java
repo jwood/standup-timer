@@ -34,8 +34,8 @@ public class Meeting {
             this.dateTime = dateTime;
         }
 
-        if (numParticipants < 2) {
-            throw new IllegalArgumentException("Meeting must have at least 2 participants");
+        if (numParticipants < 1) {
+            throw new IllegalArgumentException("Meeting must have at least 1 participant");
         }
 
         meetingStats = new MeetingStats(numParticipants, individualStatusLength, meetingLength, quickestStatus, longestStatus);

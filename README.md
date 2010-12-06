@@ -8,6 +8,9 @@ Standup Timer is free, open source, and available under the Apache V2 license.
 
 ## ChangeLog
 
+### Version 1.3
+- Allow a meeting with only 1 participant
+
 ### Version 1.2
 - Added support for meetings of any length
 - Added support for meetings with any number of participants
@@ -41,6 +44,6 @@ Sounds downloaded from [http://soundbible.com](http://soundbible.com), and modif
 
 ## Author
 John Wood  
-[john_p_wood@yahoo.com](mailto:john_p_wood@yahoo.com)   
+[john@johnpwood.net](mailto:john@johnpwood.net)
 [http://johnpwood.net/standup-timer](http://johnpwood.net/standup-timer)   
 

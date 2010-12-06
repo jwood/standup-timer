@@ -117,7 +117,7 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
         teamNamesPos = teamNameSpinner.getSelectedItemPosition();
         i.putExtra("teamName", (String) teamNameSpinner.getSelectedItem());
 
-        if (numParticipants < 2 || (Prefs.allowUnlimitedParticipants(this) == false && numParticipants > 20)) {
+        if (numParticipants < 1 || (Prefs.allowUnlimitedParticipants(this) == false && numParticipants > 20)) {
             showInvalidNumberOfParticipantsDialog();
         } else {
             saveState();

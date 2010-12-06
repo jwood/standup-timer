@@ -33,9 +33,9 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
     }
 
     @MediumTest
-    public void test_less_than_2_meeting_participants_displays_error_dialog() {
+    public void test_less_than_1_meeting_participants_displays_error_dialog() {
         TextView t = (TextView) a.findViewById(R.id.num_participants);
-        t.setText("1");
+        t.setText("0");
 
         Button b = (Button) a.findViewById(R.id.start_button);
         b.performClick();
@@ -88,7 +88,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         Spinner s = a.getMeetingLengthSpinner();
         s.setSelection(2);
         Spinner s2 = (Spinner) a.findViewById(R.id.team_names);
-        s2.setSelection(1);
+        s2.setSelection(0);
 
         Button b = (Button) a.findViewById(R.id.start_button);
         b.performClick();
@@ -96,7 +96,7 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         a.loadState();
         assertEquals(13, a.getNumParticipants());
         assertEquals(15, a.getMeetingLength());
-        assertEquals(1, a.getTeamNamesPos());
+        assertEquals(0, a.getTeamNamesPos());
     }
 
     @MediumTest
