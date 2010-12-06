@@ -77,10 +77,6 @@ public class ConfigureStandupTimer extends Activity implements OnClickListener {
             Logger.d("Displaying the team configuration");
             displayTeamConfiguration();
             return true;
-        case R.id.quit:
-            Logger.d("Quitting");
-            finish();
-            return true;
         default:
             Logger.e("Unknown menu item selected");
             return false;

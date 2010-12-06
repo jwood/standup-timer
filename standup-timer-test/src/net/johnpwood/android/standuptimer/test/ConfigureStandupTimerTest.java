@@ -204,19 +204,4 @@ public class ConfigureStandupTimerTest extends ActivityUnitTestCase<ConfigureSta
         assertTrue(a.displayTeamConfigurationCalled());
         EasyMock.verify(menuItem);
     }
-
-    @MediumTest
-    public void test_quit_menu_item_quits_the_application() {
-        MenuItem menuItem = EasyMock.createMock(MenuItem.class);
-        EasyMock.expect(menuItem.getItemId()).andReturn(R.id.quit);
-
-        EasyMock.replay(menuItem);
-        a.onOptionsItemSelected(menuItem);
-        assertFalse(a.displayAboutBoxCalled());
-        assertFalse(a.displayHelpDialogCalled());
-        assertFalse(a.displaySettingsCalled());
-        assertTrue(isFinishCalled());
-        assertFalse(a.displayTeamConfigurationCalled());
-        EasyMock.verify(menuItem);
-    }
 }

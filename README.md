@@ -10,6 +10,7 @@ Standup Timer is free, open source, and available under the Apache V2 license.
 
 ### Version 1.3
 - Allow a meeting with only 1 participant
+- Removed unnecessary Quit menu item
 
 ### Version 1.2
 - Added support for meetings of any length
