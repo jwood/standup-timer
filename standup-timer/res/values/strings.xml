@@ -54,7 +54,7 @@ and open source.
    </string>
    <string name="about_version">Standup Timer v1.3</string>
    <string name="about_copywright">&#169;2010 by John Wood</string>
-   <string name="about_author_email">john_p_wood@yahoo.com</string>
+   <string name="about_author_email">john@johnpwood.net</string>
    <string name="about_project_url">http://johnpwood.net/standup-timer</string>
 
    <string name="help_label">Help</string>
