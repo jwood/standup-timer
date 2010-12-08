@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,6 +81,8 @@ public class StandupTimer extends Activity implements OnClickListener {
         if (team != null) {
             Logger.i("Starting new meeting for team '" + team.getName() + "'");
         }
+
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         initializeSounds();
         initializeButtonListeners();

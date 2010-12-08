@@ -8,6 +8,9 @@ Standup Timer is free, open source, and available under the Apache V2 license.
 
 ## ChangeLog
 
+### Version 1.4 (Unreleased)
+- Let the user adjust the media volume when the timer is running
+
 ### Version 1.3
 - Allow a meeting with only 1 participant
 - Removed unnecessary Quit menu item
