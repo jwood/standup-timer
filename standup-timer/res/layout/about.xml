@@ -15,7 +15,7 @@
          android:layout_marginTop="10dp" android:layout_height="wrap_content"
          android:text="@string/about_version" android:layout_gravity="center" />
       <TextView android:layout_width="wrap_content"
-         android:layout_height="wrap_content" android:text="@string/about_copywright"
+         android:layout_height="wrap_content" android:text="@string/about_copyright"
          android:layout_gravity="center" />
       <TextView android:layout_width="wrap_content"
          android:layout_height="wrap_content" android:text="@string/about_author_email"

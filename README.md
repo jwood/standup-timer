@@ -7,7 +7,7 @@ participants an equal share of time to state their progress.
 Standup Timer is free, open source, and available under the Apache V2 license.
 
 ## License
-Copyright 2010 John Wood
+Copyright 2011 John Wood
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
